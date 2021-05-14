@@ -16,8 +16,12 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = () => {
     return auth.signInWithPopup(Providers.google);
   };
-
-  const signOut = () => {
+  const isUser = () => {
+    if(currentUser && currentUser !== null && currentUser !== "NoUser")
+          return true;
+    return false;
+  }
+  const logOut = () => {
     return auth.signOut();
   };
   const forgotPassword = (email) => {
@@ -29,15 +33,16 @@ export function AuthProvider({ children }) {
       if (user) setCurrentUser(user);
       else {
         setCurrentUser("NoUser");
-        console.log("Setting to new User");
+        console.log("Setting to No User");
       }
     });
     return unsubscribe;
   }, []);
   const value = {
     currentUser,
+    isUser,
     loginWithEmail,
-    signOut,
+    logOut,
     forgotPassword,
     signInWithGoogle,
   };
