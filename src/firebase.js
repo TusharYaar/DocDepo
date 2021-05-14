@@ -19,14 +19,14 @@ export const auth = firebase.auth();
 const firestore = firebase.firestore();
 const storage = firebase.storage();
 export const Database = {
-  fileDepo: firestore.collection('fileDepo'),
-  textDepo: firestore.collection('textDepo'),
+  FILEDEPO: firestore.collection('fileDepo'),
+  NOTEDEPO: firestore.collection('noteDepo'),
   getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp,
   arrayUnion: firebase.firestore.FieldValue.arrayUnion,
   arrayRemove: firebase.firestore.FieldValue.arrayRemove,
-  storage: storage,
-  timestamp: firebase.firestore.FieldValue.timestamp,
+  STORAGE: storage,
 }
+export const TIMESTAMP = firebase.firestore.FieldValue.serverTimestamp;
 export const Providers = {
   google: new firebase.auth.GoogleAuthProvider(),
 }

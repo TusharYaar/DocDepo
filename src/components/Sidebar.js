@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
@@ -20,7 +20,7 @@ import { Typography } from "@material-ui/core";
 import {withRouter,Link as RouterLink } from "react-router-dom"
 
 const drawerWidth =200;
-
+const TabRoutes = ["/dashboard","/dashboard/doc"]
 
 const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
   const classes = useStyles();
@@ -51,7 +51,7 @@ const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
       <Divider />
       <Tabs
         orientation="vertical"
-        value={location.pathname !=="/" ? location.pathname : false}
+        value={TabRoutes.includes(location.pathname) ? location.pathname : false}
         className={classes.tabs}
       >
           <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <TextFieldsRoundedIcon className={classes.tabIcon} /><Typography varient="h6" className={classes.tabText} > Text </Typography></Grid>} value="/dashboard" component={RouterLink} to="/dashboard" />
