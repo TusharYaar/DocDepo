@@ -13,7 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade';
 import { withRouter,Link as RouterLink } from "react-router-dom";
-
+import Hidden from '@material-ui/core/Hidden';
 import {useAuth } from "../context/AuthContext"
 import Sidebar from "./Sidebar";
 
@@ -64,10 +64,10 @@ const Navbar= (props) => {
           >
             <MenuIcon />
           </IconButton> : null}
-          <Typography variant="h6" noWrap className={classes.title}>
+          <Link variant="h6" noWrap className={classes.title} underline="none" color="inherit" component={RouterLink} to="/">
            DocDepo
-          </Typography>
-          {isUser() ?  <Link component={RouterLink} to="/dashboard" color="inherit"> Go to Dashboard</Link> :<Link component={RouterLink} to="/login" color="inherit"> Login</Link> }
+          </Link>
+          {isUser() ?  <Link component={RouterLink} to="/dashboard" color="inherit" underline="none"> <Hidden only="xs"> Go to</Hidden> Dashboard</Link> :<Link underline="none" component={RouterLink} to="/login" color="inherit"> Login</Link> }
           {/* <Typography variant="p" noWrap >{isUser() ? "Go to Dashboard": "Login"}</Typography> */}
           {isUser() && (
             <div>
@@ -171,7 +171,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    
   }
 }));
 

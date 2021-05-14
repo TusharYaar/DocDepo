@@ -9,11 +9,11 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import IconButton from '@material-ui/core/IconButton';
-
-
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import TextFieldsRoundedIcon from '@material-ui/icons/TextFieldsRounded';
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 const drawerWidth =200;
 const Sidebar = ({openDrawer,setOpenDrawer,handleDrawerClose}) => {
   const classes = useStyles();
@@ -42,27 +42,33 @@ const Sidebar = ({openDrawer,setOpenDrawer,handleDrawerClose}) => {
         </IconButton>
       </div>
       <Divider />
+      <Tabs
+        orientation="vertical"
+        // value={value}
+        // onChange={handleChange}
+        // className={classes.tabs}
+        
+      >
+          <Tab icon={<TextFieldsRoundedIcon className={classes.tabIcon} />} label="Item One" />
+        <Tab label="Item Two" />
+      </Tabs>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
+      
+      <ListItem button key={"Text"}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <TextFieldsRoundedIcon />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={"Text"} />
           </ListItem>
-        ))}
+          <ListItem button key={"Documents"}>
+            <ListItemIcon>
+              <InsertDriveFileOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Documents"} />
+          </ListItem>
+
       </List>
       <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
     </Drawer>
   );
 };
@@ -122,6 +128,9 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+  tabIcon: {
+      display: "inline-block"
+  }
 }));
 
 export default Sidebar;

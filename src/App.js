@@ -13,25 +13,21 @@ import Dashboard from "./components/Dashboard";
 
 function App() {
   const classes = useStyles();
-  const {currentUser } = useAuth();
-  const isUserLoggedIn = () => {
-    if(currentUser !=="NoUser" && currentUser !== null)
-      return true;
-    return false;
-  }
+  const {isUser} = useAuth();
+
   return (
     <div className={classes.root}>
       <Navbar />
         <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/dashboard" exact>
-        {  isUserLoggedIn() ? <Dashboard /> : <Redirect to="/login"/> }
+        {  isUser() ? <Dashboard /> : <Redirect to="/login"/> }
            </Route>
         <Route path="/login" exact>
-          {<LogIn /> }
+          { isUser() ?  <Redirect to="/dashboard"/> : <LogIn /> }
         </Route>
         <Route path="/signup" exact>
-          {/* {  isUserLoggedIn() ? <Redirect to="/"/> :<SignUp /> } */}
+          {  isUser() ? <Redirect to="/dashboard"/> :<SignUp /> }
           <SignUp />
         </Route>
        </Switch>
