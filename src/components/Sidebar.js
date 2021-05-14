@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
@@ -11,11 +11,18 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from '@material-ui/core/IconButton';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import TextFieldsRoundedIcon from '@material-ui/icons/TextFieldsRounded';
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import Grid from "@material-ui/core/Grid";
+import { Typography } from "@material-ui/core";
+import {withRouter,Link as RouterLink } from "react-router-dom"
+
 const drawerWidth =200;
-const Sidebar = ({openDrawer,setOpenDrawer,handleDrawerClose}) => {
+
+
+const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -44,31 +51,25 @@ const Sidebar = ({openDrawer,setOpenDrawer,handleDrawerClose}) => {
       <Divider />
       <Tabs
         orientation="vertical"
-        // value={value}
-        // onChange={handleChange}
-        // className={classes.tabs}
-        
+        value={location.pathname !=="/" ? location.pathname : false}
+        className={classes.tabs}
       >
-          <Tab icon={<TextFieldsRoundedIcon className={classes.tabIcon} />} label="Item One" />
-        <Tab label="Item Two" />
+          <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <TextFieldsRoundedIcon className={classes.tabIcon} /><Typography varient="h6" className={classes.tabText} > Text </Typography></Grid>} value="/dashboard" component={RouterLink} to="/dashboard" />
+          <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <InsertDriveFileOutlinedIcon className={classes.tabIcon} /><Typography varient="h6"className={classes.tabText} > Documents </Typography></Grid>} value="/dashboard/doc" component={RouterLink} to="/dashboard/doc"/>
+            
       </Tabs>
-      <List>
-      
+      <Divider />
+
+
+      <List> 
       <ListItem button key={"Text"}>
             <ListItemIcon>
-              <TextFieldsRoundedIcon />
+              <ReportProblemOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary={"Text"} />
-          </ListItem>
-          <ListItem button key={"Documents"}>
-            <ListItemIcon>
-              <InsertDriveFileOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Documents"} />
-          </ListItem>
-
+            <ListItemText primary={"Report problem"} />
+      </ListItem>
       </List>
-      <Divider />
+
     </Drawer>
   );
 };
@@ -129,8 +130,14 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
   },
   tabIcon: {
-      display: "inline-block"
+    marginRight: theme.spacing(4),
+  },
+  tabGrid: {
+  padding: theme.spacing(1,0,1,1)
+  },
+  tabs: {
+    flexGrow: 1
   }
 }));
 
-export default Sidebar;
+export default withRouter(Sidebar);

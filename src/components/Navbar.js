@@ -105,7 +105,7 @@ const Navbar= (props) => {
           )}
         </Toolbar>
       </AppBar>
-      {isUser() ? <Sidebar  openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} handleDrawerClose={handleDrawerClose} /> : null}
+      {isUser() ? <Sidebar  openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} handleDrawerClose={handleDrawerClose}/> : null}
     </div>
   );
 }
