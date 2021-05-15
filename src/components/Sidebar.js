@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
@@ -20,12 +20,21 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import {withRouter,Link as RouterLink } from "react-router-dom"
 
+import FeedbackDialog from "./FeedbackDialog";
 const drawerWidth =200;
 const TabRoutes = ["/dashboard","/dashboard/doc","/dashboard/forum"]
 
 const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+  const handleDialogResponse = (response) => {
+    console.log(response)
+    setDialogOpen(false);
+  }
   return (
     <Drawer
       variant="permanent"
@@ -64,14 +73,14 @@ const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
 
 
       <List> 
-      <ListItem button key={"Text"}>
+      <ListItem button key={"Text"} onClick={handleDialogOpen}>
             <ListItemIcon>
               <ReportProblemOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={"Report problem"} />
       </ListItem>
       </List>
-
+      <FeedbackDialog open={dialogOpen} dialogResponse={handleDialogResponse}/>
     </Drawer>
   );
 };
