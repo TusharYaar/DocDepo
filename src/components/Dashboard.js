@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from "@material-ui/core/Paper"
 import { Grid,TextField,InputAdornment } from '@material-ui/core';
@@ -8,11 +8,34 @@ import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 
 import AddNote from "./AddNote"
 import Note from "./Note";
-import {Database} from "../firebase"
+import {Database} from "../firebase";
+import {useAuth }from "../context/AuthContext";
 const Dashboard = () => {
     const classes = useStyles();
-    const [filter, setFilter] = useState('All');
-    const [searchValue, setSearchValue] = useState('')
+    const [filter, setFilter] = useState("All");
+    const [searchValue, setSearchValue] = useState("");
+    const [userNotes, setUserNotes] = useState([]);
+    const { currentUser} = useAuth();
+    useEffect(() =>{
+      const getNotes = async () => {
+        try {
+          var notes = [];
+           Database.NOTESDEPO
+            .where("user", "==", currentUser.uid)
+            .onSnapshot((snapshot) => {
+              notes= [];
+              snapshot.forEach((doc) => {
+                notes.push({...doc.data(),id: doc.id});
+              });
+              if (notes.length > 0) setUserNotes(notes);
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getNotes();
+    },[currentUser.uid]);
+
     const handleFilter = (event, newFilter) => {
         setFilter(newFilter);
       };
@@ -20,9 +43,18 @@ const Dashboard = () => {
         setSearchValue(event.target.value);
     }
     const addNoteToCollection = async (note) => {
-        await Database.NOTESDEPO.add(note);
-        
+        await Database.NOTESDEPO.add(note);   
     }
+    const deleteNoteFromCollection = async (note) => {
+      try{
+        console.log(note);
+     await Database.NOTESDEPO.doc(note).delete();
+     console.log("done");
+    }
+  catch(err) {
+    console.log(err);
+  }}
+    const showNotes = userNotes.map(note => <Note date={note.createdAt} text={note.text} key={note.id} id={note.id} deleteNote={deleteNoteFromCollection}/>)
     return (
         <div>
         <div className={classes.toolbar} />
@@ -62,16 +94,7 @@ const Dashboard = () => {
         </Grid>
             <Grid container className={classes.gridContainer} justify="space-between">
             <AddNote addNote = {addNoteToCollection}/>
-            <Note/>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
-            <Paper className={classes.inputCard} elevation={6}></Paper>
+            {userNotes.length > 0 && showNotes}
             </Grid>
         </div>
     )
