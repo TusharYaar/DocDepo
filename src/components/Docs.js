@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
-
+import Zoom from '@material-ui/core/Zoom';
 import FileTypeIcon from "./FileTypeIcon";
 const File = (props) => {
   const classes = useStyles();
@@ -16,7 +16,8 @@ const File = (props) => {
   };
   const handleDelete = () => {};
   return (
-    <Paper elevation={3} className={classes.paper}>
+        <Zoom in={true} style={{ transitionDelay: props.delay ? props.delay : "200ms" }}>
+            <Paper elevation={3} className={classes.paper}>
       <Grid container justify="space-between" direction="column">
         <Grid item>
           <Typography variant="caption">
@@ -51,6 +52,7 @@ const File = (props) => {
         </Grid>
       </Grid>
     </Paper>
+        </Zoom>
   );
 };
 

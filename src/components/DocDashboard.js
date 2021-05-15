@@ -74,8 +74,8 @@ const DocDashboard = () => {
     filteredList= filteredList.filter((docs)=> docs.type.includes(filter));
     if(searchValue.length > 0)
     filteredList= filteredList.filter((docs)=> docs.name.includes(searchValue));
-    return filteredList.map((file) => (
-          <Docs key={file.name} fileDetails={file} />
+    return filteredList.map((file,index) => (
+          <Docs key={file.name} fileDetails={file}  delay={`${index*150}ms`}/>
       ));
   }
   return (
