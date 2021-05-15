@@ -12,7 +12,7 @@ import UploadDocs from "./UploadDocs";
 const DocDashboard = () => {
   const classes = useStyles();
   const { currentUser } = useAuth();
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState("all");
   const [searchValue, setSearchValue] = useState("");
   const [userDocs, setUserDocs] = useState([]);
   const [uploadDocs, setUploadDocs] = useState([]);
@@ -65,9 +65,19 @@ const DocDashboard = () => {
       uploadDocDetails={uploadDocDetails}
     />
   ));
-  const showUserDocs = userDocs.map((file) => (
-      <Docs key={file.name} fileDetails={file} />
-  ));
+  // const showUserDocs = userDocs.map((file) => (
+  //     <Docs key={file.name} fileDetails={file} />
+  // ));
+  const showUserDocs = () => {
+    let filteredList = [...userDocs];
+    if(filter !== "all")
+    filteredList= filteredList.filter((docs)=> docs.type.includes(filter));
+    if(searchValue.length > 0)
+    filteredList= filteredList.filter((docs)=> docs.name.includes(searchValue));
+    return filteredList.map((file) => (
+          <Docs key={file.name} fileDetails={file} />
+      ));
+  }
   return (
     <div className={classes.pageDiv}>
       <div className={classes.toolbar} />
@@ -101,16 +111,16 @@ const DocDashboard = () => {
           onChange={handleFilter}
           aria-label="text alignment"
         >
-          <ToggleButton value="All" aria-label="All Files">
+          <ToggleButton value="all" aria-label="All Files">
             All
           </ToggleButton>
-          <ToggleButton value="Images" aria-label="Images">
+          <ToggleButton value="image" aria-label="Images">
             Images
           </ToggleButton>
-          <ToggleButton value="PDF" aria-label="PDF">
+          <ToggleButton value="pdf" aria-label="PDF">
             PDF
           </ToggleButton>
-          <ToggleButton value="Video" aria-label="Video">
+          <ToggleButton value="video" aria-label="Video">
             Video
           </ToggleButton>
         </ToggleButtonGroup>
@@ -125,7 +135,7 @@ const DocDashboard = () => {
       </Grid>
       <Grid container justify="center">
         {uploadDocs.length > 0 && showUploadDocs}
-        {userDocs.length > 0 && showUserDocs}
+        {userDocs.length > 0 && showUserDocs()}
       </Grid>
     </div>
   );
