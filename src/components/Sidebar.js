@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import TextFieldsRoundedIcon from '@material-ui/icons/TextFieldsRounded';
+import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Grid from "@material-ui/core/Grid";
@@ -20,7 +21,7 @@ import { Typography } from "@material-ui/core";
 import {withRouter,Link as RouterLink } from "react-router-dom"
 
 const drawerWidth =200;
-const TabRoutes = ["/dashboard","/dashboard/doc"]
+const TabRoutes = ["/dashboard","/dashboard/doc","/dashboard/forum"]
 
 const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
   const classes = useStyles();
@@ -56,6 +57,7 @@ const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
       >
           <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <TextFieldsRoundedIcon className={classes.tabIcon} /><Typography varient="h6" className={classes.tabText} > Text </Typography></Grid>} value="/dashboard" component={RouterLink} to="/dashboard" />
           <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <InsertDriveFileOutlinedIcon className={classes.tabIcon} /><Typography varient="h6"className={classes.tabText} > Documents </Typography></Grid>} value="/dashboard/doc" component={RouterLink} to="/dashboard/doc"/>
+          <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <ForumOutlinedIcon className={classes.tabIcon} /><Typography varient="h6"className={classes.tabText} > Forum </Typography></Grid>} value="/dashboard/forum" component={RouterLink} to="/dashboard/forum"/>
             
       </Tabs>
       <Divider />

@@ -9,14 +9,13 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from '@material-ui/core/Link';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade';
 import { withRouter,Link as RouterLink } from "react-router-dom";
 import Hidden from '@material-ui/core/Hidden';
 import {useAuth } from "../context/AuthContext"
 import Sidebar from "./Sidebar";
-
+import Avatar from '@material-ui/core/Avatar';
 const drawerWidth = 200;
 
 const Navbar= (props) => {
@@ -78,7 +77,7 @@ const Navbar= (props) => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                <Avatar alt="Remy Sharp" src={`${currentUser.photoURL ? currentUser.photoURL : "https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"}`} />
               </IconButton>
               <Menu
                 id="menu-appbar"

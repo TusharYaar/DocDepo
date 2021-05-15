@@ -1,6 +1,5 @@
 import React, {useState,useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from "@material-ui/core/Paper"
 import { Grid,TextField,InputAdornment } from '@material-ui/core';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -27,7 +26,7 @@ const Dashboard = () => {
               snapshot.forEach((doc) => {
                 notes.push({...doc.data(),id: doc.id});
               });
-              if (notes.length > 0) setUserNotes(notes);
+              setUserNotes(notes);
             });
         } catch (err) {
           console.log(err);
@@ -56,7 +55,7 @@ const Dashboard = () => {
   }}
     const showNotes = userNotes.map(note => <Note date={note.createdAt} text={note.text} key={note.id} id={note.id} deleteNote={deleteNoteFromCollection}/>)
     return (
-        <div>
+        <div className={classes.pageDiv}>
         <div className={classes.toolbar} />
         <Grid container justify="space-between" className={classes.searchGridContainer}>
         <Grid item xs={12} sm={6}>
@@ -116,6 +115,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         margin: theme.spacing(2)
     },
-    margin: {margin: theme.spacing(1,0)}
+    margin: {margin: theme.spacing(1,0)},
+    pageDiv: {flexGrow:1}
 }));
 export default Dashboard
