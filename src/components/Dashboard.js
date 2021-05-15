@@ -6,6 +6,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
 import MessageSnackBar from "./MessageSnackBar";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import AddNote from "./AddNote";
 import Note from "./Note";
 import { Database } from "../firebase";
@@ -19,6 +20,11 @@ const Dashboard = () => {
     open: false,
     message: "",
     severity: "",
+  });
+  const [dialogValues, setDialogValues] = useState({
+    open: false,
+    type: "",
+    elementId: ""
   });
 
   const { currentUser } = useAuth();
@@ -60,6 +66,13 @@ const Dashboard = () => {
       console.log(err);
     }
   };
+  const handleDeleteNote = (note) => {
+    setDialogValues({
+      open: true,
+      type: "Note",
+      elementId: note
+    })
+  }
   const deleteNoteFromCollection = async (note) => {
     try {
       console.log(note);
@@ -89,6 +102,15 @@ const Dashboard = () => {
     }
     setSnackbarValues({ open: false, message: "", severity: "" });
   };
+  const dialogClose = (value,note) => {
+    console.log(value,note)
+    if(value) deleteNoteFromCollection(note);
+    setDialogValues({
+      open: false,
+      type: "Note",
+      elementId: ""
+    })
+  }
   // const showNotes = userNotes.map((note, index) => (
   //   <Note
   //     date={note.createdAt}
@@ -113,7 +135,7 @@ const Dashboard = () => {
         text={note.text}
         key={note.id}
         id={note.id}
-        deleteNote={deleteNoteFromCollection}
+        deleteNote={handleDeleteNote}
         copyNote ={copyTextFromNote}
         delay={`${index * 200}ms`}
       />
@@ -165,6 +187,7 @@ const Dashboard = () => {
         {userNotes.length > 0 && showNotes()}
       </Grid>
       <MessageSnackBar handleClose={snackbarClose} details={snackbarValues} />
+      <ConfirmDeleteDialog handleClose={dialogClose} details={dialogValues}/>
     </div>
   );
 };

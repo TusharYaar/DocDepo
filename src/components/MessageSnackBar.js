@@ -7,7 +7,6 @@ const Alert = (props)=> {
   }
 
 const MessageSnackBar = (props) => {
-    console.log(props.details)
     return (
         <Snackbar open={props.details.open} autoHideDuration={6000} onClose={props.handleClose}>
         <Alert onClose={props.details.handleClose} severity={props.details.severity}>
