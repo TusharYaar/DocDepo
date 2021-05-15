@@ -21,9 +21,8 @@ const storage = firebase.storage();
 export const Database = {
   DOCSDEPO: firestore.collection('docsDepo'),
   NOTESDEPO: firestore.collection('notesDepo'),
+  FEEDBACKS: firestore.collection('feedbacks'),
   getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp,
-  arrayUnion: firebase.firestore.FieldValue.arrayUnion,
-  arrayRemove: firebase.firestore.FieldValue.arrayRemove,
   STORAGE: storage,
 }
 export const TIMESTAMP = firebase.firestore.FieldValue.serverTimestamp;

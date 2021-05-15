@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
@@ -9,32 +9,63 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import IconButton from '@material-ui/core/IconButton';
-import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import TextFieldsRoundedIcon from '@material-ui/icons/TextFieldsRounded';
-import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
+import IconButton from "@material-ui/core/IconButton";
+import InsertDriveFileOutlinedIcon from "@material-ui/icons/InsertDriveFileOutlined";
+import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
+import TextFieldsRoundedIcon from "@material-ui/icons/TextFieldsRounded";
+import ForumOutlinedIcon from "@material-ui/icons/ForumOutlined";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
-import {withRouter,Link as RouterLink } from "react-router-dom"
+import { withRouter, Link as RouterLink } from "react-router-dom";
+import { Database } from "../firebase";
 
+import MessageSnackBar from "./MessageSnackBar";
 import FeedbackDialog from "./FeedbackDialog";
-const drawerWidth =200;
-const TabRoutes = ["/dashboard","/dashboard/doc","/dashboard/forum"]
+const drawerWidth = 200;
+const TabRoutes = ["/dashboard", "/dashboard/doc", "/dashboard/forum"];
 
-const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
+const Sidebar = ({
+  openDrawer,
+  handleDrawerClose,
+  location,
+  userEmail,
+  userId,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackbarValues, setSnackbarValues] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   const handleDialogOpen = () => {
     setDialogOpen(true);
   };
-  const handleDialogResponse = (response) => {
-    console.log(response)
+  const handleDialogResponse = async (response) => {
     setDialogOpen(false);
-  }
+    if (response && response.length > 3 && response.length < 150) {
+      try {
+        await Database.FEEDBACKS.add({
+          user: userId,
+          email: userEmail,
+          feedback: response,
+        });
+        setSnackbarValues({ open: true, message: "Feedback sent successfully. Thank You", severity: "success" });
+
+      } catch (err) {
+        setSnackbarValues({ open: true, message: err.message, severity: "error" });
+      }
+    }
+  };
+  const snackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarValues({ open: false, message: "", severity: "success" });
+  };
   return (
     <Drawer
       variant="permanent"
@@ -61,26 +92,87 @@ const Sidebar = ({openDrawer,handleDrawerClose,location}) => {
       <Divider />
       <Tabs
         orientation="vertical"
-        value={TabRoutes.includes(location.pathname) ? location.pathname : false}
+        value={
+          TabRoutes.includes(location.pathname) ? location.pathname : false
+        }
         className={classes.tabs}
       >
-          <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <TextFieldsRoundedIcon className={classes.tabIcon} /><Typography varient="h6" className={classes.tabText} > Text </Typography></Grid>} value="/dashboard" component={RouterLink} to="/dashboard" />
-          <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <InsertDriveFileOutlinedIcon className={classes.tabIcon} /><Typography varient="h6"className={classes.tabText} > Documents </Typography></Grid>} value="/dashboard/doc" component={RouterLink} to="/dashboard/doc"/>
-          <Tab label={<Grid container justify="flex-start" wrap="nowrap" alignItems="center" className={classes.tabGrid} > <ForumOutlinedIcon className={classes.tabIcon} /><Typography varient="h6"className={classes.tabText} > Forum </Typography></Grid>} value="/dashboard/forum" component={RouterLink} to="/dashboard/forum"/>
-            
+        <Tab
+          label={
+            <Grid
+              container
+              justify="flex-start"
+              wrap="nowrap"
+              alignItems="center"
+              className={classes.tabGrid}
+            >
+              {" "}
+              <TextFieldsRoundedIcon className={classes.tabIcon} />
+              <Typography varient="h6" className={classes.tabText}>
+                {" "}
+                Text{" "}
+              </Typography>
+            </Grid>
+          }
+          value="/dashboard"
+          component={RouterLink}
+          to="/dashboard"
+        />
+        <Tab
+          label={
+            <Grid
+              container
+              justify="flex-start"
+              wrap="nowrap"
+              alignItems="center"
+              className={classes.tabGrid}
+            >
+              {" "}
+              <InsertDriveFileOutlinedIcon className={classes.tabIcon} />
+              <Typography varient="h6" className={classes.tabText}>
+                {" "}
+                Documents{" "}
+              </Typography>
+            </Grid>
+          }
+          value="/dashboard/doc"
+          component={RouterLink}
+          to="/dashboard/doc"
+        />
+        <Tab
+          label={
+            <Grid
+              container
+              justify="flex-start"
+              wrap="nowrap"
+              alignItems="center"
+              className={classes.tabGrid}
+            >
+              {" "}
+              <ForumOutlinedIcon className={classes.tabIcon} />
+              <Typography varient="h6" className={classes.tabText}>
+                {" "}
+                Forum{" "}
+              </Typography>
+            </Grid>
+          }
+          value="/dashboard/forum"
+          component={RouterLink}
+          to="/dashboard/forum"
+        />
       </Tabs>
       <Divider />
 
-
-      <List> 
-      <ListItem button key={"Text"} onClick={handleDialogOpen}>
-            <ListItemIcon>
-              <ReportProblemOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Report problem"} />
-      </ListItem>
+      <List>
+        <ListItem button key={"Text"} onClick={handleDialogOpen}>
+          <ListItemIcon>
+            <ReportProblemOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Report problem"} />
+        </ListItem>
       </List>
-      <FeedbackDialog open={dialogOpen} dialogResponse={handleDialogResponse}/>
+      <FeedbackDialog open={dialogOpen} dialogResponse={handleDialogResponse} />
+      <MessageSnackBar handleClose={snackbarClose} details={snackbarValues} />
     </Drawer>
   );
 };
@@ -144,11 +236,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(4),
   },
   tabGrid: {
-  padding: theme.spacing(1,0,1,1)
+    padding: theme.spacing(1, 0, 1, 1),
   },
   tabs: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
 export default withRouter(Sidebar);

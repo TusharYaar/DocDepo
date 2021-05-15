@@ -19,7 +19,7 @@ const FeedbackDialog = ({open,dialogResponse}) => {
   const submitResponse = () => {
     if(response.length > 150 || response.length <= 3)
     {
-        setError("Feedback should be 5 to 150 characters long")
+        setError("Feedback should be 4 to 150 characters long")
         return;
     }
     dialogResponse(response)
