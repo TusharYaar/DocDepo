@@ -1,0 +1,20 @@
+import React from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+const Alert = (props)=> {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+const MessageSnackBar = (props) => {
+    console.log(props.details)
+    return (
+        <Snackbar open={props.details.open} autoHideDuration={6000} onClose={props.handleClose}>
+        <Alert onClose={props.details.handleClose} severity={props.details.severity}>
+          {props.details.message}
+        </Alert>
+      </Snackbar>
+    )
+}
+
+export default MessageSnackBar

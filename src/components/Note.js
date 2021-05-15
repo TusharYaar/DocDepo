@@ -14,7 +14,7 @@ const Note = (props) => {
         props.deleteNote(props.id);
     }
     const handleCopy = () => {
-        navigator.clipboard.writeText(props.text)
+        props.copyNote(props.text);
     }
     return (
         <Zoom in={true} style={{ transitionDelay: props.delay || "200ms"}}>   

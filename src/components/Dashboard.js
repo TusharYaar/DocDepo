@@ -5,6 +5,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
+import MessageSnackBar from "./MessageSnackBar";
 import AddNote from "./AddNote";
 import Note from "./Note";
 import { Database } from "../firebase";
@@ -14,6 +15,12 @@ const Dashboard = () => {
   const [filter, setFilter] = useState("all");
   const [searchValue, setSearchValue] = useState("");
   const [userNotes, setUserNotes] = useState([]);
+  const [snackbarValues, setSnackbarValues] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
+
   const { currentUser } = useAuth();
   useEffect(() => {
     const getNotes = async () => {
@@ -42,16 +49,45 @@ const Dashboard = () => {
     setSearchValue(event.target.value);
   };
   const addNoteToCollection = async (note) => {
-    await Database.NOTESDEPO.add(note);
+    try {
+      await Database.NOTESDEPO.add(note);
+      setSnackbarValues({
+        open: true,
+        message: "Note Uploaded to your Depo",
+        severity: "success",
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
   const deleteNoteFromCollection = async (note) => {
     try {
       console.log(note);
       await Database.NOTESDEPO.doc(note).delete();
       console.log("done");
+      setSnackbarValues({
+        open: true,
+        message: "Note Deletd from your Depo",
+        severity: "success",
+      });
     } catch (err) {
       console.log(err);
     }
+  };
+  const copyTextFromNote = (noteText) => {
+    navigator.clipboard.writeText(noteText)
+
+    setSnackbarValues({
+      open: true,
+      message: "Note Copied",
+      severity: "success",
+    });
+  }
+  const snackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarValues({ open: false, message: "", severity: "" });
   };
   // const showNotes = userNotes.map((note, index) => (
   //   <Note
@@ -64,22 +100,25 @@ const Dashboard = () => {
   //   />
   // ));
   const showNotes = () => {
-   let filteredList = [...userNotes];
+    let filteredList = [...userNotes];
     // if(filter !== "all")
-      // filteredNotes.filter(notes=>notes.text.includes(filter) )
-    if(searchValue.length > 0)
-      filteredList= filteredList.filter((notes)=> notes.text.includes(searchValue));
-      return filteredList.map((note,index) => (
-        <Note
-            date={note.createdAt}
-            text={note.text}
-            key={note.id}
-            id={note.id}
-            deleteNote={deleteNoteFromCollection}
-            delay={`${index * 200}ms`}
-          />
-        ));
-  }
+    // filteredNotes.filter(notes=>notes.text.includes(filter) )
+    if (searchValue.length > 0)
+      filteredList = filteredList.filter((notes) =>
+        notes.text.includes(searchValue)
+      );
+    return filteredList.map((note, index) => (
+      <Note
+        date={note.createdAt}
+        text={note.text}
+        key={note.id}
+        id={note.id}
+        deleteNote={deleteNoteFromCollection}
+        copyNote ={copyTextFromNote}
+        delay={`${index * 200}ms`}
+      />
+    ));
+  };
   return (
     <div className={classes.pageDiv}>
       <div className={classes.toolbar} />
@@ -125,6 +164,7 @@ const Dashboard = () => {
         <AddNote addNote={addNoteToCollection} />
         {userNotes.length > 0 && showNotes()}
       </Grid>
+      <MessageSnackBar handleClose={snackbarClose} details={snackbarValues} />
     </div>
   );
 };

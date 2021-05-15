@@ -9,6 +9,7 @@ import { Database } from "../firebase";
 import UploadFileContainer from "./UploadFileContainer";
 import Docs from "./Docs";
 import UploadDocs from "./UploadDocs";
+import MessageSnackBar from "./MessageSnackBar";
 const DocDashboard = () => {
   const classes = useStyles();
   const { currentUser } = useAuth();
@@ -16,6 +17,7 @@ const DocDashboard = () => {
   const [searchValue, setSearchValue] = useState("");
   const [userDocs, setUserDocs] = useState([]);
   const [uploadDocs, setUploadDocs] = useState([]);
+  const [snackbarValues, setSnackbarValues] = useState({open: false, message: "", severity:""});
   useEffect(() => {
     const getDocs = async () => {
       try {
@@ -31,6 +33,8 @@ const DocDashboard = () => {
         );
       } catch (err) {
         console.log(err);
+      setSnackbarValues({open: true, message: err.message, severity:"error"})
+
       }
     };
     getDocs();
@@ -49,14 +53,35 @@ const DocDashboard = () => {
     removeDocsForUpload(docDetails.name);
     try {
       await Database.DOCSDEPO.add(docDetails);
+      setSnackbarValues({open: true, message: "Doc Uploaded to your depo", severity:"success"})
+
     } catch (err) {
       console.log(err);
+      setSnackbarValues({open: true, message: err.message, severity:"error"})
+
     }
   };
   const removeDocsForUpload = (DocName) => {
     setUploadDocs((docs) => docs.filter((doc) => doc.name !== DocName));
   };
+  const deleteDoc = async (id,path) => {
+    try {
+      await Database.DOCSDEPO.doc(id).delete();
+      await Database.STORAGE.ref().child(path).delete();
+      console.log(id,path);
+      setSnackbarValues({open: true, message: "Deleted Successfully", severity:"success"})
+    } catch (err) {
+      console.log(err);
+      setSnackbarValues({open: true, message: err.message, severity:"error"})
+    }
 
+  }
+  const snackbarClose =  (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarValues({open: false, message: "", severity:""});
+  }
   const allFileNames = userDocs.map((doc) => doc.name);
   const showUploadDocs = uploadDocs.map((file) => (
     <UploadDocs
@@ -68,6 +93,11 @@ const DocDashboard = () => {
   // const showUserDocs = userDocs.map((file) => (
   //     <Docs key={file.name} fileDetails={file} />
   // ));
+  const handleDocDownload = (url) => {
+    var win = window.open(url, "_blank");
+    win.focus();
+    setSnackbarValues({open: true, message: "Starting Download", severity:"info"})
+  }
   const showUserDocs = () => {
     let filteredList = [...userDocs];
     if(filter !== "all")
@@ -75,7 +105,7 @@ const DocDashboard = () => {
     if(searchValue.length > 0)
     filteredList= filteredList.filter((docs)=> docs.name.includes(searchValue));
     return filteredList.map((file,index) => (
-          <Docs key={file.name} fileDetails={file}  delay={`${index*150}ms`}/>
+          <Docs key={file.name} fileDetails={file}  delay={`${index*150}ms`} deleteDoc={deleteDoc} downloadDoc={handleDocDownload}/>
       ));
   }
   return (
@@ -137,6 +167,7 @@ const DocDashboard = () => {
         {uploadDocs.length > 0 && showUploadDocs}
         {userDocs.length > 0 && showUserDocs()}
       </Grid>
+      <MessageSnackBar handleClose={snackbarClose} details={snackbarValues}/>
     </div>
   );
 };

@@ -11,10 +11,11 @@ import FileTypeIcon from "./FileTypeIcon";
 const File = (props) => {
   const classes = useStyles();
   const handleDownload = () => {
-    var win = window.open(props.fileDetails.url, "_blank");
-    win.focus();
+  props.downloadDoc(props.fileDetails.url)
   };
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    props.deleteDoc(props.fileDetails.id,props.fileDetails.path)
+  };
   return (
         <Zoom in={true} style={{ transitionDelay: props.delay ? props.delay : "200ms" }}>
             <Paper elevation={3} className={classes.paper}>
