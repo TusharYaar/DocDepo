@@ -1,19 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, TextField, InputAdornment } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
-
+import {useAuth} from "../context/AuthContext";
+import {Database } from "../firebase"
 import UploadFileContainer from "./UploadFileContainer";
-// import File from "./File";
-import UploadFile from "./UploadDocs";
+import Docs from "./Docs";
+import UploadDocs from "./UploadDocs";
 const DocDashboard = () => {
   const classes = useStyles();
+  const {currentUser } = useAuth();
   const [filter, setFilter] = useState("All");
   const [searchValue, setSearchValue] = useState("");
-  // const [userDocs,setUserDocs] = useState([]);
+  const [userDocs,setUserDocs] = useState([]);
   const [uploadDocs, setUploadDocs] = useState([]);
+  useEffect(() =>{
+    const getDocs = async () => {
+      try {
+        var docs = [];
+         Database.DOCSDEPO
+          .where("user", "==", currentUser.uid)
+          .onSnapshot((snapshot) => {
+            docs= [];
+            snapshot.forEach((doc) => {
+              docs.push({...doc.data(),id: doc.id});
+            });
+            setUserDocs(docs);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getDocs();
+  },[currentUser.uid]);
   const handleFilter = (event, newFilter) => {
     setFilter(newFilter);
   };
@@ -23,11 +44,25 @@ const DocDashboard = () => {
   const addDocsForUpload = (newDocs) => {
     setUploadDocs((docs) => [...docs, ...newDocs]);
   };
+  const uploadDocDetails = async (docDetails) => {
+    console.log(docDetails);
+    removeDocsForUpload(docDetails.name);
+    try {
+    await Database.DOCSDEPO.add(docDetails);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
   const removeDocsForUpload = (DocName) => {
     setUploadDocs((docs) => docs.filter((doc)=>  doc.name !== DocName))
   }
-  const showUploadFiles = uploadDocs.map((file) => (
-    <UploadFile key={file.name} file={file} removeDocsForUpload={removeDocsForUpload}/>
+  const allFileNames = userDocs.map((doc) => doc.name)
+  const showUploadDocs = uploadDocs.map((file) => (
+    <UploadDocs key={file.name} file={file} uploadDocDetails={uploadDocDetails}/>
+  ));
+  const showUserDocs = userDocs.map((file) => (
+    <Docs key={file.name} file={file}/>
   ));
   return (
     <div className={classes.pageDiv}>
@@ -78,11 +113,13 @@ const DocDashboard = () => {
       </Grid>
       <Grid container justify="center">
         <Grid item xs={12}>
-          <UploadFileContainer addDocsForUpload={addDocsForUpload} />
+          <UploadFileContainer addDocsForUpload={addDocsForUpload} allFileNames={allFileNames} />
         </Grid>
       </Grid>
       <Grid container justify="center">
-        {uploadDocs.length > 0 && showUploadFiles}
+        {uploadDocs.length > 0 && showUploadDocs}
+        {userDocs.length > 0 && showUserDocs}
+
       </Grid>
     </div>
   );

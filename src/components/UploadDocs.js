@@ -7,26 +7,21 @@ import {useAuth} from "../context/AuthContext"
 import {useStorage } from "../hooks/useStorage"
 import { Grid } from '@material-ui/core';
 import ProgressBar from "./ProgressBar"
-const UploadFile = (props) => {
+const UploadDocs = (props) => {
     const {currentUser} = useAuth();
     const classes  = useStyles();
     var{ progress, url,error } = useStorage(props.file,currentUser.uid);
-    const addToCollection = async  () => {
+    const addToCollection = () => {
       let docDetails = {
-        docName: props.file.name,
+        name: props.file.name,
         url: url,
         user: currentUser.uid,
         createdAt: TIMESTAMP(),
         userEmail: currentUser.email,
-        path:`${currentUser.uid}/${props.file.name}`
+        path:`${currentUser.uid}/${props.file.name}`,
+        type: props.file.type
       }
-      console.log(docDetails);
-      try {
-      await Database.DOCSDEPO.add(docDetails);
-      props.removeDocsForUpload(props.file.name);
-    } catch (err) {
-      console.log(err)
-    }
+      props.uploadDocDetails(docDetails);
   }
     if(progress === 100 && url ) {
       addToCollection();
@@ -57,4 +52,4 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   }));
-export default UploadFile;
+export default UploadDocs;

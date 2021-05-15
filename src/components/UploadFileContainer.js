@@ -9,9 +9,10 @@ import Typography from "@material-ui/core/Typography";
 
 
 const UploadFileContainer = (props) => {
+  console.log(props.allFileNames)
   const classes = useStyles();
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
+  const onDrop = useCallback((files) => {
+    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name))
     props.addDocsForUpload(acceptedFiles);
   }, [props]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

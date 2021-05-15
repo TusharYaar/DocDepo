@@ -39,7 +39,6 @@ const BorderLinearProgress = withStyles((theme) => ({
   }))(LinearProgress);
 
 const ProgressBar = ({value,error}) => {
-    // const classes = useStyles();
     if (error && error === true) return <BorderLinearError variant="determinate" value={100}  />
     else if (value && value > 0 && value !== 100 )
     return <BorderLinearProgress variant="determinate" value={value} />
