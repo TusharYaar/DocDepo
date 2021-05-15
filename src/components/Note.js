@@ -11,7 +11,7 @@ const Note = (props) => {
         props.deleteNote(props.id);
     }
     return (
-        <Paper className={classes.card} elevation={6}>
+        <Paper className={classes.card} elevation={3}>
             <Grid container justify="space-between" direction="column" alignItems="start" className={classes.gridContainer}>
 <div>
 <Typography variant="caption">{props.date ? props.date.toDate().toDateString() : "NoDate"}</Typography>     

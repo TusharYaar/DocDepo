@@ -46,7 +46,7 @@ const AddNote = (props) => {
   };
 
   return (
-    <Paper className={classes.inputCard} elevation={6}>
+    <Paper className={classes.inputCard} elevation={3}>
       <Grid container direction="column" justify="space-between">
         <TextField
           id="outlined-multiline-static"

@@ -1,68 +1,88 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, TextField, InputAdornment } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
-import UploadFileContainer from "./UploadFileContainer"
+import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
+
+import UploadFileContainer from "./UploadFileContainer";
+// import File from "./File";
+import UploadFile from "./UploadDocs";
 const DocDashboard = () => {
   const classes = useStyles();
   const [filter, setFilter] = useState("All");
   const [searchValue, setSearchValue] = useState("");
-  
+  // const [userDocs,setUserDocs] = useState([]);
+  const [uploadDocs, setUploadDocs] = useState([]);
   const handleFilter = (event, newFilter) => {
     setFilter(newFilter);
   };
   const handleSeachValueChange = (event) => {
     setSearchValue(event.target.value);
-}
+  };
+  const addDocsForUpload = (newDocs) => {
+    setUploadDocs((docs) => [...docs, ...newDocs]);
+  };
+  const removeDocsForUpload = (DocName) => {
+    setUploadDocs((docs) => docs.filter((doc)=>  doc.name !== DocName))
+  }
+  const showUploadFiles = uploadDocs.map((file) => (
+    <UploadFile key={file.name} file={file} removeDocsForUpload={removeDocsForUpload}/>
+  ));
   return (
     <div className={classes.pageDiv}>
       <div className={classes.toolbar} />
-      <Grid container justify="space-between" className={classes.searchGridContainer}>
+      <Grid
+        container
+        justify="space-between"
+        className={classes.searchGridContainer}
+      >
         <Grid item xs={12} sm={4}>
-        <TextField
-        fullWidth
-        value={searchValue}
-        onChange={handleSeachValueChange}
-        className={classes.margin}
-        variant="filled"
-        id="search"
-        label="Search"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchRoundedIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
+          <TextField
+            fullWidth
+            value={searchValue}
+            onChange={handleSeachValueChange}
+            className={classes.margin}
+            variant="filled"
+            id="search"
+            label="Search"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchRoundedIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
         </Grid>
-      <ToggleButtonGroup
-      value={filter}
-      exclusive
-      className={classes.margin}
-      onChange={handleFilter}
-      aria-label="text alignment"
-    >
-      <ToggleButton value="All" aria-label="All Files">
-        All
-      </ToggleButton>
-      <ToggleButton value="Images" aria-label="Images">
-        Images
-      </ToggleButton>
-      <ToggleButton value="PDF" aria-label="PDF">
-        PDF
-      </ToggleButton>
-      <ToggleButton value="Video" aria-label="Video">
-        Video
-      </ToggleButton>
-    </ToggleButtonGroup>
-        </Grid>
+        <ToggleButtonGroup
+          value={filter}
+          exclusive
+          className={classes.margin}
+          onChange={handleFilter}
+          aria-label="text alignment"
+        >
+          <ToggleButton value="All" aria-label="All Files">
+            All
+          </ToggleButton>
+          <ToggleButton value="Images" aria-label="Images">
+            Images
+          </ToggleButton>
+          <ToggleButton value="PDF" aria-label="PDF">
+            PDF
+          </ToggleButton>
+          <ToggleButton value="Video" aria-label="Video">
+            Video
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Grid>
       <Grid container justify="center">
         <Grid item xs={12}>
-        <UploadFileContainer />
+          <UploadFileContainer addDocsForUpload={addDocsForUpload} />
         </Grid>
+      </Grid>
+      <Grid container justify="center">
+        {uploadDocs.length > 0 && showUploadFiles}
       </Grid>
     </div>
   );
