@@ -19,8 +19,8 @@ export const auth = firebase.auth();
 const firestore = firebase.firestore();
 const storage = firebase.storage();
 export const Database = {
-  FILEDEPO: firestore.collection('fileDepo'),
-  NOTEDEPO: firestore.collection('noteDepo'),
+  FILESDEPO: firestore.collection('filesDepo'),
+  NOTESDEPO: firestore.collection('notesDepo'),
   getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp,
   arrayUnion: firebase.firestore.FieldValue.arrayUnion,
   arrayRemove: firebase.firestore.FieldValue.arrayRemove,

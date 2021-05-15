@@ -20,7 +20,7 @@ const Dashboard = () => {
         setSearchValue(event.target.value);
     }
     const addNoteToCollection = async (note) => {
-        await Database.NOTEDEPO.add(note);
+        await Database.NOTESDEPO.add(note);
         
     }
     return (
