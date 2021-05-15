@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [snackbarValues, setSnackbarValues] = useState({
     open: false,
     message: "",
-    severity: "",
+    severity: "success",
   });
   const [dialogValues, setDialogValues] = useState({
     open: false,
@@ -100,7 +100,7 @@ const Dashboard = () => {
     if (reason === "clickaway") {
       return;
     }
-    setSnackbarValues({ open: false, message: "", severity: "" });
+    setSnackbarValues({ open: false, message: "", severity: "success" });
   };
   const dialogClose = (value,note) => {
     console.log(value,note)

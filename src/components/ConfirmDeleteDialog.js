@@ -24,7 +24,7 @@ export default function ConfirmDeleteDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Are you sure you want to Delete ?</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Are you sure you want to Delete this {props.details.type}?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
            The content will be permanently be removed from your depo and you won't be able to retrieve it.'

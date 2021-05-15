@@ -6,10 +6,15 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import { useAuth } from "../context/AuthContext";
 import { Database } from "../firebase";
+
+
 import UploadFileContainer from "./UploadFileContainer";
 import Docs from "./Docs";
 import UploadDocs from "./UploadDocs";
 import MessageSnackBar from "./MessageSnackBar";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
+
+
 const DocDashboard = () => {
   const classes = useStyles();
   const { currentUser } = useAuth();
@@ -17,7 +22,12 @@ const DocDashboard = () => {
   const [searchValue, setSearchValue] = useState("");
   const [userDocs, setUserDocs] = useState([]);
   const [uploadDocs, setUploadDocs] = useState([]);
-  const [snackbarValues, setSnackbarValues] = useState({open: false, message: "", severity:""});
+  const [snackbarValues, setSnackbarValues] = useState({open: false, message: "", severity:"success"});
+  const [dialogValues, setDialogValues] = useState({
+    open: false,
+    type: "",
+    elementId: ""
+  });
   useEffect(() => {
     const getDocs = async () => {
       try {
@@ -64,6 +74,14 @@ const DocDashboard = () => {
   const removeDocsForUpload = (DocName) => {
     setUploadDocs((docs) => docs.filter((doc) => doc.name !== DocName));
   };
+  const handleDeleteDoc = (id,path) => {
+    setDialogValues({
+      open: true,
+      type: "Doc",
+      elementId: {id: id,
+      path: path}
+    })
+  }
   const deleteDoc = async (id,path) => {
     try {
       await Database.DOCSDEPO.doc(id).delete();
@@ -80,7 +98,15 @@ const DocDashboard = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setSnackbarValues({open: false, message: "", severity:""});
+    setSnackbarValues({open: false, message: "", severity:"success"});
+  }
+  const dialogClose = (value,elementId) => {
+    if(value) deleteDoc(elementId.id,elementId.path);
+    setDialogValues({
+      open: false,
+      type: "Doc",
+      elementId: {id: "",path: ""}
+    })
   }
   const allFileNames = userDocs.map((doc) => doc.name);
   const showUploadDocs = uploadDocs.map((file) => (
@@ -105,7 +131,7 @@ const DocDashboard = () => {
     if(searchValue.length > 0)
     filteredList= filteredList.filter((docs)=> docs.name.includes(searchValue));
     return filteredList.map((file,index) => (
-          <Docs key={file.name} fileDetails={file}  delay={`${index*150}ms`} deleteDoc={deleteDoc} downloadDoc={handleDocDownload}/>
+          <Docs key={file.name} fileDetails={file}  delay={`${index*150}ms`} deleteDoc={handleDeleteDoc} downloadDoc={handleDocDownload}/>
       ));
   }
   return (
@@ -168,6 +194,8 @@ const DocDashboard = () => {
         {userDocs.length > 0 && showUserDocs()}
       </Grid>
       <MessageSnackBar handleClose={snackbarClose} details={snackbarValues}/>
+      <ConfirmDeleteDialog handleClose={dialogClose} details={dialogValues}/>
+
     </div>
   );
 };
