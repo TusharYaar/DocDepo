@@ -9,7 +9,6 @@ import Typography from "@material-ui/core/Typography";
 
 
 const UploadFileContainer = (props) => {
-  console.log(props.allFileNames)
   const classes = useStyles();
   const onDrop = useCallback((files) => {
     let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name))

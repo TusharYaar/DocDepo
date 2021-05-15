@@ -18,7 +18,7 @@ const Note = (props) => {
             <Typography variant="body1" className={classes.noteText}>{props.text}</Typography> 
             </div>
             <Grid item container justify="flex-end">
-            <IconButton color="primary" aria-label="upload picture" component="span" onClick={handleDelete}>
+            <IconButton color="primary" aria-label="Delete Note" component="span" onClick={handleDelete}>
           <DeleteIcon />
         </IconButton>
             </Grid>

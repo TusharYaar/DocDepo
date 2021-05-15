@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from "@material-ui/core/styles";
-import {Database,TIMESTAMP } from "../firebase"
+import {TIMESTAMP } from "../firebase"
 import Paper from '@material-ui/core/Paper'
 
 import {useAuth} from "../context/AuthContext"
