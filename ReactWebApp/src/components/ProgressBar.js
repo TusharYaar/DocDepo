@@ -38,11 +38,12 @@ const BorderLinearProgress = withStyles((theme) => ({
     },
   }))(LinearProgress);
 
-const ProgressBar = ({value,error}) => {
+const ProgressBar = ({value,url,error}) => {
     if (error && error === true) return <BorderLinearError variant="determinate" value={100}  />
-    else if (value && value > 0 && value !== 100 )
+    if (value && value > 0 && value !== 100 )
     return <BorderLinearProgress variant="determinate" value={value} />
-    else if(value === 100) return <BorderLinearSuccess variant="determinate" value={100} />
+    else if(value === 100 && !url) return <BorderLinearSuccess variant="determinate" value={100} />
+    else if (value === 100 && url) return <BorderLinearSuccess />
     else return <BorderLinearProgress />
 }
 

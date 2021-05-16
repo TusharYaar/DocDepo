@@ -40,6 +40,11 @@ const Dashboard = ({ userNotes }) => {
       });
     } catch (err) {
       console.log(err);
+      setSnackbarValues({
+        open: true,
+        message: err.message,
+        severity: "error",
+      });
     }
   };
   const handleDeleteNote = (note) => {

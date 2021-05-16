@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import {TIMESTAMP } from "../firebase"
 import Paper from '@material-ui/core/Paper'
-
+import Typography  from '@material-ui/core/Typography';
 import {useAuth} from "../context/AuthContext"
 import {useStorage } from "../hooks/useStorage"
 import { Grid } from '@material-ui/core';
@@ -29,8 +29,8 @@ const UploadDocs = (props) => {
     return (
         <Paper elevation={3} className={classes.paper}>
         <Grid container className={classes.gridContainer} direction="column" justify="space-between">
-        <Grid contianer className={classes.fileDetailContainer}> This s a upload file component</Grid>
-        <ProgressBar value={progress} error={error}/>
+        <Grid contianer className={classes.fileDetailContainer}><Typography varient="h6">Uploading</Typography></Grid>
+        <ProgressBar value={progress} url={url} error={error}/>
         </Grid>
     </Paper>
     )

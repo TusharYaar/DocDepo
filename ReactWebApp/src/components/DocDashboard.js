@@ -40,7 +40,6 @@ const DocDashboard = ({ userDocs }) => {
     setUploadDocs((docs) => [...docs, ...newDocs]);
   };
   const uploadDocDetails = async (docDetails) => {
-    console.log(docDetails);
     removeDocsForUpload(docDetails.name);
     try {
       await Database.DOCSDEPO.add(docDetails);
@@ -101,7 +100,7 @@ const DocDashboard = ({ userDocs }) => {
       elementId: { id: "", path: "" },
     });
   };
-  const allFileNames = userDocs.map((doc) => doc.name);
+  const allFileNames = [...userDocs.map((doc) => doc.name),...uploadDocs.map((doc) => doc.name)];
   const showUploadDocs = uploadDocs.map((file) => (
     <UploadDocs
       key={file.name}
