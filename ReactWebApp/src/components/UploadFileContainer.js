@@ -36,8 +36,9 @@ const UploadFileContainer = (props) => {
                <Typography variant="h5" color="primary">Drop the files here ...</Typography>
           </Grid>
       ) : (
-        <Grid container justify="center" alignItems="center">
+        <Grid container justify="center" alignItems="center" direction="column">
             <Typography variant="h5" color="primary">Drop Files or Click the Box</Typography>
+            <Typography variant="body2">File should be unique and less than 20MB</Typography>
         </Grid>
       )}
     </Box>
