@@ -11,7 +11,14 @@ import Typography from "@material-ui/core/Typography";
 const UploadFileContainer = (props) => {
   const classes = useStyles();
   const onDrop = useCallback((files) => {
-    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name))
+    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name) && !(file.size >= 20*1024))
+    if(acceptedFiles.length < files.length) {
+      props.setSnackbarValues({
+        open: true,
+        message: "Files should be unique and less that 20MB in size",
+        severity: "error",
+      });
+    }
     props.addDocsForUpload(acceptedFiles);
   }, [props]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

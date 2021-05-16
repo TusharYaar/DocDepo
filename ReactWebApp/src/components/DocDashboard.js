@@ -91,7 +91,7 @@ const DocDashboard = ({ userDocs }) => {
     if (reason === "clickaway") {
       return;
     }
-    setSnackbarValues({ open: false, message: "", severity: "success" });
+    setSnackbarValues((values)=> {return {...values, open: false}});
   };
   const dialogClose = (value, elementId) => {
     if (value) deleteDoc(elementId.id, elementId.path);
@@ -188,6 +188,7 @@ const DocDashboard = ({ userDocs }) => {
           <UploadFileContainer
             addDocsForUpload={addDocsForUpload}
             allFileNames={allFileNames}
+            setSnackbarValues={setSnackbarValues}
           />
         </Grid>
       </Grid>
