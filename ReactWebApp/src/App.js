@@ -32,7 +32,6 @@ function App() {
         </Route>
         <Route path="/signup" exact>
           {  isUser() ? <Redirect to="/dashboard"/> :<SignUp /> }
-          <SignUp />
         </Route>
        </Switch>
     </div>

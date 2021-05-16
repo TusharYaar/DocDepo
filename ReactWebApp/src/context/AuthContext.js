@@ -13,6 +13,9 @@ export function AuthProvider({ children }) {
   const loginWithEmail = (email, password) => {
     return auth.signInWithEmailAndPassword(email, password);
   };
+  const signupWithEmail = (email, password) => {
+    return auth.createUserWithEmailAndPassword(email, password)
+  }
   const signInWithGoogle = () => {
     return auth.signInWithPopup(Providers.google);
   };
@@ -42,6 +45,7 @@ export function AuthProvider({ children }) {
     currentUser,
     isUser,
     loginWithEmail,
+    signupWithEmail,
     logOut,
     forgotPassword,
     signInWithGoogle,
