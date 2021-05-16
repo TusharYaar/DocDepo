@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, TextField, InputAdornment } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -10,12 +10,10 @@ import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import AddNote from "./AddNote";
 import Note from "./Note";
 import { Database } from "../firebase";
-import { useAuth } from "../context/AuthContext";
-const Dashboard = () => {
+const Dashboard = ({userNotes}) => {
   const classes = useStyles();
   const [filter, setFilter] = useState("all");
   const [searchValue, setSearchValue] = useState("");
-  const [userNotes, setUserNotes] = useState([]);
   const [snackbarValues, setSnackbarValues] = useState({
     open: false,
     message: "",
@@ -26,28 +24,6 @@ const Dashboard = () => {
     type: "",
     elementId: ""
   });
-
-  const { currentUser } = useAuth();
-  useEffect(() => {
-    const getNotes = async () => {
-      try {
-        var notes = [];
-        Database.NOTESDEPO.where("user", "==", currentUser.uid).onSnapshot(
-          (snapshot) => {
-            notes = [];
-            snapshot.forEach((doc) => {
-              notes.push({ ...doc.data(), id: doc.id });
-            });
-            setUserNotes(notes);
-          }
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getNotes();
-  }, [currentUser.uid]);
-
   const handleFilter = (event, newFilter) => {
     setFilter(newFilter);
   };
