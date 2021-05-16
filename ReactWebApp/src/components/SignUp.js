@@ -154,7 +154,6 @@ const SignUp = () => {
             <OutlinedInput
               id="password"
               label="Password"
-              l
               type={values.showPassword ? "text" : "password"}
               value={values.password}
               onChange={handleChange("password")}
@@ -185,7 +184,6 @@ const SignUp = () => {
             <OutlinedInput
               id="confirmPassword"
               label="confirmPassword"
-              l
               type={values.showConfirmPassword ? "text" : "password"}
               value={values.confirmPassword}
               onChange={handleChange("confirmPassword")}

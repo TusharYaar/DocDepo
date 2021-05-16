@@ -7,48 +7,29 @@ import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import { useAuth } from "../context/AuthContext";
 import { Database } from "../firebase";
 
-
 import UploadFileContainer from "./UploadFileContainer";
 import Docs from "./Docs";
 import UploadDocs from "./UploadDocs";
 import MessageSnackBar from "./MessageSnackBar";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
-
-const DocDashboard = () => {
+const DocDashboard = ({ userDocs }) => {
   const classes = useStyles();
   const { currentUser } = useAuth();
   const [filter, setFilter] = useState("all");
   const [searchValue, setSearchValue] = useState("");
-  const [userDocs, setUserDocs] = useState([]);
   const [uploadDocs, setUploadDocs] = useState([]);
-  const [snackbarValues, setSnackbarValues] = useState({open: false, message: "", severity:"success"});
+  const [snackbarValues, setSnackbarValues] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   const [dialogValues, setDialogValues] = useState({
     open: false,
     type: "",
-    elementId: ""
+    elementId: "",
   });
-  useEffect(() => {
-    const getDocs = async () => {
-      try {
-        var docs = [];
-        Database.DOCSDEPO.where("user", "==", currentUser.uid).onSnapshot(
-          (snapshot) => {
-            docs = [];
-            snapshot.forEach((doc) => {
-              docs.push({ ...doc.data(), id: doc.id });
-            });
-            setUserDocs(docs);
-          }
-        );
-      } catch (err) {
-        console.log(err);
-      setSnackbarValues({open: true, message: err.message, severity:"error"})
-
-      }
-    };
-    getDocs();
-  }, [currentUser.uid]);
+  useEffect(() => {}, [currentUser.uid]);
   const handleFilter = (event, newFilter) => {
     setFilter(newFilter);
   };
@@ -63,51 +44,63 @@ const DocDashboard = () => {
     removeDocsForUpload(docDetails.name);
     try {
       await Database.DOCSDEPO.add(docDetails);
-      setSnackbarValues({open: true, message: "Doc Uploaded to your depo", severity:"success"})
-
+      setSnackbarValues({
+        open: true,
+        message: "Doc Uploaded to your depo",
+        severity: "success",
+      });
     } catch (err) {
       console.log(err);
-      setSnackbarValues({open: true, message: err.message, severity:"error"})
-
+      setSnackbarValues({
+        open: true,
+        message: err.message,
+        severity: "error",
+      });
     }
   };
   const removeDocsForUpload = (DocName) => {
     setUploadDocs((docs) => docs.filter((doc) => doc.name !== DocName));
   };
-  const handleDeleteDoc = (id,path) => {
+  const handleDeleteDoc = (id, path) => {
     setDialogValues({
       open: true,
       type: "Doc",
-      elementId: {id: id,
-      path: path}
-    })
-  }
-  const deleteDoc = async (id,path) => {
+      elementId: { id: id, path: path },
+    });
+  };
+  const deleteDoc = async (id, path) => {
     try {
       await Database.DOCSDEPO.doc(id).delete();
       await Database.STORAGE.ref().child(path).delete();
-      console.log(id,path);
-      setSnackbarValues({open: true, message: "Deleted Successfully", severity:"success"})
+      console.log(id, path);
+      setSnackbarValues({
+        open: true,
+        message: "Deleted Successfully",
+        severity: "success",
+      });
     } catch (err) {
       console.log(err);
-      setSnackbarValues({open: true, message: err.message, severity:"error"})
+      setSnackbarValues({
+        open: true,
+        message: err.message,
+        severity: "error",
+      });
     }
-
-  }
-  const snackbarClose =  (event, reason) => {
-    if (reason === 'clickaway') {
+  };
+  const snackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
       return;
     }
-    setSnackbarValues({open: false, message: "", severity:"success"});
-  }
-  const dialogClose = (value,elementId) => {
-    if(value) deleteDoc(elementId.id,elementId.path);
+    setSnackbarValues({ open: false, message: "", severity: "success" });
+  };
+  const dialogClose = (value, elementId) => {
+    if (value) deleteDoc(elementId.id, elementId.path);
     setDialogValues({
       open: false,
       type: "Doc",
-      elementId: {id: "",path: ""}
-    })
-  }
+      elementId: { id: "", path: "" },
+    });
+  };
   const allFileNames = userDocs.map((doc) => doc.name);
   const showUploadDocs = uploadDocs.map((file) => (
     <UploadDocs
@@ -116,24 +109,33 @@ const DocDashboard = () => {
       uploadDocDetails={uploadDocDetails}
     />
   ));
-  // const showUserDocs = userDocs.map((file) => (
-  //     <Docs key={file.name} fileDetails={file} />
-  // ));
   const handleDocDownload = (url) => {
     var win = window.open(url, "_blank");
     win.focus();
-    setSnackbarValues({open: true, message: "Starting Download", severity:"info"})
-  }
+    setSnackbarValues({
+      open: true,
+      message: "Starting Download",
+      severity: "info",
+    });
+  };
   const showUserDocs = () => {
     let filteredList = [...userDocs];
-    if(filter !== "all")
-    filteredList= filteredList.filter((docs)=> docs.type.includes(filter));
-    if(searchValue.length > 0)
-    filteredList= filteredList.filter((docs)=> docs.name.includes(searchValue));
-    return filteredList.map((file,index) => (
-          <Docs key={file.name} fileDetails={file}  delay={`${index*150}ms`} deleteDoc={handleDeleteDoc} downloadDoc={handleDocDownload}/>
-      ));
-  }
+    if (filter !== "all")
+      filteredList = filteredList.filter((docs) => docs.type.includes(filter));
+    if (searchValue.length > 0)
+      filteredList = filteredList.filter((docs) =>
+        docs.name.includes(searchValue)
+      );
+    return filteredList.map((file, index) => (
+      <Docs
+        key={file.name}
+        fileDetails={file}
+        delay={`${index * 150}ms`}
+        deleteDoc={handleDeleteDoc}
+        downloadDoc={handleDocDownload}
+      />
+    ));
+  };
   return (
     <div className={classes.pageDiv}>
       <div className={classes.toolbar} />
@@ -193,9 +195,8 @@ const DocDashboard = () => {
         {uploadDocs.length > 0 && showUploadDocs}
         {userDocs.length > 0 && showUserDocs()}
       </Grid>
-      <MessageSnackBar handleClose={snackbarClose} details={snackbarValues}/>
-      <ConfirmDeleteDialog handleClose={dialogClose} details={dialogValues}/>
-
+      <MessageSnackBar handleClose={snackbarClose} details={snackbarValues} />
+      <ConfirmDeleteDialog handleClose={dialogClose} details={dialogValues} />
     </div>
   );
 };

@@ -1,8 +1,8 @@
-import React, {useEffect,useState} from 'react';
-import {useAuth} from "./context/AuthContext";
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from "react";
+import { useAuth } from "./context/AuthContext";
+import { makeStyles } from "@material-ui/core/styles";
 
-import {Switch, Route,Redirect} from 'react-router-dom';
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import { Database } from "./firebase";
 import Navbar from "./components/Navbar";
@@ -14,8 +14,9 @@ import DocDashboard from "./components/DocDashboard";
 
 function App() {
   const classes = useStyles();
-  const {isUser,currentUser} = useAuth();
+  const { isUser, currentUser } = useAuth();
   const [userNotes, setUserNotes] = useState([]);
+  const [userDocs, setUserDocs] = useState([]);
 
   useEffect(() => {
     const getNotes = async () => {
@@ -34,35 +35,62 @@ function App() {
         console.log(err);
       }
     };
-    if(isUser()) getNotes();
-  }, [currentUser,isUser]);
+    const getDocs = async () => {
+      try {
+        var docs = [];
+        Database.DOCSDEPO.where("user", "==", currentUser.uid).onSnapshot(
+          (snapshot) => {
+            docs = [];
+            snapshot.forEach((doc) => {
+              docs.push({ ...doc.data(), id: doc.id });
+            });
+            setUserDocs(docs);
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
+    if (currentUser && currentUser !== "NoUser") {
+      getNotes();
+      getDocs();
+    }
+  }, [currentUser]);
 
   return (
     <div className={classes.root}>
       <Navbar />
-        <Switch>
+      <Switch>
         <Route path="/" exact component={Home} />
-        
+
         <Route path="/dashboard/doc" exact>
-          {isUser() ? <DocDashboard /> : <Redirect to="/login"/>}
+          {isUser() ? (
+            <DocDashboard userDocs={userDocs} />
+          ) : (
+            <Redirect to="/login" />
+          )}
         </Route>
         <Route path="/dashboard" exact>
-        {  isUser() ? <Dashboard userNotes={userNotes} /> : <Redirect to="/login"/> }
-           </Route>
+          {isUser() ? (
+            <Dashboard userNotes={userNotes} />
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
         <Route path="/login" exact>
-          { isUser() ?  <Redirect to="/dashboard"/> : <LogIn /> }
+          {isUser() ? <Redirect to="/dashboard" /> : <LogIn />}
         </Route>
         <Route path="/signup" exact>
-          {  isUser() ? <Redirect to="/dashboard"/> :<SignUp /> }
+          {isUser() ? <Redirect to="/dashboard" /> : <SignUp />}
         </Route>
-       </Switch>
+      </Switch>
     </div>
   );
 }
 const useStyles = makeStyles({
   root: {
-    display: 'flex',
+    display: "flex",
   },
 });
 

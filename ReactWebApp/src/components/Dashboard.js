@@ -10,7 +10,7 @@ import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import AddNote from "./AddNote";
 import Note from "./Note";
 import { Database } from "../firebase";
-const Dashboard = ({userNotes}) => {
+const Dashboard = ({ userNotes }) => {
   const classes = useStyles();
   const [filter, setFilter] = useState("all");
   const [searchValue, setSearchValue] = useState("");
@@ -22,7 +22,7 @@ const Dashboard = ({userNotes}) => {
   const [dialogValues, setDialogValues] = useState({
     open: false,
     type: "",
-    elementId: ""
+    elementId: "",
   });
   const handleFilter = (event, newFilter) => {
     setFilter(newFilter);
@@ -46,9 +46,9 @@ const Dashboard = ({userNotes}) => {
     setDialogValues({
       open: true,
       type: "Note",
-      elementId: note
-    })
-  }
+      elementId: note,
+    });
+  };
   const deleteNoteFromCollection = async (note) => {
     try {
       console.log(note);
@@ -64,39 +64,29 @@ const Dashboard = ({userNotes}) => {
     }
   };
   const copyTextFromNote = (noteText) => {
-    navigator.clipboard.writeText(noteText)
+    navigator.clipboard.writeText(noteText);
 
     setSnackbarValues({
       open: true,
       message: "Note Copied",
       severity: "success",
     });
-  }
+  };
   const snackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setSnackbarValues({ open: false, message: "", severity: "success" });
   };
-  const dialogClose = (value,note) => {
-    console.log(value,note)
-    if(value) deleteNoteFromCollection(note);
+  const dialogClose = (value, note) => {
+    console.log(value, note);
+    if (value) deleteNoteFromCollection(note);
     setDialogValues({
       open: false,
       type: "Note",
-      elementId: ""
-    })
-  }
-  // const showNotes = userNotes.map((note, index) => (
-  //   <Note
-  //     date={note.createdAt}
-  //     text={note.text}
-  //     key={note.id}
-  //     id={note.id}
-  //     deleteNote={deleteNoteFromCollection}
-  //     delay={`${index * 200}ms`}
-  //   />
-  // ));
+      elementId: "",
+    });
+  };
   const showNotes = () => {
     let filteredList = [...userNotes];
     // if(filter !== "all")
@@ -112,7 +102,7 @@ const Dashboard = ({userNotes}) => {
         key={note.id}
         id={note.id}
         deleteNote={handleDeleteNote}
-        copyNote ={copyTextFromNote}
+        copyNote={copyTextFromNote}
         delay={`${index * 200}ms`}
       />
     ));
@@ -163,7 +153,7 @@ const Dashboard = ({userNotes}) => {
         {userNotes.length > 0 && showNotes()}
       </Grid>
       <MessageSnackBar handleClose={snackbarClose} details={snackbarValues} />
-      <ConfirmDeleteDialog handleClose={dialogClose} details={dialogValues}/>
+      <ConfirmDeleteDialog handleClose={dialogClose} details={dialogValues} />
     </div>
   );
 };

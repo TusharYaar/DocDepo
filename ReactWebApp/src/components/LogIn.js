@@ -131,7 +131,6 @@ const LogIn = () => {
             <OutlinedInput
               id="password"
               label="Password"
-              l
               type={values.showPassword ? "text" : "password"}
               value={values.password}
               onChange={handleChange("password")}
