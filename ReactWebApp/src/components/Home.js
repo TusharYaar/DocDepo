@@ -72,6 +72,7 @@ const Home = () => {
                 <Link href="https://github.com/TusharYaar">Github</Link>
                 <Link varient="body1">Twitter</Link>
                 <Link varient="body1">Instagram</Link>
+                <Typography variant="overline">*File size Limit is set to 50MB</Typography>
                 </Grid>
 
             </Grid>
