@@ -24,7 +24,7 @@ import { Database } from "../firebase";
 import MessageSnackBar from "./MessageSnackBar";
 import FeedbackDialog from "./FeedbackDialog";
 const drawerWidth = 200;
-const TabRoutes = ["/dashboard", "/dashboard/doc", "/dashboard/forum"];
+const TabRoutes = ["/dashboard", "/dashboard/doc", "/dashboard/globalchat"];
 
 const Sidebar = ({
   openDrawer,
@@ -33,6 +33,8 @@ const Sidebar = ({
   userEmail,
   userId,
 }) => {
+  const  Filter = require('bad-words');
+  const  filter = new Filter();
   const classes = useStyles();
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -51,7 +53,7 @@ const Sidebar = ({
         await Database.FEEDBACKS.add({
           user: userId,
           email: userEmail,
-          feedback: response,
+          feedback: filter.clean(response),
         });
         setSnackbarValues({ open: true, message: "Feedback sent successfully. Thank You", severity: "success" });
 
@@ -150,15 +152,15 @@ const Sidebar = ({
             >
               {" "}
               <ForumOutlinedIcon className={classes.tabIcon} />
-              <Typography varient="h6" className={classes.tabText}>
+              <Typography varient="h6" className={classes.tabText} noWrap>
                 {" "}
-                Forum{" "}
+                Global Chat{" "}
               </Typography>
             </Grid>
           }
-          value="/dashboard/forum"
+          value="/dashboard/globalchat"
           component={RouterLink}
-          to="/dashboard/forum"
+          to="/dashboard/globalchat"
         />
       </Tabs>
       <Divider />

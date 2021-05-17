@@ -9,6 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useAuth } from "../context/AuthContext";
 import { TIMESTAMP } from "../firebase";
 const AddNote = (props) => {
+  const  Filter = require('bad-words');
+   const  filter = new Filter();
   const { currentUser } = useAuth();
   const classes = useStyles();
   const [noteValue, setNoteValue] = useState("");
@@ -29,7 +31,7 @@ const AddNote = (props) => {
   };
   const handleSubmitNote = async () => {
     let note = {
-      text: noteValue,
+      text: filter.clean(noteValue),
       createdAt: TIMESTAMP(),
       user: currentUser.uid,
       userEmail: currentUser.email,

@@ -34,7 +34,7 @@ const FeedbackDialog = ({open,dialogResponse}) => {
         <DialogContent>
           <DialogContentText>
             You can help me built a better app by reporting a problem. I will try my best to solve the issue in the quickest time possible.
-            Thankyou
+            Ohh!! and dont write bad words, it will be filtered. Thankyou 
           </DialogContentText>
           <TextField
             error={error.length > 0 ? true : false}
