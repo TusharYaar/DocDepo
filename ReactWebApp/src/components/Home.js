@@ -6,7 +6,7 @@ const Home = () => {
     return (
         <div>
                   <div className={classes.toolbar} />
-            This is home component
+            This is home page. Yes i know its not complete.Its under development. Click Login or go to dashboard
         </div>
     )
 }

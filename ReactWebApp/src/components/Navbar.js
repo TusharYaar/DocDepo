@@ -96,9 +96,7 @@ const Navbar= (props) => {
                 TransitionComponent={Fade}
               >
                 <MenuItem disabled><Typography>{currentUser.email}</Typography></MenuItem>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={RouterLink} to="/setting">Setting</MenuItem>
-                <MenuItem onClick={logOut}>LogOut</MenuItem>
+                <MenuItem onClick={() => {handleClose();logOut();}}>LogOut</MenuItem>
               </Menu>
             </div>
           )}

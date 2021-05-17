@@ -12,7 +12,7 @@ const UploadFileContainer = (props) => {
   const classes = useStyles();
   const onDrop = useCallback((files) => {
     console.log(files[0].size);
-    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name) && !(file.size >= 20*1024*1024))
+    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name) && !(file.size >= 50*1024*1024))
     if(acceptedFiles.length < files.length) {
       props.setSnackbarValues({
         open: true,
@@ -39,7 +39,7 @@ const UploadFileContainer = (props) => {
       ) : (
         <Grid container justify="center" alignItems="center" direction="column">
             <Typography variant="h5" color="primary">Drop Files or Click the Box</Typography>
-            <Typography variant="body2">File should be unique and less than 20MB</Typography>
+            <Typography variant="body2">File should be unique and less than 50MB</Typography>
         </Grid>
       )}
     </Box>

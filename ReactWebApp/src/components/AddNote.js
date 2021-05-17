@@ -35,6 +35,7 @@ const AddNote = (props) => {
       createdAt: TIMESTAMP(),
       user: currentUser.uid,
       userEmail: currentUser.email,
+      isImportant: false
     };
     try {
       await props.addNote(note);

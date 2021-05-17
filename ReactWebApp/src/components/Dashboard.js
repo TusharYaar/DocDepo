@@ -47,6 +47,18 @@ const Dashboard = ({ userNotes }) => {
       });
     }
   };
+  const toggleIsImportant = async (noteId,value) => {
+    try {
+      await Database.NOTESDEPO.doc(noteId).update({isImportant: value});
+    }
+    catch (err) {
+      setSnackbarValues({
+        open: true,
+        message: err.message,
+        severity: "error",
+      });
+    }
+  }
   const handleDeleteNote = (note) => {
     setDialogValues({
       open: true,
@@ -94,8 +106,8 @@ const Dashboard = ({ userNotes }) => {
   };
   const showNotes = () => {
     let filteredList = [...userNotes];
-    // if(filter !== "all")
-    // filteredNotes.filter(notes=>notes.text.includes(filter) )
+    if(filter !== "all")
+    filteredList= filteredList.filter(notes=>notes.isImportant===true )
     if (searchValue.length > 0)
       filteredList = filteredList.filter((notes) =>
         notes.text.includes(searchValue)
@@ -106,9 +118,11 @@ const Dashboard = ({ userNotes }) => {
         text={note.text}
         key={note.id}
         id={note.id}
+        isImportant={note.isImportant}
         deleteNote={handleDeleteNote}
         copyNote={copyTextFromNote}
         delay={`${index * 200}ms`}
+        toggleIsImportant={toggleIsImportant}
       />
     ));
   };
@@ -148,9 +162,9 @@ const Dashboard = ({ userNotes }) => {
           <ToggleButton value="all" aria-label="All Notes">
             All
           </ToggleButton>
-          {/* <ToggleButton value="important" aria-label="Important Notes">
+          <ToggleButton value="important" aria-label="Important Notes">
             Important
-          </ToggleButton> */}
+          </ToggleButton>
         </ToggleButtonGroup>
       </Grid>
       <Grid container className={classes.gridContainer} justify="flex-start">
