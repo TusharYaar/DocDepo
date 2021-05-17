@@ -144,8 +144,8 @@ const Sidebar = ({
       </Tabs>
       <Divider />
 
-      <List>
-        <ListItem button key={"Text"} onClick={handleDialogOpen}>
+      <List >
+        <ListItem button key={"Text"} onClick={handleDialogOpen} className={classes.list}>
           <ListItemIcon>
             <ReportProblemOutlinedIcon />
           </ListItemIcon>
@@ -220,8 +220,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 0, 1, 1),
   },
   tabs: {
-    flexGrow: 1,
+    flexGrow: 1
   },
+  list: {
+    marginBottom: theme.spacing(3),
+  }
 }));
 
 export default withRouter(Sidebar);
