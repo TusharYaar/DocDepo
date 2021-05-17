@@ -13,7 +13,6 @@ import IconButton from "@material-ui/core/IconButton";
 import InsertDriveFileOutlinedIcon from "@material-ui/icons/InsertDriveFileOutlined";
 import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 import TextFieldsRoundedIcon from "@material-ui/icons/TextFieldsRounded";
-import ForumOutlinedIcon from "@material-ui/icons/ForumOutlined";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Grid from "@material-ui/core/Grid";
@@ -141,27 +140,7 @@ const Sidebar = ({
           component={RouterLink}
           to="/dashboard/doc"
         />
-        <Tab
-          label={
-            <Grid
-              container
-              justify="flex-start"
-              wrap="nowrap"
-              alignItems="center"
-              className={classes.tabGrid}
-            >
-              {" "}
-              <ForumOutlinedIcon className={classes.tabIcon} />
-              <Typography varient="h6" className={classes.tabText} noWrap>
-                {" "}
-                Global Chat{" "}
-              </Typography>
-            </Grid>
-          }
-          value="/dashboard/globalchat"
-          component={RouterLink}
-          to="/dashboard/globalchat"
-        />
+       
       </Tabs>
       <Divider />
 

@@ -11,7 +11,6 @@ import Home from "./components/Home";
 import SignUp from "./components/SignUp";
 import Dashboard from "./components/Dashboard";
 import DocDashboard from "./components/DocDashboard";
-import GlobalChat from "./components/GlobalChat";
 function App() {
   const classes = useStyles();
   const { isUser, currentUser } = useAuth();
@@ -74,13 +73,6 @@ function App() {
         <Route path="/dashboard" exact>
           {isUser() ? (
             <Dashboard userNotes={userNotes} />
-          ) : (
-            <Redirect to="/login" />
-          )}
-        </Route>
-        <Route path="/dashboard/globalchat" exact>
-          {isUser() ? (
-            <GlobalChat userNotes={userNotes} />
           ) : (
             <Redirect to="/login" />
           )}
