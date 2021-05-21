@@ -83,7 +83,7 @@ const SignUp = () => {
       try {
         setLoading(true);
         await signupWithEmail(values.email, values.password);
-        history.push("/adddetails");
+        history.push("/givedetails");
       } catch (err) {
         setLoginError(err.message);
         setLoading(false);

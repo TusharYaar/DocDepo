@@ -35,8 +35,7 @@ export function AuthProvider({ children }) {
         console.log(user);
       if (user) {
         Database.USERS.doc(user.uid).get().then(userD => {
-          console.log(userD.data());
-        setCurrentUser({...user,detailsGiven: true});
+        setCurrentUser({...user,...userD.data(),detailsGiven: true});
         }).catch(err => {
         setCurrentUser({...user,detailsGiven: false});
         })

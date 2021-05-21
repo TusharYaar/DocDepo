@@ -95,7 +95,7 @@ const Navbar= (props) => {
                 onClose={handleClose}
                 TransitionComponent={Fade}
               >
-                <MenuItem disabled><Typography>{currentUser.email}</Typography></MenuItem>
+                <MenuItem disabled><Typography>{currentUser.displayName}</Typography></MenuItem>
                 <MenuItem onClick={() => {handleClose();logOut();}}>LogOut</MenuItem>
               </Menu>
             </div>

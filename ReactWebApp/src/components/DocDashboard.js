@@ -188,6 +188,7 @@ const DocDashboard = ({ userDocs }) => {
             addDocsForUpload={addDocsForUpload}
             allFileNames={allFileNames}
             setSnackbarValues={setSnackbarValues}
+            fileLimit={currentUser.fileLimit}
           />
         </Grid>
       </Grid>
