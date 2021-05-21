@@ -82,7 +82,7 @@ function App() {
         </Route>
         <Route path="/login" exact>
           
-            {isUser() && !currentUser.detailsGiven ?  <Redirect to="/dashboard" /> : isUser() ?  <Redirect to="/givedetails" /> :  <LogIn />}
+            {isUser() && currentUser.detailsGiven ?  <Redirect to="/dashboard" /> : isUser() ?  <Redirect to="/givedetails" /> :  <LogIn />}
           
         </Route>
         <Route path="/signup" exact>

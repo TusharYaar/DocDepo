@@ -21,6 +21,7 @@ const storage = firebase.storage();
 export const Database = {
   DOCSDEPO: firestore.collection('docsDepo'),
   NOTESDEPO: firestore.collection('notesDepo'),
+  USERS: firestore.collection('users'),
   FEEDBACKS: firestore.collection('feedbacks'),
   getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp,
   STORAGE: storage,

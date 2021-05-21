@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { auth, Providers } from "../firebase";
+import { auth, Providers,Database } from "../firebase";
 
 const AuthContext = React.createContext();
 
@@ -32,9 +32,15 @@ export function AuthProvider({ children }) {
   };
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-        console.log(user)
+        console.log(user);
       if (user) {
+        Database.USERS.doc(user.uid).get().then(userD => {
+          console.log(userD.data());
+        setCurrentUser({...user,detailsGiven: true});
+        }).catch(err => {
         setCurrentUser({...user,detailsGiven: false});
+        })
+        
       }
       else {
         setCurrentUser("NoUser");
@@ -51,6 +57,7 @@ export function AuthProvider({ children }) {
     logOut,
     forgotPassword,
     signInWithGoogle,
+    setCurrentUser
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
