@@ -11,6 +11,7 @@ import Home from "./components/Home";
 import SignUp from "./components/SignUp";
 import Dashboard from "./components/Dashboard";
 import DocDashboard from "./components/DocDashboard";
+import GiveDetails from "./components/GiveDetails";
 function App() {
   const classes = useStyles();
   const { isUser, currentUser } = useAuth();
@@ -62,27 +63,32 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" exact component={Home} />
-
         <Route path="/dashboard/doc" exact>
-          {isUser() ? (
+          {isUser() && currentUser.detailsGiven ? (
             <DocDashboard userDocs={userDocs} />
-          ) : (
+          ) : isUser() ? <Redirect to="/givedetails" /> : (
             <Redirect to="/login" />
           )}
+        </Route>
+        <Route path="/givedetails" exact>
+          <GiveDetails/>
         </Route>
         <Route path="/dashboard" exact>
-          {isUser() ? (
+          {isUser() && currentUser.detailsGiven ?  
             <Dashboard userNotes={userNotes} />
-          ) : (
+           :  isUser() ? <Redirect to="/givedetails" /> :
             <Redirect to="/login" />
-          )}
+          }
         </Route>
         <Route path="/login" exact>
-          {isUser() ? <Redirect to="/dashboard" /> : <LogIn />}
+          
+            {isUser() && !currentUser.detailsGiven ?  <Redirect to="/dashboard" /> : isUser() ?  <Redirect to="/givedetails" /> :  <LogIn />}
+          
         </Route>
         <Route path="/signup" exact>
-          {isUser() ? <Redirect to="/dashboard" /> : <SignUp />}
+          {isUser()  && currentUser.detailsGiven ? <Redirect to="/dashboard" /> : isUser() ?  <Redirect to="/givedetails" /> : <SignUp />}
         </Route>
+        {/* <Route path="/"><Redirect to="/dashboard"/></Route> */}
       </Switch>
     </div>
   );

@@ -33,7 +33,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
         console.log(user)
-      if (user) setCurrentUser(user);
+      if (user) {
+        setCurrentUser({...user,detailsGiven: false});
+      }
       else {
         setCurrentUser("NoUser");
         console.log("Setting to No User");

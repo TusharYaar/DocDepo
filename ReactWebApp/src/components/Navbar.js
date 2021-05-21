@@ -24,7 +24,7 @@ const Navbar= (props) => {
   const [openDrawer, setOpenDrawer]= useState(false);
   const [openMenu, setOpenMenu]= useState(false);
   const [menuOpen, setMenuOpen] =useState(null);
-  if(["/login","/signup","/forgotpassword"].includes(props.location.pathname)) {return <div></div>}
+  if(["/login","/signup","/forgotpassword","/givedetails"].includes(props.location.pathname)) {return <div></div>}
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
   };

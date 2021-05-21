@@ -43,7 +43,6 @@ const SignUp = () => {
   }, [currentUser]);
 
   const handleChange = (prop) => (event) => {
-      console.log(prop)
     setValues({ ...values, [prop]: event.target.value });
   };
  const  handleClickShowConfirmPassword = () => {
@@ -84,7 +83,7 @@ const SignUp = () => {
       try {
         setLoading(true);
         await signupWithEmail(values.email, values.password);
-        history.push("/dashboard");
+        history.push("/adddetails");
       } catch (err) {
         setLoginError(err.message);
         setLoading(false);
