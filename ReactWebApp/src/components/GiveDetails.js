@@ -163,7 +163,7 @@ const GiveDetails = () => {
             onClick={handleSubmit}
             disabled={isLoading}
           >
-            Primary
+            Submit
           </Button>
         </Paper>
       </Grid>
@@ -202,6 +202,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(3),
+    margin: theme.spacing(4, 0),
     flexGrow: 1,
   },
   input: {

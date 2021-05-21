@@ -32,10 +32,12 @@ export function AuthProvider({ children }) {
   };
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-        console.log(user);
       if (user) {
         Database.USERS.doc(user.uid).get().then(userD => {
-        setCurrentUser({...user,...userD.data(),detailsGiven: true});
+          console.log(userD.data().fileLimit)
+          if(userD.data().fileLimit)
+          setCurrentUser({...user,...userD.data(),detailsGiven: true});
+          else setCurrentUser({...user,detailsGiven: false});
         }).catch(err => {
         setCurrentUser({...user,detailsGiven: false});
         })

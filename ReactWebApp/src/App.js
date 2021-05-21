@@ -71,7 +71,8 @@ function App() {
           )}
         </Route>
         <Route path="/givedetails" exact>
-          <GiveDetails/>
+        {isUser() && currentUser.detailsGiven ?  <Redirect to="/dashboard" /> : isUser() && !currentUser.detailsGiven ? <GiveDetails/> : <Redirect to="/login" />}
+          
         </Route>
         <Route path="/dashboard" exact>
           {isUser() && currentUser.detailsGiven ?  
