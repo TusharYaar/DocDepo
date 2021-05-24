@@ -12,11 +12,11 @@ const UploadFileContainer = (props) => {
   const classes = useStyles();
   const onDrop = useCallback((files) => {
     console.log(files[0].size);
-    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name) && !(file.size >= props.fileLimit*1024*1024))
+    let acceptedFiles = files.filter((file) => !props.allFileNames.includes(file.name) && !file.name <= 30 && !(file.size >= props.fileLimit*1024*1024))
     if(acceptedFiles.length < files.length) {
       props.setSnackbarValues({
         open: true,
-        message: `Files should be unique and less that ${props.fileLimit} in size, According to your plan`,
+        message: `Files should be unique,has name less than 30 characters and less that ${props.fileLimit} in size, According to your plan`,
         severity: "error",
       });
     }

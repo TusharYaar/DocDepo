@@ -192,7 +192,7 @@ const DocDashboard = ({ userDocs }) => {
           />
         </Grid>
       </Grid>
-      <Grid container justify="flex-start">
+      <Grid container direction="column" justify="flex-start" >
         {uploadDocs.length > 0 && showUploadDocs}
         {userDocs.length > 0 && showUserDocs()}
       </Grid>

@@ -19,20 +19,22 @@ const File = (props) => {
   return (
         <Zoom in={true} style={{ transitionDelay: props.delay ? props.delay : "200ms" }}>
             <Paper elevation={3} className={classes.paper}>
-      <Grid container justify="space-between" direction="column">
-        <Grid item>
+      <Grid container justify="flex-start" direction="row" wrap="wrap">
+        <Grid item xs={1}>
+        <FileTypeIcon fileType={props.fileDetails.type}/>
+        </Grid>
+        <Grid item  zeroMinWidth xs={9} className={classes.textContainer}>
           <Typography variant="caption">
             {props.fileDetails.createdAt
               ? props.fileDetails.createdAt.toDate().toDateString()
               : "NoDate"}
           </Typography>
-          <Typography variant="body1" className={classes.fileName}  >
-            {props.fileDetails.name}
+          <Typography variant="body1" className={classes.fileName}  noWrap >
+            {props.fileDetails.name.slice(0,30)}
           </Typography>
         </Grid>
-        <Grid container justify="space-between" direction="row" alignItems="center">
-            <FileTypeIcon fileType={props.fileDetails.type}/>
-         <div>
+        <Grid container item  xs={12} sm={2} justify="flex-end" direction="row" alignItems="center">
+ 
          <IconButton
             color="primary"
             aria-label="Download Doc"
@@ -49,7 +51,6 @@ const File = (props) => {
           >
             <DeleteIcon />
           </IconButton>
-          </div>
         </Grid>
       </Grid>
     </Paper>
@@ -59,15 +60,17 @@ const File = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    width: theme.spacing(24),
-    height: theme.spacing(24),
+    // height: theme.spacing(9),
     padding: theme.spacing(1),
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     display: "flex",
-    overflowX: "hidden"
+    // overflowX: "hidden"
   },
   fileName: {
     margin: theme.spacing(1),
   },
+  textContainer: {
+    maxWidth: "100%"
+  }
 }));
 export default File;

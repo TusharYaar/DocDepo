@@ -29,7 +29,7 @@ const UploadDocs = (props) => {
     return (
         <Paper elevation={3} className={classes.paper}>
         <Grid container className={classes.gridContainer} direction="column" justify="space-between">
-        <Grid contianer className={classes.fileDetailContainer}><Typography varient="h6">Uploading</Typography></Grid>
+        <Grid container className={classes.fileDetailContainer}><Typography varient="h6">Uploading</Typography></Grid>
         <ProgressBar value={progress} url={url} error={error}/>
         </Grid>
     </Paper>
@@ -37,9 +37,7 @@ const UploadDocs = (props) => {
 }
 const useStyles = makeStyles((theme) => ({
     paper: {
-        width: theme.spacing(24),
-        height: theme.spacing(24),
-        margin: theme.spacing(2),
+        margin: theme.spacing(1),
         display: "flex"
     },
     gridContainer: {
