@@ -31,7 +31,7 @@ const GiveDetails = () => {
       currentUser && currentUser.displayName ? currentUser.displayName : "",
     birthDate: new Date(),
     gender: "male",
-    fileLimit: 40,
+    fileLimit: 50,
   });
   const [errors, setErrors] = useState({ displayName: "", birthDate: null });
   const [isLoading, setLoading] = useState(false);

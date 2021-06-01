@@ -70,8 +70,9 @@ const Home = () => {
   justify="flex-start"
   alignItems="flex-start">
                 <Link href="https://github.com/TusharYaar">Github</Link>
-                <Link varient="body1">Twitter</Link>
-                <Link varient="body1">Instagram</Link>
+                <Link varient="body1" href="https://twitter.com/tushar_yaar" >Twitter</Link>
+                <Link varient="body1" href="https://www.instagram.com/tushar_yaar/">Instagram</Link>
+                <Link varient="body1" href="https://tusharyaar.netlify.app" >Know More about me</Link>
                 <Typography variant="overline">*File size Limit is set to 50MB</Typography>
                 </Grid>
 
@@ -100,13 +101,13 @@ const useStyles = makeStyles((theme) => ({
   image: {
     backgroundImage: "url(./homePage.png)",
     backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: "cover",
+    // backgroundColor:
+    //   theme.palette.type === "light"
+    //     ? theme.palette.grey[50]
+    //     : theme.palette.grey[900],
+    backgroundSize: "contain",
     backgroundPosition: "center",
-    minHeight: 500,
+    minHeight: 300,
   },
 }));
 export default Home;
