@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
-import { makeStyles } from "@material-ui/core/styles";
-
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import { Database } from "./firebase";
@@ -17,7 +16,23 @@ function App() {
   const { isUser, currentUser } = useAuth();
   const [userNotes, setUserNotes] = useState([]);
   const [userDocs, setUserDocs] = useState([]);
-
+  const [darkTheme,setDarkTheme] = useState(false);
+  const theme = createMuiTheme({
+    palette: {
+      type:darkTheme ? "dark": "light",
+      primary: {
+        main: "#7c4dff",
+        light: "#b47cff",
+        dark: "#3f1dcb"
+      },
+      secondary: {
+        main: "#ff9800",
+      },
+    },
+  });
+  const toggleDarkTheme = () => {
+    setDarkTheme((current)=> !current);
+  }
   useEffect(() => {
     const getNotes = async () => {
       try {
@@ -59,8 +74,9 @@ function App() {
   }, [currentUser]);
 
   return (
+    <ThemeProvider theme={theme}>
     <div className={classes.root}>
-      <Navbar />
+      <Navbar darkTheme={darkTheme} toggleTheme={toggleDarkTheme} />
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/dashboard/doc" exact>
@@ -92,6 +108,7 @@ function App() {
         {/* <Route path="/"><Redirect to="/dashboard"/></Route> */}
       </Switch>
     </div>
+    </ThemeProvider>
   );
 }
 const useStyles = makeStyles({
@@ -99,5 +116,6 @@ const useStyles = makeStyles({
     display: "flex",
   },
 });
+
 
 export default App;

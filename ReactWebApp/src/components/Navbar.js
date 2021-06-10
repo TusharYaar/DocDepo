@@ -1,30 +1,39 @@
-import React, {useState} from 'react';
-import clsx from 'clsx';
-import { makeStyles} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Link from '@material-ui/core/Link';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade';
-import { withRouter,Link as RouterLink } from "react-router-dom";
-import Hidden from '@material-ui/core/Hidden';
-import {useAuth } from "../context/AuthContext"
+import React, { useState } from "react";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Link from "@material-ui/core/Link";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import Fade from "@material-ui/core/Fade";
+import { withRouter, Link as RouterLink } from "react-router-dom";
+import Hidden from "@material-ui/core/Hidden";
+import { useAuth } from "../context/AuthContext";
 import Sidebar from "./Sidebar";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 const drawerWidth = 200;
 
-const Navbar= (props) => {
+const Navbar = (props) => {
   const classes = useStyles();
-  const {currentUser,logOut, isUser} = useAuth();
-  const [openDrawer, setOpenDrawer]= useState(false);
-  const [openMenu, setOpenMenu]= useState(false);
-  const [menuOpen, setMenuOpen] =useState(null);
-  if(["/login","/signup","/forgotpassword","/givedetails"].includes(props.location.pathname)) {return <div></div>}
+  const { currentUser, logOut, isUser } = useAuth();
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(null);
+  if (
+    ["/login", "/signup", "/forgotpassword", "/givedetails"].includes(
+      props.location.pathname
+    )
+  ) {
+    return <div></div>;
+  }
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
   };
@@ -33,17 +42,17 @@ const Navbar= (props) => {
     setOpenDrawer(false);
   };
   const handleMenu = (event) => {
-  setMenuOpen(event.currentTarget);
-  setOpenMenu(true)
+    setMenuOpen(event.currentTarget);
+    setOpenMenu(true);
   };
 
   const handleClose = () => {
     setMenuOpen(null);
-    setOpenMenu(false)
+    setOpenMenu(false);
   };
 
   return (
-    <div >
+    <div>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -52,21 +61,51 @@ const Navbar= (props) => {
         })}
       >
         <Toolbar>
-        {   isUser() ?       <IconButton
+          {isUser() ? (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: openDrawer,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+          ) : null}
+          <Link
+            variant="h6"
+            noWrap
+            className={classes.title}
+            underline="none"
             color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: openDrawer,
-            })}
+            component={RouterLink}
+            to="/"
           >
-            <MenuIcon />
-          </IconButton> : null}
-          <Link variant="h6" noWrap className={classes.title} underline="none" color="inherit" component={RouterLink} to="/">
-           DocDepo
+            DocDepo
           </Link>
-          {isUser() ?  <Link component={RouterLink} to="/dashboard" color="inherit" underline="none"> <Hidden only="xs"> Go to</Hidden> Dashboard</Link> :<Link underline="none" component={RouterLink} to="/login" color="inherit"> Login</Link> }
+          {isUser() ? (
+            <Link
+              component={RouterLink}
+              to="/dashboard"
+              color="inherit"
+              underline="none"
+            >
+              {" "}
+              <Hidden only="xs"> Go to</Hidden> Dashboard
+            </Link>
+          ) : (
+            <Link
+              underline="none"
+              component={RouterLink}
+              to="/login"
+              color="inherit"
+            >
+              {" "}
+              Login
+            </Link>
+          )}
           {/* <Typography variant="p" noWrap >{isUser() ? "Go to Dashboard": "Login"}</Typography> */}
           {isUser() && (
             <div>
@@ -77,43 +116,80 @@ const Navbar= (props) => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <Avatar alt="Remy Sharp" src={`${currentUser.photoURL ? currentUser.photoURL : "https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"}`} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={`${
+                    currentUser.photoURL
+                      ? currentUser.photoURL
+                      : "https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+                  }`}
+                />
               </IconButton>
               <Menu
                 id="menu-appbar"
                 anchorEl={menuOpen}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={openMenu}
                 onClose={handleClose}
                 TransitionComponent={Fade}
               >
-                <MenuItem disabled><Typography>{currentUser.displayName}</Typography></MenuItem>
-                <MenuItem onClick={() => {handleClose();logOut();}}>LogOut</MenuItem>
+                <MenuItem disabled>
+                  <Typography>{currentUser.displayName}</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={props.darkTheme}
+                          onChange={props.toggleTheme}
+                        />
+                      }
+                      label="Dark Theme"
+                    />
+                  </FormGroup>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    logOut();
+                  }}
+                >
+                  LogOut
+                </MenuItem>
               </Menu>
             </div>
           )}
         </Toolbar>
       </AppBar>
-      {isUser() ? <Sidebar  openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} handleDrawerClose={handleDrawerClose} userEmail={currentUser.email} userId={currentUser.uid}/> : null}
+      {isUser() ? (
+        <Sidebar
+          openDrawer={openDrawer}
+          setOpenDrawer={setOpenDrawer}
+          handleDrawerClose={handleDrawerClose}
+          userEmail={currentUser.email}
+          userId={currentUser.uid}
+        />
+      ) : null}
     </div>
   );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -121,7 +197,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -130,35 +206,35 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 36,
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
   },
   drawerOpen: {
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerClose: {
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: 'hidden',
+    overflowX: "hidden",
     width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9) + 1,
     },
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -169,9 +245,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    
-  }
+  },
 }));
-
 
 export default withRouter(Navbar);
