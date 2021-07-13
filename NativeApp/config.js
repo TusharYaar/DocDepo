@@ -1,10 +1,10 @@
 export default firebaseConfig = {
-    apiKey: "AIzaSyCyyCBHrudQz6LqXk7k_shouWoysyPbDQ4",
-    authDomain: "docdepo-53679.firebaseapp.com",
-    projectId: "docdepo-53679",
-    storageBucket: "docdepo-53679.appspot.com",
-    messagingSenderId: "920988754215",
-    appId: "1:920988754215:web:ab7f06b565fa84fbe24902",
-    measurementId: "G-SCKSKLNG57"
-  };
+  apiKey: "AIzaSyDxR7xenhB8Bc5ukmMb0u3DZrVLl2Ch7gM",
+  authDomain: "nativedocdepo.firebaseapp.com",
+  projectId: "nativedocdepo",
+  storageBucket: "nativedocdepo.appspot.com",
+  messagingSenderId: "776118291039",
+  appId: "1:776118291039:web:dc43e9058205f7742e29ea"
+};
+
 
