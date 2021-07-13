@@ -1,7 +1,9 @@
 import {LOGIN, LOGOUT} from "../actions/user";
 const initialState = {
-    token: null,
-    uid: null,
+    accessToken: null,
+    expirationTime: null,
+    email: null,
+    apiKey: null
 }
 
 export default (state = initialState, { type, payload }) => {

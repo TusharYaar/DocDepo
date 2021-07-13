@@ -10,8 +10,8 @@ const AppNavigator= () => {
   const user = useSelector(state => state.user);
   return (
     <NavigationContainer>
-      {!user.token && !user.uid && <LoginScreen />}
-      {!!user.token && !!user.uid &&  <TabNavigator />}
+      {!user.accessToken && !user.uid && <LoginScreen />}
+      {!!user.accessToken && !!user.uid &&  <TabNavigator />}
     </NavigationContainer>
   );
 }
