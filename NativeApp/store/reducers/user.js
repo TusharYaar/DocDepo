@@ -5,6 +5,7 @@ const initialState = {
     email: null,
     apiKey: null,
     autoLogin: true,
+    uid: null,
 }
 
 export default (state = initialState, { type, payload }) => {

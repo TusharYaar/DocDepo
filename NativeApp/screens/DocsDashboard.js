@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,Button } from 'react-native'
+import IconButton from "../components/IconButton"
 
 const DocsDashboard = () => {
     return (
@@ -12,3 +13,16 @@ const DocsDashboard = () => {
 export default DocsDashboard
 
 const styles = StyleSheet.create({})
+
+
+export const docsScreenOptions = ({ navigation, route }) => {
+    return { 
+        headerLeft: () => (
+            <IconButton
+              onPress={() => navigation.toggleDrawer()}
+              icon="menu"
+              color="black"
+            />
+          ),
+    }
+}

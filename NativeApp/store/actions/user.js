@@ -5,13 +5,18 @@ export const LOGOUT = "LOGOUT";
 export const NO_USER = "NO_USER";
 export const loginUser = (payload) => {
   return async (dispatch) => {
-      await await AsyncStorage.setItem('@user_details', JSON.stringify(payload))
+      await AsyncStorage.setItem('@user_details', JSON.stringify(payload))
     dispatch({
       type: LOGIN,
       payload,
     });
   };
 };
+
+export const autoLoginUser = (payload) => ({
+    type: LOGIN,
+    payload,
+})
 
 export const logoutUser = () => ({
   type: LOGOUT,
