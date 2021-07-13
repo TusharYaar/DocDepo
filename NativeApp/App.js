@@ -2,7 +2,8 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import { StatusBar } from "expo-status-bar";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers,applyMiddleware } from "redux";
+import thunk from 'redux-thunk';
 import {
   useFonts,
   Manrope_400Regular,
@@ -25,7 +26,7 @@ const App = () => {
     user: userReducer,
   });
 
-  const store = createStore(rootReducer);
+  const store = createStore(rootReducer,applyMiddleware(thunk));
 
   if (!fontsLoaded) {
     return <AppLoading />;

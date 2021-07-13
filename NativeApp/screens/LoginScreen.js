@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import {loginUser} from "../store/actions/user";
 const LoginScreen = () => {
     const dispatch = useDispatch();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("test@test.com");
+    const [password, setPassword] = useState("testtest");
     const [isLoading, setLoading] = useState(false);
     const handleLogin = async () => {
         setLoading(true);
