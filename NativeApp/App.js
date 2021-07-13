@@ -8,6 +8,10 @@ import {
 } from '@expo-google-fonts/manrope';
 import { StyleSheet, Text, View } from 'react-native';
 import AppLoading from 'expo-app-loading';
+
+import AppNavigator from "./navigation/AppNavigator"
+
+
 const App = () => {
   let [fontsLoaded] = useFonts({
     Manrope_400Regular,
@@ -20,10 +24,7 @@ const App = () => {
     return <AppLoading />;
   }
   return (
-    <View style={styles.container}>
-      <Text style={{fontFamily: "Manrope_800ExtraBold"}}>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <AppNavigator />
   );
 }
 
