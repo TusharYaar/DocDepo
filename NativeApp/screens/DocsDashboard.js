@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View,Button } from 'react-native'
-import IconButton from "../components/IconButton"
+import IconButton from "../components/IconButton";
 
 const DocsDashboard = () => {
     return (
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({})
 
 export const docsScreenOptions = ({ navigation, route }) => {
     return { 
+        title: "Docs" ,
         headerLeft: () => (
             <IconButton
               onPress={() => navigation.toggleDrawer()}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import DocsDashboard, {docsScreenOptions} from "../screens/DocsDashboard";
-import NotesDashboard from '../screens/NotesDashboard';
+import NotesDashboard,{notesScreenOptions} from '../screens/NotesDashboard';
 
 const StackDocs = createStackNavigator();
 const StackNotes = createStackNavigator();
@@ -18,7 +18,7 @@ export const DocsNavigator = () => {
 export const NotesNavigator = () => {
     return (
         <StackNotes.Navigator>
-        <StackNotes.Screen name="Home" component={NotesDashboard} />
+        <StackNotes.Screen name="Home" component={NotesDashboard} options={notesScreenOptions}  />
       </StackNotes.Navigator>
     )
 }
