@@ -1,14 +1,17 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-
+import {useSelector} from 'react-redux';
 
 import TabNavigator from './TabNavigator';
 
+import LoginScreen from '../screens/LoginScreen';
+
 const AppNavigator= () => {
+  const user = useSelector(state => state.user);
   return (
     <NavigationContainer>
-        <TabNavigator />
+      {!user.token && !user.uid && <LoginScreen />}
+      {!!user.token && !!user.uid &&  <TabNavigator />}
     </NavigationContainer>
   );
 }
