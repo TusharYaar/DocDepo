@@ -1,11 +1,13 @@
 import React ,{useState} from 'react';
-import { StyleSheet, Text, View, TextInput,Button ,ActivityIndicator} from 'react-native'
+import { StyleSheet, Text, View, TextInput,Button ,ActivityIndicator,StatusBar,Platform} from 'react-native';
 
 import {auth} from "../config";
 
 import { useDispatch } from 'react-redux';
-
 import {loginUser} from "../store/actions/user";
+
+import Header from "../components/Header";
+import Body from "../components/Body";
 const LoginScreen = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("test@test.com");
@@ -31,15 +33,17 @@ const LoginScreen = () => {
     }
     return (
         <View style={styles.screen}>
-            <Text>Login Screen</Text>
-            <View>
-                <Text>Email</Text>
+            <Header>Login</Header>
+            <View style={styles.container}>
+                <Body>Email</Body>
                 <TextInput style={styles.input} value={email} onChangeText={(text) => {setEmail(text)}}/>
-                <Text>Password</Text>
+                <Body>Password</Body>
                 <TextInput style={styles.input} value={password} onChangeText={(text) => {setPassword(text)}}/>
             </View>
-           { isLoading ? <ActivityIndicator color="black"/> :   <Button title="Login" onPress={handleLogin} />
+            <View>
+           { isLoading ? <ActivityIndicator color="black" size="large"/> : <Button title="Login" onPress={handleLogin} />
            } 
+           </View>
             </View>
     )
 }
@@ -49,12 +53,19 @@ export default LoginScreen
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        justifyContent: "center",
+        padding: 10,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 10 : 10,
     },
     input: {
-        height: 40,
         marginVertical: 12,
         borderWidth: 1,
-        width: "100%"
+        width: "100%",
+        padding: 10,
+        fontSize: 20,
+        fontFamily: "Manrope_400Regular"
       },
+    container: {
+        marginVertical: 40,
+
+    }
 })

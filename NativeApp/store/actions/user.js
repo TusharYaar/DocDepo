@@ -18,9 +18,12 @@ export const autoLoginUser = (payload) => ({
     payload,
 })
 
-export const logoutUser = () => ({
-  type: LOGOUT,
-});
+export const logoutUser =() => (dispatch) =>{
+  dispatch({
+    type: LOGOUT,
+  });
+return AsyncStorage.removeItem("@user_details")
+} 
 
 export const noUser = () => ({
   type: NO_USER,
