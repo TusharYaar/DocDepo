@@ -1,10 +1,6 @@
 import React from "react";
-import { Platform } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NotesNavigator, DocsNavigator } from "./stackNavigators";
-
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 
 import IconButton from "../components/IconButton";
 const Tab = createMaterialBottomTabNavigator();

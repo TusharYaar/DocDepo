@@ -32,7 +32,8 @@
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
-    "firebase": "8.2.3"
+    "firebase": "8.2.3",
+    "expo-clipboard": "~1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

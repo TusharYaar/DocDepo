@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   createDrawerNavigator,
   DrawerItem,
   DrawerItemList,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
-// import DrawerNavigatorOptions from './DrawerNavigatorOptions';
 
 import TabNavigator from "./TabNavigator";
 import Settings from "../screens/Settings";
@@ -15,7 +14,6 @@ const Drawer = createDrawerNavigator();
 import { logoutUser } from "../store/actions/user";
 
 const DrawerNavigator = (props) => {
-  // const [t,r] = useState("");
   const dispatch = useDispatch();
   return (
     <Drawer.Navigator
