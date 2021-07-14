@@ -9,13 +9,14 @@ import {
   Manrope_400Regular,
   Manrope_800ExtraBold,
 } from "@expo-google-fonts/manrope";
-import { StyleSheet } from "react-native";
+import { StyleSheet,LogBox } from "react-native";
 import AppLoading from "expo-app-loading";
 
 import AppNavigator from "./navigation/AppNavigator";
 
 import userReducer from "./store/reducers/user";
 
+LogBox.ignoreLogs(['Setting a timer']);
 const App = () => {
   let [fontsLoaded] = useFonts({
     Manrope_400Regular,

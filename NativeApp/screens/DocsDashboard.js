@@ -1,13 +1,16 @@
-import React , {useState,useEffect} from 'react'
+import React , {useState,useEffect,useCallback} from 'react'
 import { StyleSheet, Text, View,Button } from 'react-native'
 import IconButton from "../components/IconButton";
 
-// import {Database} from "../config"
+import {firestore} from "../config"
 
 import { useSelector } from 'react-redux';
 const DocsDashboard = () => {
 
+    const [docs, setDocs] = useState([]);
     const userId = useSelector(state => state.user.uid);
+
+
     return (
         <View>
             <Text>This is Docs dashboard</Text>
@@ -17,7 +20,9 @@ const DocsDashboard = () => {
 
 export default DocsDashboard
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    drawerIcon: {marginLeft: 10}
+})
 
 
 export const docsScreenOptions = ({ navigation, route }) => {
@@ -27,6 +32,8 @@ export const docsScreenOptions = ({ navigation, route }) => {
             <IconButton
               onPress={() => navigation.toggleDrawer()}
               icon="menu"
+              iconIson="ios-menu-sharp"
+              style={styles.drawerIcon}
               color="black"
             />
           ),

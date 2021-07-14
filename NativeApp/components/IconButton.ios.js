@@ -1,13 +1,15 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-const IconButton = () => {
+const IconButton = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}>
-            <Ionicons name={`ios-${props.icon}`} size={24} color={props.color} />
+            <View style={props.style}>
+                <Ionicons name={props.iconIos} size={24} color={props.color} />
+            </View>
         </TouchableOpacity>
     )
 }
 
 export default IconButton
-const styles = StyleSheet.create({})
+
