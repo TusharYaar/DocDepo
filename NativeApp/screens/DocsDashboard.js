@@ -32,7 +32,7 @@ export const docsScreenOptions = ({ navigation, route }) => {
             <IconButton
               onPress={() => navigation.toggleDrawer()}
               icon="menu"
-              iconIson="ios-menu-sharp"
+              iconIos="ios-menu-sharp"
               style={styles.drawerIcon}
               color="black"
             />

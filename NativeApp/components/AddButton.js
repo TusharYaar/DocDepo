@@ -1,19 +1,22 @@
 import React from 'react'
-import { StyleSheet, Text, View,TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, View,TouchableNativeFeedback,TouchableOpacity, Platform } from 'react-native'
 
 import IconButton from "../components/IconButton";
 
 const AddButton = (props) => {
+    const Touchable = Platform.OS === "android" ? TouchableNativeFeedback : TouchableOpacity;
     return (
         <View style={styles.button}>
-           <TouchableNativeFeedback>
+        <Touchable onPress={props.onPress} style={styles.inner}>
+            <View style={styles.inner}>
            <IconButton
           onPress={props.onPress}
           icon="book-plus"
-          iconIson="ios-refresh-sharp"
+          iconIcon="ios-add-sharp"
           color="white"
-        />
-           </TouchableNativeFeedback>
+          />
+          </View>
+        </Touchable>
         </View>
     )
 }
@@ -28,7 +31,11 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "blue",
     borderRadius: 25,
+
+},
+inner :{
     alignItems: "center",
     justifyContent: "center",
+    flex: 1,
 }
 })

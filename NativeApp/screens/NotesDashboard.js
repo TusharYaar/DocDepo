@@ -39,7 +39,7 @@ const NotesDashboard = (props) => {
         <IconButton
           onPress={fetchDocsFromFirestore}
           icon="refresh"
-          iconIson="ios-refresh-sharp"
+          iconIos="ios-refresh-sharp"
           style={styles.refreshIcon}
           color="black"
         />
@@ -85,7 +85,7 @@ export const notesScreenOptions = ({ navigation }) => {
       <IconButton
         onPress={() => navigation.toggleDrawer()}
         icon="menu"
-        iconIson="ios-menu-sharp"
+        iconIos="ios-menu-sharp"
         style={styles.drawerIcon}
         color="black"
       />
