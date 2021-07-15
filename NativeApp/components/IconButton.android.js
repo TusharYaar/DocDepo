@@ -5,7 +5,7 @@ const IconButton = (props) => {
     return (
         <TouchableNativeFeedback onPress={props.onPress}>
             <View style={props.style}>
-            <MaterialCommunityIcons name={props.icon} size={24} color={props.color} />
+            <MaterialCommunityIcons name={props.icon} size={props.size ? props.size : 24} color={props.color} />
                 </View> 
         </TouchableNativeFeedback>
     )

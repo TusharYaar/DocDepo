@@ -5,7 +5,7 @@ const IconButton = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={props.style}>
-                <Ionicons name={props.iconIos} size={24} color={props.color} />
+                <Ionicons name={props.iconIos} size={props.size ? props.size : 24} color={props.color} />
             </View>
         </TouchableOpacity>
     )

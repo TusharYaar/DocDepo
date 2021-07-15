@@ -11,9 +11,10 @@ const AddButton = (props) => {
             <View style={styles.inner}>
            <IconButton
           onPress={props.onPress}
-          icon="book-plus"
+          icon="card-plus"
           iconIcon="ios-add-sharp"
           color="white"
+          size={36}
           />
           </View>
         </Touchable>
@@ -25,12 +26,12 @@ export default AddButton
 
 const styles = StyleSheet.create({
  button:{   position: "absolute",
-    bottom: 10,
-    right: 10,
-    width: 50,
-    height: 50,
+    bottom: 16,
+    right: 16,
+    width: 60,
+    height: 60,
     backgroundColor: "blue",
-    borderRadius: 25,
+    borderRadius: 35,
 
 },
 inner :{
