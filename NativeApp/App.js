@@ -15,7 +15,8 @@ import AppLoading from "expo-app-loading";
 import AppNavigator from "./navigation/AppNavigator";
 
 import userReducer from "./store/reducers/user";
-import notesReducer from "./store/reducers/notes"
+import notesReducer from "./store/reducers/notes";
+import docsReducer from "./store/reducers/docs"
 
 LogBox.ignoreLogs(['Setting a timer']);
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
   const rootReducer = combineReducers({
     user: userReducer,
     notes: notesReducer,
+    docs: docsReducer,
   });
 
   const store = createStore(rootReducer,applyMiddleware(thunk));
