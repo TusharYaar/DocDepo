@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
 import * as Clipboard from "expo-clipboard";
 
 import { useSelector,useDispatch } from "react-redux";
-import {addMultipleNotes} from "../store/actions/notes";
+import {addMultipleNotes,deleteNote} from "../store/actions/notes";
 import { firestore } from "../config";
 
 import IconButton from "../components/IconButton";
@@ -45,9 +45,10 @@ const NotesDashboard = (props) => {
   };
 
   const handleDeleteFromCollection = async (note) => {
+    setIsLoading(true);
     try {
       await firestore.collection("notesDepo").doc(note).delete();
-      
+      dispatch(deleteNote({id: note}))
     }
     catch (err) {
       Alert.alert("Error", err.message,[{
@@ -55,6 +56,7 @@ const NotesDashboard = (props) => {
         style: "cancel",
       },]);
     }
+    setIsLoading(false);
   };
   const handleDelete = (note) => {
     Alert.alert("Delete Note", "This note will be deleted", [
@@ -78,6 +80,7 @@ const NotesDashboard = (props) => {
             note={item}
             copyToClipboard={() => copyToClipboard(item.text)}
             deleteNote={() => handleDelete(item.id)}
+            disabled={isLoading}
           />
         )}
         refreshing={isLoading}

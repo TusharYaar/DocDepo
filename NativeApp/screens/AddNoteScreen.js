@@ -31,7 +31,6 @@ const AddNoteScreen = (props) => {
             createdAt: TIMESTAMP.now(),
         };
         const ref = await firestore.collection('notesDepo').add(note);
-        console.log(ref.id);
         dispatch(addNote({ id: ref.id, ...note }));
         props.navigation.goBack();
     }
