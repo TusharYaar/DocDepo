@@ -4,12 +4,39 @@ import IconButton from "../components/IconButton";
 
 import {firestore} from "../config"
 
-import { useSelector } from 'react-redux';
-const DocsDashboard = () => {
+import { useSelector,useDispatch } from 'react-redux';
+const DocsDashboard = (props) => {
 
-    const [docs, setDocs] = useState([]);
-    const userId = useSelector(state => state.user.uid);
-
+    const { navigation } = props;
+    const [isLoading, setIsLoading] = useState(false);
+    const userId = useSelector((state) => state.user.uid);
+    const dispatch = useDispatch();
+    const notes = useSelector(state => state.notes.notes);
+    const fetchDocsFromFirestore = useCallback(async () => {
+      setIsLoading(true);
+      try {
+        
+        const querySnapshot = await firestore
+        .collection("docsDepo")
+        .where("user", "==", userId)
+        .get();
+        let arr = [];
+        querySnapshot.forEach((doc) => {
+          arr.push({ id: doc.id, ...doc.data() });
+        });
+        // dispatch(addMultipleNotes(arr));
+        console.log(arr);
+        setIsLoading(false);
+      }
+      catch(err) {
+        console.error(err.message);
+      }
+    }, [firestore,dispatch,userId]);
+  
+    useEffect(() => {
+      fetchDocsFromFirestore();
+    }, [fetchDocsFromFirestore]);
+  
 
     return (
         <View>
