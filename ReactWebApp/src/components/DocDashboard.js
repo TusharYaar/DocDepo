@@ -6,6 +6,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import { useAuth } from "../context/AuthContext";
 import { Database } from "../firebase";
+import { saveAs } from 'file-saver';
 
 import UploadFileContainer from "./UploadFileContainer";
 import Docs from "./Docs";
@@ -108,9 +109,15 @@ const DocDashboard = ({ userDocs }) => {
       uploadDocDetails={uploadDocDetails}
     />
   ));
-  const handleDocDownload = (url) => {
-    var win = window.open(url, "_blank");
-    win.focus();
+  const handleDocDownload = (url,filename) => {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = (event) => {
+      var blob = xhr.response;
+      saveAs(blob, filename);
+    };
+    xhr.open('GET', url);
+    xhr.send();
     setSnackbarValues({
       open: true,
       message: "Starting Download",

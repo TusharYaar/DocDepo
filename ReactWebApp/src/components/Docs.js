@@ -11,7 +11,7 @@ import FileTypeIcon from "./FileTypeIcon";
 const File = (props) => {
   const classes = useStyles();
   const handleDownload = () => {
-  props.downloadDoc(props.fileDetails.url)
+  props.downloadDoc(props.fileDetails.url,props.fileDetails.name)
   };
   const handleDelete = () => {
     props.deleteDoc(props.fileDetails.id,props.fileDetails.path)
