@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 import { StyleSheet, View, TextInput, Button, Alert } from 'react-native'
 
 import * as Clipboard from 'expo-clipboard';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {addNote} from "../store/actions/notes";
 
 import {firestore,TIMESTAMP} from "../config"
 
@@ -10,7 +11,8 @@ const AddNoteScreen = (props) => {
     const user = useSelector(state => state.user);
     const [text, setText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    
+    const dispatch = useDispatch();
+
     const fetchCopiedText = async () => {
         const text = await Clipboard.getStringAsync();
         setNote(text);
@@ -28,8 +30,9 @@ const AddNoteScreen = (props) => {
             isImportant: false,
             createdAt: TIMESTAMP.now(),
         };
-        console.log(note);
         const ref = await firestore.collection('notesDepo').add(note);
+        console.log(ref.id);
+        dispatch(addNote({ id: ref.id, ...note }));
         props.navigation.goBack();
     }
     catch (err) {

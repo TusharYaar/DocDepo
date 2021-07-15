@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
 import * as Clipboard from "expo-clipboard";
 
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import {addMultipleNotes} from "../store/actions/notes";
 import { firestore } from "../config";
 
 import IconButton from "../components/IconButton";
@@ -11,23 +12,29 @@ import AddButton from "../components/AddButton";
 
 const NotesDashboard = (props) => {
   const { navigation } = props;
-  const [notes, setNotes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const userId = useSelector((state) => state.user.uid);
-
+  const dispatch = useDispatch();
+  const notes = useSelector(state => state.notes.notes);
   const fetchDocsFromFirestore = useCallback(async () => {
     setIsLoading(true);
-    const querySnapshot = await firestore
+    try {
+      
+      const querySnapshot = await firestore
       .collection("notesDepo")
       .where("user", "==", userId)
       .get();
-    let arr = [];
-    querySnapshot.forEach((doc) => {
-      arr.push({ id: doc.id, ...doc.data() });
-    });
-    setNotes(arr);
-    setIsLoading(false);
-  }, [firestore]);
+      let arr = [];
+      querySnapshot.forEach((doc) => {
+        arr.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch(addMultipleNotes(arr));
+      setIsLoading(false);
+    }
+    catch(err) {
+      console.error(err.message);
+    }
+  }, [firestore,dispatch,userId]);
 
   useEffect(() => {
     fetchDocsFromFirestore();
@@ -40,7 +47,7 @@ const NotesDashboard = (props) => {
   const handleDeleteFromCollection = async (note) => {
     try {
       await firestore.collection("notesDepo").doc(note).delete();
-
+      
     }
     catch (err) {
       Alert.alert("Error", err.message,[{
