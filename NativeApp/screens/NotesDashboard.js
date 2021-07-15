@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Text, View, Button, FlatList,Alert } from "react-native";
+import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
 import * as Clipboard from "expo-clipboard";
 
 import { useSelector } from "react-redux";
 import { firestore } from "../config";
 
-
 import IconButton from "../components/IconButton";
 import Notes from "../components/Notes";
 import AddButton from "../components/AddButton";
-
 
 const NotesDashboard = (props) => {
   const { navigation } = props;
@@ -39,25 +37,31 @@ const NotesDashboard = (props) => {
     Clipboard.setString(text);
   };
 
-  const handleDeleteFromCollection = (note) => {
-    firestore
-      .collection("notesDepo")
-      .doc(note)
-      .delete();
-  }
-const handleDelete = (note) => {
-  Alert.alert(
-    "Delete Note",
-    "This note will be deleted",
-    [
+  const handleDeleteFromCollection = async (note) => {
+    try {
+      await firestore.collection("notesDepo").doc(note).delete();
+
+    }
+    catch (err) {
+      Alert.alert("Error", err.message,[{
+        text: "Ok",
+        style: "cancel",
+      },]);
+    }
+  };
+  const handleDelete = (note) => {
+    Alert.alert("Delete Note", "This note will be deleted", [
       {
         text: "Cancel",
-        style: "cancel"
+        style: "cancel",
       },
-      { text: "Ok", onPress: () => handleDeleteFromCollection(note) , style: "destructive"}
-    ]
-  );
-}
+      {
+        text: "Ok",
+        onPress: () => handleDeleteFromCollection(note),
+        style: "destructive",
+      },
+    ]);
+  };
   return (
     <View style={styles.screen}>
       <FlatList
@@ -66,13 +70,13 @@ const handleDelete = (note) => {
           <Notes
             note={item}
             copyToClipboard={() => copyToClipboard(item.text)}
-            deleteNote = {() => handleDelete(item.id)}
+            deleteNote={() => handleDelete(item.id)}
           />
         )}
         refreshing={isLoading}
         onRefresh={fetchDocsFromFirestore}
       />
-      <AddButton onPress={() => navigation.navigate('AddNote')}/>
+      <AddButton onPress={() => navigation.navigate("AddNote")} />
     </View>
   );
 };
@@ -81,7 +85,6 @@ export default NotesDashboard;
 
 const styles = StyleSheet.create({
   drawerIcon: { marginLeft: 10 },
-  refreshIcon: { marginRight: 10 },
   screen: {
     padding: 10,
     flex: 1,

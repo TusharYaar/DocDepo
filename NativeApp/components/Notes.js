@@ -28,7 +28,7 @@ export default Notes;
 const styles = StyleSheet.create({
     container: {
        maxHeight: 500,
-       minHeight: 100,
+       minHeight: 130,
        width: "100%",
        marginVertical: 10,
        padding: 10,

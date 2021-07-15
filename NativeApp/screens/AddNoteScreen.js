@@ -1,24 +1,52 @@
 import React, {useState} from 'react'
-import { StyleSheet, View, TextInput, Button } from 'react-native'
+import { StyleSheet, View, TextInput, Button, Alert } from 'react-native'
 
 import * as Clipboard from 'expo-clipboard';
+import { useSelector } from 'react-redux';
+
+import {firestore,TIMESTAMP} from "../config"
+
 const AddNoteScreen = (props) => {
-    const [note, setNote] = useState('');
+    const user = useSelector(state => state.user);
+    const [text, setText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     
     const fetchCopiedText = async () => {
         const text = await Clipboard.getStringAsync();
         setNote(text);
       };
     const handleChange = (text) => {
-        setNote(text);
+        setText(text);
+    }
+    const handleSubmit = async () => {
+    try {
+        setIsLoading(true);
+        const note = {
+            text: text,
+            user: user.uid,
+            userEmail: user.email,
+            isImportant: false,
+            createdAt: TIMESTAMP.now(),
+        };
+        console.log(note);
+        const ref = await firestore.collection('notesDepo').add(note);
+        props.navigation.goBack();
+    }
+    catch (err) {
+        setIsLoading(false);
+        Alert.alert("Error", err.message,[{
+            text: "Ok",
+            style: "cancel",
+          },]);
+    }
     }
     return (
         <View style={styles.screen}>
-            <TextInput style={styles.input} multiline autoFocus keyboardType="default" autoCapitalize="sentences" numberOfLines={5} maxLength={120} value={note} onChangeText={handleChange}/>
+            <TextInput style={styles.input} multiline autoFocus keyboardType="default" autoCapitalize="sentences" numberOfLines={5} maxLength={120} value={text} onChangeText={handleChange}/>
             <View style={styles.button}>    
-            <Button title="Last Copied Text" onPress={fetchCopiedText}  />
+            <Button title="Last Copied Text" onPress={fetchCopiedText} disabled={isLoading}  />
             </View ><View style={styles.button}>
-            <Button title="Add Note" onPress={()=>{}} />
+            <Button title="Add Note" onPress={handleSubmit} disabled={isLoading} />
             </View>
         </View>
     )
