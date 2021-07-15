@@ -33,7 +33,9 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "firebase": "8.2.3",
-    "expo-clipboard": "~1.1.0"
+    "expo-clipboard": "~1.1.0",
+    "expo-auth-session": "~3.3.1",
+    "expo-random": "~11.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View,Button } from 'react-native'
 import {format } from "date-fns";
 
 import Body from "../components/Body"
-const Notes = ({note,copyToClipboard}) => {
+const Notes = ({note,copyToClipboard,deleteNote}) => {
     return (
         <View style={styles.container}>
             <View>
@@ -16,7 +16,7 @@ const Notes = ({note,copyToClipboard}) => {
                 <Button title="copy" onPress={copyToClipboard}/>
                 </View>
                 <View style={styles.button}>
-                <Button title="delete" color="red" onPress={()=>{}} />
+                <Button title="delete" color="red" onPress={deleteNote} />
                 </View>
             </View>
         </View>
