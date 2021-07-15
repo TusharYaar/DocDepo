@@ -10,8 +10,8 @@ import Header from "../components/Header";
 import Body from "../components/Body";
 const LoginScreen = () => {
     const dispatch = useDispatch();
-    const [email, setEmail] = useState("tusharagrawal16@rediffmail.com");
-    const [password, setPassword] = useState("agrawal11");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isLoading, setLoading] = useState(false);
     const handleLogin = async () => {
         setLoading(true);

@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
 
 import { firestore } from "../config";
 
-import { addMultipleDocs,deleteDoc } from "../store/actions/docs";
+import { addMultipleDocs, deleteDoc } from "../store/actions/docs";
+import * as FileSystem from "expo-file-system";
 
 import IconButton from "../components/IconButton";
 import Docs from "../components/Docs";
@@ -36,18 +37,18 @@ const DocsDashboard = (props) => {
     fetchDocsFromFirestore();
   }, [fetchDocsFromFirestore]);
 
-
   const handleDeleteFromCollection = async (doc) => {
     setIsLoading(true);
     try {
       await firestore.collection("docsDepo").doc(doc).delete();
-      dispatch(deleteDoc({id: doc}))
-    }
-    catch (err) {
-      Alert.alert("Error", err.message,[{
-        text: "Ok",
-        style: "cancel",
-      },]);
+      dispatch(deleteDoc({ id: doc }));
+    } catch (err) {
+      Alert.alert("Error", err.message, [
+        {
+          text: "Ok",
+          style: "cancel",
+        },
+      ]);
     }
     setIsLoading(false);
   };
@@ -65,13 +66,32 @@ const DocsDashboard = (props) => {
     ]);
   };
 
-
-
+  const downloadDoc = (docURL, filename) => {
+    FileSystem.downloadAsync(docURL, FileSystem.documentDirectory  + filename)
+      .then(({ uri }) => {
+        console.log("Finished downloading to ", uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
   return (
     <View style={styles.screen}>
       <FlatList
         data={docs}
-        renderItem={({ item }) => <Docs doc={item} isLoading={isLoading} deleteDoc={()=> {handleDelete(item.id)}} />}
+        renderItem={({ item }) => (
+          <Docs
+            doc={item}
+            isLoading={isLoading}
+            deleteDoc={() => {
+              handleDelete(item.id);
+            }}
+            downloadDoc={() => {
+              downloadDoc(item.url, item.name);
+            }}
+          />
+        )}
         refreshing={isLoading}
         onRefresh={fetchDocsFromFirestore}
       />

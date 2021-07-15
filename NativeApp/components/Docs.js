@@ -4,7 +4,7 @@ import { StyleSheet, Text, View,Button } from 'react-native'
 import {format } from "date-fns";
 
 import Body from "../components/Body"
-const Docs = ({doc, isLoading,deleteDoc}) => {
+const Docs = ({doc, isLoading,deleteDoc,downloadDoc}) => {
     return (
         <View style={styles.container}>
             <View>
@@ -13,7 +13,7 @@ const Docs = ({doc, isLoading,deleteDoc}) => {
             </View>
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
-                <Button title="Download" onPress={ () => {}} disabled={isLoading}/>
+                <Button title="Download" onPress={downloadDoc} disabled={isLoading}/>
                 </View>
                 <View style={styles.button}>
                 <Button title="delete" color="red" onPress={deleteDoc} disabled={isLoading}/>
