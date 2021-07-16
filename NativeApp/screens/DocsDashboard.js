@@ -155,6 +155,18 @@ const DocsDashboard = (props) => {
           //   onPress: () => console.log("Pressed email"),
           // },
           {
+            icon: "camera-enhance",
+            label: "Camera",
+            onPress: ()=> props.navigation.navigate("Camera"),
+            small: false,
+          },
+          // {
+          //   icon: "file-document-outline",
+          //   label: "Document",
+          //   onPress: handleDocumentPick,
+          //   small: false,
+          // },
+          {
             icon: "file-document-outline",
             label: "Document",
             onPress: handleDocumentPick,

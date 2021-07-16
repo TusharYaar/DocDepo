@@ -38,7 +38,11 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "expo-web-browser": "~9.2.0",
-    "expo-document-picker": "~9.2.4"
+    "expo-document-picker": "~9.2.4",
+    "expo-camera": "~11.2.1",
+    "expo-image-picker": "~10.2.2",
+    "expo-sharing": "~9.2.1",
+    "expo-av": "~9.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
