@@ -1,25 +1,22 @@
 import React from 'react'
-import { StyleSheet, Text, View,Button } from 'react-native'
+import { StyleSheet, Text, View, Platform } from 'react-native'
 
+import {Button, Card} from "react-native-paper"
 import {format } from "date-fns";
 
 import Body from "../components/Body"
 const Notes = ({note,copyToClipboard,deleteNote,disabled}) => {
     return (
-        <View style={styles.container}>
-            <View>
+<Card style={styles.container}>
+<Card.Content>
             <Text style={styles.date}>{format(new Date(note.createdAt.toDate()),"EEE MMM dd yyyy")}</Text>
             <Body>{note.text}</Body>
-            </View>
-            <View style={styles.buttonContainer}>
-                <View style={styles.button}>
-                <Button title="copy" onPress={copyToClipboard} disabled={disabled}/>
-                </View>
-                <View style={styles.button}>
-                <Button title="delete" color="red" onPress={deleteNote} disabled={disabled}/>
-                </View>
-            </View>
-        </View>
+            </Card.Content>
+            <Card.Actions style={styles.buttonContainer}>
+                <Button title="copy" onPress={copyToClipboard} disabled={disabled} mode={Platform.OS === "android" ? "contained" : "text"} style={styles.button}>Copy</Button>
+                <Button title="delete" color="red" mode={Platform.OS === "android" ? "contained" : "text"} onPress={deleteNote} style={styles.button} disabled={disabled}>Delete</Button>
+            </Card.Actions>
+</Card>
     )
 }
 
@@ -32,10 +29,6 @@ const styles = StyleSheet.create({
        width: "100%",
        marginVertical: 10,
        padding: 10,
-       elevation: 4,
-       borderRadius: 5,
-       backgroundColor:"white",
-       justifyContent: "space-between"
     },
     date: {
     fontSize: 14,
@@ -43,7 +36,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     },
     buttonContainer: {
-    flexDirection: "row",
     justifyContent: "flex-end",
     },
     button: {
