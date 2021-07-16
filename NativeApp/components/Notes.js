@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
        minHeight: 130,
        width: "100%",
        marginVertical: 10,
-       padding: 10,
     },
     date: {
     fontSize: 14,

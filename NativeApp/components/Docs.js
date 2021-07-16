@@ -1,25 +1,26 @@
 import React from 'react'
-import { StyleSheet, Text, View,Button } from 'react-native'
-
+import { StyleSheet, Text, View ,Platform } from 'react-native'
+import {Button, Card} from "react-native-paper";
 import {format } from "date-fns";
 
 import Body from "../components/Body"
 const Docs = ({doc, isLoading,deleteDoc,downloadDoc}) => {
     return (
-        <View style={styles.container}>
-            <View>
+        <Card style={styles.container}>
+            <Card.Content>
             <Text style={styles.date}>{format(new Date(doc.createdAt.toDate()),"EEE MMM dd yyyy")}</Text>
             <Body numberOfLines={1} >{doc.name}</Body>
-            </View>
-            <View style={styles.buttonContainer}>
+            </Card.Content>
+            <Card.Actions style={styles.buttonContainer}>
                 <View style={styles.button}>
-                <Button title="Download" onPress={downloadDoc} disabled={isLoading}/>
+                {/* <Button onPress={downloadDoc} mode={Platform.OS === "android" ? "contained" : "text"} disabled={isLoading}>Download</Button> */}
                 </View>
                 <View style={styles.button}>
-                <Button title="delete" color="red" onPress={deleteDoc} disabled={isLoading}/>
+                <Button title="delete" color="red" mode={Platform.OS === "android" ? "contained" : "text"} onPress={deleteDoc} style={styles.button} disabled={isLoading}>Delete</Button>
+
                 </View>
-            </View>
-        </View>
+            </Card.Actions>
+        </Card>
     )
 }
 
@@ -31,11 +32,6 @@ const styles = StyleSheet.create({
        minHeight: 130,
        width: "100%",
        marginVertical: 10,
-       padding: 10,
-       elevation: 4,
-       borderRadius: 5,
-       backgroundColor:"white",
-       justifyContent: "space-between"
     },
     date: {
     fontSize: 14,
@@ -43,7 +39,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     },
     buttonContainer: {
-    flexDirection: "row",
     justifyContent: "flex-end",
     },
     button: {

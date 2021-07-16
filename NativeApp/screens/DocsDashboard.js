@@ -1,20 +1,36 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
+import { StyleSheet, View, FlatList, Alert } from "react-native";
 
-import { firestore } from "../config";
+import { firestore, storage, TIMESTAMP } from "../config";
+import { useSelector, useDispatch } from "react-redux";
+import { addMultipleDocs, deleteDoc, addDoc } from "../store/actions/docs";
 
-import { addMultipleDocs, deleteDoc } from "../store/actions/docs";
 import * as FileSystem from "expo-file-system";
+import * as DocumentPicker from "expo-document-picker";
+
+import { FAB, Card, Snackbar, ActivityIndicator } from "react-native-paper";
 
 import IconButton from "../components/IconButton";
 import Docs from "../components/Docs";
-import { useSelector, useDispatch } from "react-redux";
+
 const DocsDashboard = (props) => {
-  const { navigation } = props;
   const [isLoading, setIsLoading] = useState(false);
+  const [fabOpen, setFabOpen] = useState({ open: false });
+  const [isUploading, setIsUploading] = useState(null);
+  const [snackbarValues, setSnackbarValues] = useState({
+    value: "Copied",
+    visible: false,
+  });
   const userId = useSelector((state) => state.user.uid);
-  const dispatch = useDispatch();
+  const userEmail = useSelector((state) => state.user.email);
   const docs = useSelector((state) => state.docs.docs);
+
+  const dispatch = useDispatch();
+
+  const onFabStateChange = ({ open }) => setFabOpen({ open });
+  const onDismissSnackBar = () =>
+    setSnackbarValues({ value: "Copied", visible: false });
+
   const fetchDocsFromFirestore = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -29,7 +45,7 @@ const DocsDashboard = (props) => {
       dispatch(addMultipleDocs(arr));
       setIsLoading(false);
     } catch (err) {
-      console.error(err.message);
+      Alert.alert("Error", err.message);
     }
   }, [firestore, dispatch, userId]);
 
@@ -43,12 +59,7 @@ const DocsDashboard = (props) => {
       await firestore.collection("docsDepo").doc(doc).delete();
       dispatch(deleteDoc({ id: doc }));
     } catch (err) {
-      Alert.alert("Error", err.message, [
-        {
-          text: "Ok",
-          style: "cancel",
-        },
-      ]);
+      Alert.alert("Error", err.message);
     }
     setIsLoading(false);
   };
@@ -67,15 +78,52 @@ const DocsDashboard = (props) => {
   };
 
   const downloadDoc = (docURL, filename) => {
-    FileSystem.downloadAsync(docURL, FileSystem.documentDirectory  + filename)
+    FileSystem.downloadAsync(docURL, FileSystem.documentDirectory + filename)
       .then(({ uri }) => {
         console.log("Finished downloading to ", uri);
       })
       .catch((error) => {
-        console.error(error);
+        Alert.alert("Error", err.message);
       });
   };
-  
+
+  const handleDocumentPick = async () => {
+    try {
+      const { name, size, type, uri } = await DocumentPicker.getDocumentAsync();
+      if (type != "success") return;
+      if (size > 52428800) {
+        Alert.alert(
+          "File Too Large",
+          "The file size should be smaller than 50MB"
+        );
+        return;
+      }
+      setSnackbarValues({
+        value: "Uploading... Please wait",
+        visible: true,
+      });
+      const fileRef = storage.child(`${userId}/${name}`);
+      const uploadTask = await fileRef.put(uri);
+      const fileUrl = await uploadTask.ref.getDownloadURL();
+      const doc = {
+        name: name,
+        url: fileUrl,
+        user: userId,
+        createdAt: TIMESTAMP.now(),
+        userEmail: userEmail,
+        path: `${userId}/${name}`,
+        type: "document",
+      };
+      const ref = await firestore.collection("docsDepo").add(doc);
+      dispatch(addDoc({ id: ref.id, ...doc }));
+      setSnackbarValues({
+        value: "Document Uploaded to you depo",
+        visible: true,
+      });
+    } catch (err) {
+      Alert.alert("Error", err.message);
+    }
+  };
   return (
     <View style={styles.screen}>
       <FlatList
@@ -95,6 +143,33 @@ const DocsDashboard = (props) => {
         refreshing={isLoading}
         onRefresh={fetchDocsFromFirestore}
       />
+
+      <FAB.Group
+        style={styles.fab}
+        open={fabOpen.open}
+        icon={fabOpen.open ? "file-cancel" : "plus"}
+        actions={[
+          // {
+          //   icon: "image",
+          //   label: "Image",
+          //   onPress: () => console.log("Pressed email"),
+          // },
+          {
+            icon: "file-document-outline",
+            label: "Document",
+            onPress: handleDocumentPick,
+            small: false,
+          },
+        ]}
+        onStateChange={onFabStateChange}
+      />
+      <Snackbar
+        visible={snackbarValues.visible}
+        onDismiss={onDismissSnackBar}
+        duration={4000}
+      >
+        {snackbarValues.value}
+      </Snackbar>
     </View>
   );
 };
@@ -105,6 +180,11 @@ const styles = StyleSheet.create({
   drawerIcon: { marginLeft: 10 },
   screen: {
     flex: 1,
+    padding: 10,
+  },
+  fab: {
+    bottom: 0,
+    right: 0,
   },
 });
 

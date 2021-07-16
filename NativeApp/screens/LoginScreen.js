@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  ActivityIndicator,
+  
   StatusBar,
   Platform,
 } from "react-native";
-import { TextInput, Button } from "react-native-paper";
-import { auth, googleAuthProvider, CLIENT_ID } from "../config";
+import { TextInput, Button,ActivityIndicator } from "react-native-paper";
+import { auth, googleAuthProvider, CLIENT_ID,ANDROID_CLIENT_ID } from "../config";
 
 import { ResponseType } from "expo-auth-session";
 import * as Google from "expo-auth-session/providers/google";
@@ -43,6 +43,7 @@ const LoginScreen = () => {
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     expoClientId: CLIENT_ID,
+    androidClientId:ANDROID_CLIENT_ID,
   });
   useEffect(() => {
     const loginSuccess = async () => {
@@ -96,7 +97,7 @@ const LoginScreen = () => {
       </View>
       <View>
         {isLoading ? (
-          <ActivityIndicator color="black" size="large" />
+          <ActivityIndicator animating={true}/>
         ) : (
           <Button
             mode={Platform.OS === "android" ? "contained" : "text"}
@@ -113,6 +114,7 @@ const LoginScreen = () => {
         onPress={() => {
             promptAsync();
         }}
+        icon="google"
         >
         Sign in with Google
       </Button>

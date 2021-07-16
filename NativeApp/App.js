@@ -1,7 +1,7 @@
 import React from "react";
 import { LogBox } from "react-native";
 import { StatusBar } from "expo-status-bar";
-
+import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from "react-redux";
 import { createStore, combineReducers,applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
@@ -39,7 +39,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar style="dark" />
+      <PaperProvider>
       <AppNavigator />
+      </PaperProvider>
     </Provider>
   );
 };

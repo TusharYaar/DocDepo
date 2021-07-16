@@ -15,7 +15,7 @@ import AddButton from "../components/AddButton";
 const NotesDashboard = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [snackbarValues, setSnackbarValues] = useState({value: "Copied",visible: false});
+  const [snackbarValues, setSnackbarValues] = useState({value: "",visible: false});
   const userId = useSelector((state) => state.user.uid);
   const dispatch = useDispatch();
   const notes = useSelector(state => state.notes.notes);
@@ -77,7 +77,7 @@ const NotesDashboard = (props) => {
       },
     ]);
   };
-  const onDismissSnackBar = () => setSnackbarValues({value: "Copied",visible: false});
+  const onDismissSnackBar = () => setSnackbarValues({value: "",visible: false});
   return (
     <View style={styles.screen}>
       <FlatList
