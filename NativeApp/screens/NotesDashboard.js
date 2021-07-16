@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
+import { StyleSheet, View, FlatList, Alert } from "react-native";
+import {Snackbar,FAB } from 'react-native-paper';
 import * as Clipboard from "expo-clipboard";
+
 
 import { useSelector,useDispatch } from "react-redux";
 import {addMultipleNotes,deleteNote} from "../store/actions/notes";
@@ -13,6 +15,7 @@ import AddButton from "../components/AddButton";
 const NotesDashboard = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(false);
+  const [snackbarValues, setSnackbarValues] = useState({value: "Copied",visible: false});
   const userId = useSelector((state) => state.user.uid);
   const dispatch = useDispatch();
   const notes = useSelector(state => state.notes.notes);
@@ -42,13 +45,16 @@ const NotesDashboard = (props) => {
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
+    setSnackbarValues({value: "Note Copied to Clipboard",visible: true})
+
   };
 
   const handleDeleteFromCollection = async (note) => {
     setIsLoading(true);
     try {
       await firestore.collection("notesDepo").doc(note).delete();
-      dispatch(deleteNote({id: note}))
+      dispatch(deleteNote({id: note}));
+      setSnackbarValues({value: "Note Deleted",visible: true})
     }
     catch (err) {
       Alert.alert("Error", err.message,[{
@@ -71,6 +77,7 @@ const NotesDashboard = (props) => {
       },
     ]);
   };
+  const onDismissSnackBar = () => setSnackbarValues({value: "Copied",visible: false});
   return (
     <View style={styles.screen}>
       <FlatList
@@ -86,7 +93,17 @@ const NotesDashboard = (props) => {
         refreshing={isLoading}
         onRefresh={fetchDocsFromFirestore}
       />
-      <AddButton onPress={() => navigation.navigate("AddNote")} />
+      <FAB
+    style={styles.fab}
+    icon="plus"
+    onPress={() => navigation.navigate("AddNote")}
+  />
+      <Snackbar
+        visible={snackbarValues.visible}
+        onDismiss={onDismissSnackBar}
+        duration={4000}>
+       {snackbarValues.value}
+      </Snackbar>
     </View>
   );
 };
@@ -99,6 +116,12 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  }
 });
 
 export const notesScreenOptions = ({ navigation }) => {
