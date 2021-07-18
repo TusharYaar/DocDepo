@@ -1,6 +1,8 @@
 import React from "react";
 import { LogBox } from "react-native";
+import 'react-native-gesture-handler';
 import { StatusBar } from "expo-status-bar";
+import { enableScreens } from 'react-native-screens';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from "react-redux";
 import { createStore, combineReducers,applyMiddleware } from "redux";
@@ -10,6 +12,7 @@ import {
   Manrope_400Regular,
   Manrope_800ExtraBold,
 } from "@expo-google-fonts/manrope";
+
 import AppLoading from "expo-app-loading";
 
 import AppNavigator from "./navigation/AppNavigator";
@@ -19,6 +22,9 @@ import notesReducer from "./store/reducers/notes";
 import docsReducer from "./store/reducers/docs"
 
 LogBox.ignoreLogs(['Setting a timer']);
+
+enableScreens(false);
+
 const App = () => {
   let [fontsLoaded] = useFonts({
     Manrope_400Regular,

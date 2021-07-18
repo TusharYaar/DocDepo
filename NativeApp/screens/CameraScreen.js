@@ -3,19 +3,24 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   useWindowDimensions,
+  Platform,
 } from "react-native";
 import { Camera } from "expo-camera";
 import { useIsFocused } from '@react-navigation/native';
 import { Button,IconButton, ActivityIndicator } from "react-native-paper";
 
+import {PinchGestureHandler } from 'react-native-gesture-handler'
+
+import Header from "../components/Header";
 const CameraScreen = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [isLoading, setIsLoading]= useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState({value: Camera.Constants.FlashMode.off,icon: "flash-off"});
+  const [whiteBalance, setWhiteBalance] = useState({value: Camera.Constants.WhiteBalance.auto,icon: "white-balance-auto"});
 
+  const [zoom,setZoom] = useState(0);
   const [cameraReady, setCameraReady] = useState(false);
   const cameraRef = useRef(null);
   const cameraStyle = {
@@ -70,29 +75,70 @@ const CameraScreen = ({navigation}) => {
       break;
     }
   }
+  // Zoom
+  const handleZoom = (event) => {
+    let zoomLevel = event.nativeEvent.scale < 1 ? zoom - 0.01 : zoom + 0.01
+    zoomLevel = zoomLevel < 0 ? 0 : zoomLevel;
+    zoomLevel = zoomLevel > 1 ? 1 : zoomLevel;
+    setZoom(zoomLevel);
+  }
+  const resetZoom = () => {
+    setZoom(0);
+  }
+
+  // White balance
+  const handleWhiteBalance = () => {
+    switch (whiteBalance.value)  {
+      case Camera.Constants.WhiteBalance.auto:
+        setWhiteBalance({value: Camera.Constants.WhiteBalance.incandescent,icon: "white-balance-incandescent"});
+      break;
+      case Camera.Constants.WhiteBalance.incandescent:
+        setWhiteBalance({value: Camera.Constants.WhiteBalance.sunny,icon: "white-balance-sunny"});
+      break;
+      case Camera.Constants.WhiteBalance.sunny:
+        setWhiteBalance({value: Camera.Constants.WhiteBalance.cloudy,icon: "weather-cloudy"});
+      break;
+      case Camera.Constants.WhiteBalance.cloudy:
+        setWhiteBalance({value: Camera.Constants.WhiteBalance.fluorescent,icon: "white-balance-iridescent"});
+      break;
+      case Camera.Constants.WhiteBalance.fluorescent:
+        setWhiteBalance({value: Camera.Constants.WhiteBalance.auto,icon: "white-balance-auto"});
+      break;
+    } 
+
+  }
 
   return (
     <View style={styles.screen}>
+      <PinchGestureHandler onGestureEvent={handleZoom} >
+        <View style={styles.background}>
       <Camera
         style={{ ...styles.camera, ...cameraStyle}}
         type={type}
         flashMode={flash.value}
         autoFocus="on"
+        zoom={zoom}
+        whiteBalance={whiteBalance.value}
         onCameraReady={() => {
           setCameraReady(true);
         }}
         ratio="4:3"
         ref={cameraRef}
-      >
+        >
       </Camera>
+      </View>
+    </PinchGestureHandler>
       <View>
         <View style={styles.buttonActions}>
           <IconButton onPress={flipCamera} icon={type === Camera.Constants.Type.back ? "camera-rear" : "camera-front"} />
           <IconButton onPress={toggleFlash} icon={flash.icon} />
-
+          <IconButton onPress={handleWhiteBalance} icon={whiteBalance.icon} />
+          <Button onPress={resetZoom} mode={Platform.OS === "android" ? "contained" : "text"}>{(1 + zoom*9).toFixed(1)}</Button>
         </View>
-        {isLoading ? <ActivityIndicator/> : <Button icon="camera" onPress={takePicture}>Take Picture</Button>}
       </View>
+        <View style={styles.pictureButton}>
+        {isLoading ? <ActivityIndicator animating={true} size={56}/> : <IconButton icon="camera" onPress={takePicture} size={40}/>}
+        </View>
     </View>
   );
 };
@@ -104,6 +150,16 @@ const styles = StyleSheet.create({
   buttonActions: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  background: {
+    backgroundColor: "orange"
+  },
+  pictureButton: {
+    paddingVertical: 10,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 
