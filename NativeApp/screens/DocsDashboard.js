@@ -160,12 +160,12 @@ const DocsDashboard = (props) => {
             onPress: ()=> props.navigation.navigate("Camera"),
             small: false,
           },
-          // {
-          //   icon: "file-document-outline",
-          //   label: "Document",
-          //   onPress: handleDocumentPick,
-          //   small: false,
-          // },
+          {
+            icon: "microphone-plus",
+            label: "Audio",
+            onPress: ()=> props.navigation.navigate("Audio"),
+            small: false,
+          },
           {
             icon: "file-document-outline",
             label: "Document",

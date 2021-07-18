@@ -4,6 +4,8 @@ import DocsDashboard, {docsScreenOptions} from "../screens/DocsDashboard";
 import NotesDashboard,{notesScreenOptions} from '../screens/NotesDashboard';
 import AddNoteScreen,{addNoteScreenOptions} from '../screens/AddNoteScreen';
 import CameraScreen from '../screens/CameraScreen';
+import AudioScreen from '../screens/AudioScreen';
+
 import PhotoViewScreen from '../screens/PhotoViewScreen';
 const StackDocs = createStackNavigator();
 const StackNotes = createStackNavigator();
@@ -15,6 +17,7 @@ export const DocsNavigator = () => {
         <StackDocs.Screen name="Docs" component={DocsDashboard} options={docsScreenOptions} />
         <StackDocs.Screen name="Camera" component={CameraScreen} />
         <StackDocs.Screen name="PhotoView" component={PhotoViewScreen} />
+        <StackDocs.Screen name="Audio" component={AudioScreen} />
 
 
       </StackDocs.Navigator>
