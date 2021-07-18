@@ -2,72 +2,77 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  
+  ScrollView,
+  Alert,
   StatusBar,
   Platform,
 } from "react-native";
 import { TextInput, Button,ActivityIndicator } from "react-native-paper";
-import { auth, googleAuthProvider, CLIENT_ID,ANDROID_CLIENT_ID } from "../config";
+import { auth, CLIENT_ID,ANDROID_CLIENT_ID,googleAuthProvider } from "../config";
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-google-app-auth';
 
-import { ResponseType } from "expo-auth-session";
-import * as Google from "expo-auth-session/providers/google";
 
 import { useDispatch } from "react-redux";
 import { loginUser } from "../store/actions/user";
 
 import Header from "../components/Header";
 import Body from "../components/Body";
+
+WebBrowser.maybeCompleteAuthSession();
+
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const saveUser = (resData)=> {
+    const data = {
+      expirationTime: resData.stsTokenManager.expirationTime,
+      accessToken: resData.stsTokenManager.accessToken,
+      email: resData.email,
+      apiKey: resData.apiKey,
+      uid: resData.uid,
+    };
+    dispatch(loginUser(data));
+  }
+
+
   const handleLogin = async () => {
     setLoading(true);
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      const resData = await auth.currentUser.toJSON();
-      const data = {
-        expirationTime: resData.stsTokenManager.expirationTime,
-        accessToken: resData.stsTokenManager.accessToken,
-        email: resData.email,
-        apiKey: resData.apiKey,
-        uid: resData.uid,
-      };
-      dispatch(loginUser(data));
+      const resData = auth.currentUser.toJSON();
+      saveUser(resData);
     } catch (err) {
-      console.log(err.message);
+      Alert.alert("Error",err.message);
       setLoading(false);
     }
   };
-
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    expoClientId: CLIENT_ID,
-    androidClientId:ANDROID_CLIENT_ID,
-  });
-  useEffect(() => {
-    const loginSuccess = async () => {
-      const { id_token } = response.params;
-      const credential = await googleAuthProvider.credential(id_token);
-      await auth.signInWithCredential(credential);
-      const resData = await auth.currentUser.toJSON();
-      const data = {
-        expirationTime: resData.stsTokenManager.expirationTime,
-        accessToken: resData.stsTokenManager.accessToken,
-        email: resData.email,
-        apiKey: resData.apiKey,
-        uid: resData.uid,
-      };
-      dispatch(loginUser(data));
-    };
-
-    if (response?.type === "success") {
-      loginSuccess();
+  const handleGoogleLogin = async () => {
+    try {
+      setGoogleLoading(true);
+      const googleUser = await Google.logInAsync({
+        androidClientId: CLIENT_ID,
+        androidStandaloneAppClientId: ANDROID_CLIENT_ID,
+        scopes: ['profile', 'email']
+      });
+      if (googleUser.type === 'success') {
+        const credential = await googleAuthProvider.credential(googleUser.idToken);
+        await auth.signInWithCredential(credential);
+        const user = auth.currentUser.toJSON();
+        saveUser(user);
+      }
+    } catch (err) {
+      Alert.alert("Error", err.message);
     }
-  }, [response]);
+    setGoogleLoading(false);
+  }
 
   return (
-    <View style={styles.screen}>
+    <ScrollView style={styles.screen}>
       <Header>Login</Header>
       <View style={styles.container}>
         <View style={styles.margin}>
@@ -108,18 +113,18 @@ const LoginScreen = () => {
         )}
       </View>
       <View style={styles.margin}>
+      {
+        googleLoading ? <ActivityIndicator animating={true} /> : 
       <Button
-        disabled={!request}
-        mode={Platform.OS === "android" ? "contained" : "text"}
-        onPress={() => {
-            promptAsync();
-        }}
-        icon="google"
-        >
+      mode={Platform.OS === "android" ? "contained" : "text"}
+      onPress={handleGoogleLogin}
+      icon="google"
+      >
         Sign in with Google
       </Button>
+        }
           </View>
-    </View>
+    </ScrollView>
   );
 };
 

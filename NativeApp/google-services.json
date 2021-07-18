@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "920988754215",
+    "project_id": "docdepo-53679",
+    "storage_bucket": "docdepo-53679.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920988754215:android:ed665d0f6910b47fe24902",
+        "android_client_info": {
+          "package_name": "com.tusharyaar.decdepo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920988754215-0gosaib3s2ksrk68u48g3lvc4v3dcsom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tusharyaar.decdepo",
+            "certificate_hash": "d5f936f626c0ab67f0604d2eb112c3bc6a1d26b8"
+          }
+        },
+        {
+          "client_id": "920988754215-r6i9ptnrn1jvv5cdsnr9sdja2hvv8vrh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmdd7uFQdDjRy7tk8omvdud9zXAz7cIW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920988754215-gb2rl2a580cr63qh21pf5idl0jmc3pqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

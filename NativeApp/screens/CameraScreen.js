@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect,useRef,useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -20,12 +20,14 @@ const CameraScreen = (props) => {
     width: useWindowDimensions().width,
     height: (useWindowDimensions().width / 3) * 4,
   };
+
+  const startCamera = useCallback(async () =>{
+    const { status } = await Camera.requestPermissionsAsync();
+    setHasPermission(status === "granted");
+  },[])
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
+    startCamera();
+  }, [startCamera]);
 
   if (hasPermission === null) {
     return <View />;
@@ -39,6 +41,7 @@ const CameraScreen = (props) => {
     const { uri, width, height } = await cameraRef.current.takePictureAsync();
     props.navigation.navigate("PhotoView",{uri, width, height});
     setIsLoading(false);
+    startCamera();
     }
   };
   return (
@@ -69,6 +72,7 @@ const CameraScreen = (props) => {
         </View>
       </Camera>
       <View>
+        <Button onPress={startCamera}>Restart</Button>
         {isLoading ? <ActivityIndicator/> : <Button onPress={takePicture}>Take Picture</Button>}
       </View>
     </View>
