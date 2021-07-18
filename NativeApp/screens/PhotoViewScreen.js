@@ -1,17 +1,24 @@
 import React from 'react'
-import { StyleSheet, Text, View,Image,  useWindowDimensions } from 'react-native'
+import { StyleSheet, Text, ScrollView,Image, View, useWindowDimensions } from 'react-native'
 
+import {Button} from 'react-native-paper';
 const PhotoViewScreen = (props) => {
     // const uri = props.navigation.getParam("uri");
+    const {uri, width, height} = props.route.params;
+
     const cameraStyle = {
         width: useWindowDimensions().width,
         height: (useWindowDimensions().width / 3) * 4,
       };
-     const {uri, width, height} = props.route.params;
     return (
-        <View style={styles.screen}>
+        <ScrollView style={styles.screen}>
             <Image source={{uri:uri}} style={{...styles.image,...cameraStyle}}/>
-        </View>
+            <View style={styles.temp}></View>
+            <Button onPress={()=>{
+    props.navigation.navigate("Camera",{uri, width, height});
+            }
+            }>Go Back</Button>
+        </ScrollView>
     )
 }
 
@@ -22,6 +29,6 @@ const styles = StyleSheet.create({
     image: {
         height: "100%",
         width: "100%"
-    }
+    },
 },
 )
