@@ -14,6 +14,8 @@ import IconButton from "../components/IconButton";
 import Docs from "../components/Docs";
 
 const DocsDashboard = (props) => {
+  const {navigation,route} = props;
+  const {params } = route;
   const [isLoading, setIsLoading] = useState(false);
   const [fabOpen, setFabOpen] = useState({ open: false });
   const [isUploading, setIsUploading] = useState(null);
@@ -49,9 +51,50 @@ const DocsDashboard = (props) => {
     }
   }, [firestore, dispatch, userId]);
 
+
+  const handleUploadDocs = useCallback( async (uri) => {
+    const fetchResponse = await fetch(uri);
+    const file = await fetchResponse.blob();
+    const {name, size, type} = file._data
+    if ( size > 52428800) {
+      Alert.alert(
+        "File Too Large",
+        "The file size should be smaller than 50MB"
+      );
+      return;
+    }
+    setSnackbarValues({
+      value: "Uploading... Please wait",
+      visible: true,
+    });
+    const fileRef = storage.child(`${userId}/${name}`);
+    const uploadTask = await fileRef.put(file);
+    const url = await uploadTask.ref.getDownloadURL();
+    const doc = {
+     name,
+      url,
+      userEmail,
+      user: userId,
+      type,
+      createdAt: TIMESTAMP.now(),
+      path: `${userId}/${name}`,
+    };
+    const ref = await firestore.collection("docsDepo").add(doc);
+    dispatch(addDoc({ id: ref.id, ...doc }));
+    setSnackbarValues({
+      value: "Document Uploaded to you depo",
+      visible: true,
+    });
+  },[userId,userEmail] )
+
   useEffect(() => {
     fetchDocsFromFirestore();
   }, [fetchDocsFromFirestore]);
+
+  useEffect(() => {
+    if(params && params.uri)
+    handleUploadDocs(params.uri);
+  },[params,handleUploadDocs])
 
   const handleDeleteFromCollection = async (doc) => {
     setIsLoading(true);
@@ -77,6 +120,8 @@ const DocsDashboard = (props) => {
     ]);
   };
 
+  
+
   const downloadDoc = (docURL, filename) => {
     FileSystem.downloadAsync(docURL, FileSystem.documentDirectory + filename)
       .then(({ uri }) => {
@@ -89,37 +134,10 @@ const DocsDashboard = (props) => {
 
   const handleDocumentPick = async () => {
     try {
-      const { name, size, type, uri } = await DocumentPicker.getDocumentAsync();
+      const { type, uri } = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: false});
       if (type != "success") return;
-      if (size > 52428800) {
-        Alert.alert(
-          "File Too Large",
-          "The file size should be smaller than 50MB"
-        );
-        return;
-      }
-      setSnackbarValues({
-        value: "Uploading... Please wait",
-        visible: true,
-      });
-      const fileRef = storage.child(`${userId}/${name}`);
-      const uploadTask = await fileRef.put(uri);
-      const fileUrl = await uploadTask.ref.getDownloadURL();
-      const doc = {
-        name: name,
-        url: fileUrl,
-        user: userId,
-        createdAt: TIMESTAMP.now(),
-        userEmail: userEmail,
-        path: `${userId}/${name}`,
-        type: "document",
-      };
-      const ref = await firestore.collection("docsDepo").add(doc);
-      dispatch(addDoc({ id: ref.id, ...doc }));
-      setSnackbarValues({
-        value: "Document Uploaded to you depo",
-        visible: true,
-      });
+      handleUploadDocs(uri);
+
     } catch (err) {
       Alert.alert("Error", err.message);
     }
@@ -149,21 +167,16 @@ const DocsDashboard = (props) => {
         open={fabOpen.open}
         icon={fabOpen.open ? "file-cancel" : "plus"}
         actions={[
-          // {
-          //   icon: "image",
-          //   label: "Image",
-          //   onPress: () => console.log("Pressed email"),
-          // },
           {
             icon: "camera-enhance",
             label: "Camera",
-            onPress: ()=> props.navigation.navigate("Camera"),
+            onPress: ()=> navigation.navigate("Camera"),
             small: false,
           },
           {
             icon: "microphone-plus",
             label: "Audio",
-            onPress: ()=> props.navigation.navigate("Audio"),
+            onPress: ()=> navigation.navigate("Audio"),
             small: false,
           },
           {
