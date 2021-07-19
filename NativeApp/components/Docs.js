@@ -9,7 +9,7 @@ const Docs = ({doc, isLoading,deleteDoc,downloadDoc}) => {
         <Card style={styles.container}>
             <Card.Content>
             <Text style={styles.date}>{format(new Date(doc.createdAt.toDate()),"EEE MMM dd yyyy")}</Text>
-            <Body numberOfLines={1} >{doc.name}</Body>
+            <Body>{doc.name}</Body>
             </Card.Content>
             <Card.Actions style={styles.buttonContainer}>
                 <View style={styles.button}>

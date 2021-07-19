@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { StyleSheet, Text, View,Alert } from "react-native";
 
-import { Audio, AVPlaybackStatus } from "expo-av";
+import { Audio } from "expo-av";
 import LottieView from 'lottie-react-native';
-import { Button, IconButton } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 const AudioScreen = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [recording,setRecording] = useState(null);
@@ -92,8 +92,8 @@ const AudioScreen = (props) => {
       <LottieView
           ref={visualizerRef}
           style={{
-            width: 400, 
-            height: 400,
+            width: "100%", 
+            height: "100%",
             backgroundColor: '#fff',
           }}
           source={require('../assets/lottie/audioVisualizer.json')}

@@ -8,14 +8,15 @@ import { addMultipleDocs, deleteDoc, addDoc } from "../store/actions/docs";
 import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
 
-import { FAB, Card, Snackbar, ActivityIndicator } from "react-native-paper";
+import { FAB, Snackbar } from "react-native-paper";
 
 import IconButton from "../components/IconButton";
 import Docs from "../components/Docs";
+import EmptyDepo from "../components/EmptyDepo";
 
 const DocsDashboard = (props) => {
-  const {navigation,route} = props;
-  const {params } = route;
+  const { navigation, route } = props;
+  const { params } = route;
   const [isLoading, setIsLoading] = useState(false);
   const [fabOpen, setFabOpen] = useState({ open: false });
   const [isUploading, setIsUploading] = useState(null);
@@ -51,60 +52,60 @@ const DocsDashboard = (props) => {
     }
   }, [firestore, dispatch, userId]);
 
-
-  const handleUploadDocs = useCallback( async (uri) => {
-    const fetchResponse = await fetch(uri);
-    const file = await fetchResponse.blob();
-    const {name, size, type} = file._data
-    if ( size > 52428800) {
-      Alert.alert(
-        "File Too Large",
-        "The file size should be smaller than 50MB"
-      );
-      return;
-    }
-    if(docs.findIndex(doc => doc.name === name) > -1){
-      return;
-    }
-    setIsUploading(true);
-    setSnackbarValues({
-      value: "Uploading... Please wait",
-      visible: true,
-    });
-    const fileRef = storage.child(`${userId}/${name}`);
-    const uploadTask = await fileRef.put(file);
-    const url = await uploadTask.ref.getDownloadURL();
-    const doc = {
-     name,
-      url,
-      userEmail,
-      user: userId,
-      type,
-      createdAt: TIMESTAMP.now(),
-      path: `${userId}/${name}`,
-    };
-    const ref = await firestore.collection("docsDepo").add(doc);
-    dispatch(addDoc({ id: ref.id, ...doc }));
-    setSnackbarValues({
-      value: "Document Uploaded to you depo",
-      visible: true,
-    });
-    setIsUploading(false);
-    
-  },[userId,userEmail] )
+  const handleUploadDocs = useCallback(
+    async (uri) => {
+      const fetchResponse = await fetch(uri);
+      const file = await fetchResponse.blob();
+      const { name, size, type } = file._data;
+      if (size > 52428800) {
+        Alert.alert(
+          "File Too Large",
+          "The file size should be smaller than 50MB"
+        );
+        return;
+      }
+      if (docs.findIndex((doc) => doc.name === name) > -1) {
+        return;
+      }
+      setIsUploading(true);
+      setSnackbarValues({
+        value: "Uploading... Please wait",
+        visible: true,
+      });
+      const fileRef = storage.child(`${userId}/${name}`);
+      const uploadTask = await fileRef.put(file);
+      const url = await uploadTask.ref.getDownloadURL();
+      const doc = {
+        name,
+        url,
+        userEmail,
+        user: userId,
+        type,
+        createdAt: TIMESTAMP.now(),
+        path: `${userId}/${name}`,
+      };
+      const ref = await firestore.collection("docsDepo").add(doc);
+      dispatch(addDoc({ id: ref.id, ...doc }));
+      setSnackbarValues({
+        value: "Document Uploaded to you depo",
+        visible: true,
+      });
+      setIsUploading(false);
+    },
+    [userId, userEmail]
+  );
 
   useEffect(() => {
     fetchDocsFromFirestore();
   }, [fetchDocsFromFirestore]);
 
   useEffect(() => {
-    if(params && params.uri)
-      {handleUploadDocs(params.uri);
-      
-      }
-  },[params,handleUploadDocs])
+    if (params && params.uri) {
+      handleUploadDocs(params.uri);
+    }
+  }, [params, handleUploadDocs]);
 
-  const handleDeleteFromCollection = async (doc,path) => {
+  const handleDeleteFromCollection = async (doc, path) => {
     setIsLoading(true);
     try {
       await firestore.collection("docsDepo").doc(doc).delete();
@@ -115,7 +116,7 @@ const DocsDashboard = (props) => {
     }
     setIsLoading(false);
   };
-  const handleDelete = (doc,path) => {
+  const handleDelete = (doc, path) => {
     Alert.alert("Delete doc", "This doc will be deleted", [
       {
         text: "Cancel",
@@ -123,13 +124,11 @@ const DocsDashboard = (props) => {
       },
       {
         text: "Ok",
-        onPress: () => handleDeleteFromCollection(doc,path),
+        onPress: () => handleDeleteFromCollection(doc, path),
         style: "destructive",
       },
     ]);
   };
-
-  
 
   const downloadDoc = (docURL, filename) => {
     FileSystem.downloadAsync(docURL, FileSystem.documentDirectory + filename)
@@ -143,33 +142,38 @@ const DocsDashboard = (props) => {
 
   const handleDocumentPick = async () => {
     try {
-      const { type, uri } = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: false});
+      const { type, uri } = await DocumentPicker.getDocumentAsync({
+        copyToCacheDirectory: false,
+      });
       if (type != "success") return;
       handleUploadDocs(uri);
-
     } catch (err) {
       Alert.alert("Error", err.message);
     }
   };
   return (
     <View style={styles.screen}>
-      <FlatList
-        data={docs}
-        renderItem={({ item }) => (
-          <Docs
-            doc={item}
-            isLoading={isLoading}
-            deleteDoc={() => {
-              handleDelete(item.id,item.path);
-            }}
-            downloadDoc={() => {
-              downloadDoc(item.url, item.name);
-            }}
-          />
-        )}
-        refreshing={isLoading}
-        onRefresh={fetchDocsFromFirestore}
-      />
+      {docs.length === 0 ? (
+        <EmptyDepo />
+      ) : (
+        <FlatList
+          data={docs}
+          renderItem={({ item }) => (
+            <Docs
+              doc={item}
+              isLoading={isLoading}
+              deleteDoc={() => {
+                handleDelete(item.id, item.path);
+              }}
+              downloadDoc={() => {
+                downloadDoc(item.url, item.name);
+              }}
+            />
+          )}
+          refreshing={isLoading}
+          onRefresh={fetchDocsFromFirestore}
+        />
+      )}
       <FAB.Group
         style={styles.fab}
         visible={!isUploading}
@@ -179,13 +183,13 @@ const DocsDashboard = (props) => {
           {
             icon: "camera-enhance",
             label: "Camera",
-            onPress: ()=> navigation.navigate("Camera"),
+            onPress: () => navigation.navigate("Camera"),
             small: false,
           },
           {
             icon: "microphone-plus",
             label: "Audio",
-            onPress: ()=> navigation.navigate("Audio"),
+            onPress: () => navigation.navigate("Audio"),
             small: false,
           },
           {
@@ -201,8 +205,8 @@ const DocsDashboard = (props) => {
         visible={snackbarValues.visible}
         onDismiss={onDismissSnackBar}
         action={{
-          label: 'Hide',
-          onPress: onDismissSnackBar
+          label: "Hide",
+          onPress: onDismissSnackBar,
         }}
       >
         {snackbarValues.value}
