@@ -12,7 +12,6 @@ import { Button,IconButton, ActivityIndicator } from "react-native-paper";
 
 import {PinchGestureHandler } from 'react-native-gesture-handler'
 
-import Header from "../components/Header";
 const CameraScreen = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [isLoading, setIsLoading]= useState(false);
