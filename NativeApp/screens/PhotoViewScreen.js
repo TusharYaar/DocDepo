@@ -19,7 +19,6 @@ const PhotoViewScreen = (props) => {
   const { uri, width, height } = props.route.params;
   const userId = useSelector((state) => state.user.uid);
   const userEmail = useSelector((state) => state.user.email);
-  const name = "SomeImage.jpg";
   const dispatch = useDispatch();
   const cameraStyle = {
     width: useWindowDimensions().width,
@@ -28,23 +27,26 @@ const PhotoViewScreen = (props) => {
   const uploadPhoto = async () => {
     setIsLoading(true);
       try{
-            const fileRef = storage.child(`${userId}/${name}`);
-            const uploadTask = await fileRef.put(uri);
+        const fetchResponse = await fetch(uri);
+        const file = await fetchResponse.blob();
+            const fileRef = storage.child(`${userId}/${file._data.name}`);
+            const uploadTask = await fileRef.put(file);
          const fileUrl = await uploadTask.ref.getDownloadURL();
             const doc = {
-          name: name,
+          name: file._data.name,
           url: fileUrl,
           user: userId,
           createdAt: TIMESTAMP.now(),
           userEmail: userEmail,
-          path: `${userId}/${name}`,
+          path: `${userId}/${file._data.name}`,
           type: "image",
         };
         const ref = await firestore.collection("docsDepo").add(doc);
         dispatch(addDoc({ id: ref.id, ...doc }));
-          props.navigation.navigate("Docs");
+          props.navigation.navigate("Docs", {uri,type: "Image"});
       }
       catch(err){
+        console.log(err.message);
         setIsLoading(false);
       }
   }
