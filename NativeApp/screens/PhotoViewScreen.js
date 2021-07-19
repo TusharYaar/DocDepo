@@ -1,3 +1,4 @@
+import React from "react";
 import {
   StyleSheet,
   Image,
@@ -23,7 +24,6 @@ const PhotoViewScreen = (props) => {
         source={{ uri: uri }}
         style={{ ...styles.image, ...cameraStyle }}
       />
-      <View style={styles.temp}></View>
       <Button
         onPress={() => {
           props.navigation.navigate("Camera");

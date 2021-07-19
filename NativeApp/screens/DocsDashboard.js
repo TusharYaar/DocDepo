@@ -63,6 +63,10 @@ const DocsDashboard = (props) => {
       );
       return;
     }
+    if(docs.findIndex(doc => doc.name === name) > -1){
+      return;
+    }
+    setIsUploading(true);
     setSnackbarValues({
       value: "Uploading... Please wait",
       visible: true,
@@ -85,6 +89,8 @@ const DocsDashboard = (props) => {
       value: "Document Uploaded to you depo",
       visible: true,
     });
+    setIsUploading(false);
+    
   },[userId,userEmail] )
 
   useEffect(() => {
@@ -93,20 +99,23 @@ const DocsDashboard = (props) => {
 
   useEffect(() => {
     if(params && params.uri)
-    handleUploadDocs(params.uri);
+      {handleUploadDocs(params.uri);
+      
+      }
   },[params,handleUploadDocs])
 
-  const handleDeleteFromCollection = async (doc) => {
+  const handleDeleteFromCollection = async (doc,path) => {
     setIsLoading(true);
     try {
       await firestore.collection("docsDepo").doc(doc).delete();
+      await storage.child(path).delete();
       dispatch(deleteDoc({ id: doc }));
     } catch (err) {
       Alert.alert("Error", err.message);
     }
     setIsLoading(false);
   };
-  const handleDelete = (doc) => {
+  const handleDelete = (doc,path) => {
     Alert.alert("Delete doc", "This doc will be deleted", [
       {
         text: "Cancel",
@@ -114,7 +123,7 @@ const DocsDashboard = (props) => {
       },
       {
         text: "Ok",
-        onPress: () => handleDeleteFromCollection(doc),
+        onPress: () => handleDeleteFromCollection(doc,path),
         style: "destructive",
       },
     ]);
@@ -151,7 +160,7 @@ const DocsDashboard = (props) => {
             doc={item}
             isLoading={isLoading}
             deleteDoc={() => {
-              handleDelete(item.id);
+              handleDelete(item.id,item.path);
             }}
             downloadDoc={() => {
               downloadDoc(item.url, item.name);
@@ -161,9 +170,9 @@ const DocsDashboard = (props) => {
         refreshing={isLoading}
         onRefresh={fetchDocsFromFirestore}
       />
-
       <FAB.Group
         style={styles.fab}
+        visible={!isUploading}
         open={fabOpen.open}
         icon={fabOpen.open ? "file-cancel" : "plus"}
         actions={[
@@ -191,7 +200,10 @@ const DocsDashboard = (props) => {
       <Snackbar
         visible={snackbarValues.visible}
         onDismiss={onDismissSnackBar}
-        duration={4000}
+        action={{
+          label: 'Hide',
+          onPress: onDismissSnackBar
+        }}
       >
         {snackbarValues.value}
       </Snackbar>
