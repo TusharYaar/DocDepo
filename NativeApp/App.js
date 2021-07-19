@@ -23,7 +23,7 @@ import docsReducer from "./store/reducers/docs"
 
 LogBox.ignoreLogs(['Setting a timer']);
 
-enableScreens(false);
+enableScreens(true);
 
 const App = () => {
   let [fontsLoaded] = useFonts({
