@@ -1,4 +1,6 @@
 import React from "react";
+
+
 import {
   createDrawerNavigator,
   DrawerItemList,
@@ -6,9 +8,11 @@ import {
 } from "@react-navigation/drawer";
 
 import {Button} from "react-native-paper";
-import TabNavigator from "./TabNavigator";
-import Settings from "../screens/Settings";
 
+
+import TabNavigator from "./TabNavigator";
+
+import { ReportProblemNavigator, HelpNavigator,SettingsNavigator } from "./StackNavigators"
 
 import { useDispatch } from "react-redux";
 const Drawer = createDrawerNavigator();
@@ -22,7 +26,6 @@ const DrawerNavigator = (props) => {
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props}>
-
             <DrawerItemList {...props} />
             <Button onPress={() => {
                 dispatch(logoutUser());
@@ -32,7 +35,10 @@ const DrawerNavigator = (props) => {
       }}
     >
       <Drawer.Screen name="Dashboard" component={TabNavigator} />
-      <Drawer.Screen name="Settings" component={Settings} />
+      <Drawer.Screen name="Settings" component={SettingsNavigator} />
+      <Drawer.Screen name="Report Problem" component={ReportProblemNavigator} />
+      <Drawer.Screen name="Help" component={HelpNavigator} />
+
     </Drawer.Navigator>
   );
 };

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, FlatList, Alert } from "react-native";
-import { Snackbar, FAB } from "react-native-paper";
+import { Snackbar, FAB, IconButton } from "react-native-paper";
 import * as Clipboard from "expo-clipboard";
 
 import { useSelector, useDispatch } from "react-redux";
 import { addMultipleNotes, deleteNote } from "../store/actions/notes";
 import { firestore } from "../config";
 
-import IconButton from "../components/IconButton";
 import Notes from "../components/Notes";
 import EmptyDepo from "../components/EmptyDepo";
 
@@ -137,8 +136,6 @@ export const notesScreenOptions = ({ navigation }) => {
       <IconButton
         onPress={() => navigation.toggleDrawer()}
         icon="menu"
-        iconIos="ios-menu-sharp"
-        style={styles.drawerIcon}
         color="black"
       />
     ),

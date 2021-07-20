@@ -1,6 +1,6 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { NotesNavigator, DocsNavigator } from "./stackNavigators";
+import { NotesNavigator, DocsNavigator } from "./StackNavigators";
 
 import IconButton from "../components/IconButton";
 const Tab = createMaterialBottomTabNavigator();

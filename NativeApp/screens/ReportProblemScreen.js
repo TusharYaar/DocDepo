@@ -1,23 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native'
 
-import { IconButton } from "react-native-paper";
+import { Snackbar, FAB, IconButton } from "react-native-paper";
 
-const Settings = () => {
+const ReportProblemScreen = () => {
     return (
         <View>
-            <Text>This is settings</Text>
+            <Text>
+                Report Problem Screen
+            </Text>
         </View>
     )
 }
 
-export default Settings
+export default ReportProblemScreen
 
 const styles = StyleSheet.create({})
 
-export const settingsScreenOptions = ({ navigation }) => {
+export const rpScreenOptions = ({ navigation }) => {
     return {
-      title: "Settings",
+      title: "Report a problem",
       headerLeft: () => (
         <IconButton
           onPress={() => navigation.toggleDrawer()}

@@ -9,9 +9,9 @@ import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
 import * as Sharing from 'expo-sharing';
 
-import { FAB, Snackbar } from "react-native-paper";
+import { FAB, Snackbar,IconButton } from "react-native-paper";
 
-import IconButton from "../components/IconButton";
+
 import Docs from "../components/Docs";
 import EmptyDepo from "../components/EmptyDepo";
 
@@ -263,8 +263,6 @@ export const docsScreenOptions = ({ navigation, route }) => {
       <IconButton
         onPress={() => navigation.toggleDrawer()}
         icon="menu"
-        iconIos="ios-menu-sharp"
-        style={styles.drawerIcon}
         color="black"
       />
     ),

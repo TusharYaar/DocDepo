@@ -1,23 +1,25 @@
-import React from 'react'
+import React from 'react';
+
 import { StyleSheet, Text, View } from 'react-native'
 
-import { IconButton } from "react-native-paper";
+import { Snackbar, FAB, IconButton } from "react-native-paper";
 
-const Settings = () => {
+
+const HelpScreen = () => {
     return (
         <View>
-            <Text>This is settings</Text>
+            <Text>Help Screen</Text>
         </View>
     )
 }
 
-export default Settings
+export default HelpScreen
 
 const styles = StyleSheet.create({})
 
-export const settingsScreenOptions = ({ navigation }) => {
+export const helpScreenOptions = ({ navigation }) => {
     return {
-      title: "Settings",
+      title: "Help",
       headerLeft: () => (
         <IconButton
           onPress={() => navigation.toggleDrawer()}

@@ -5,11 +5,17 @@ import NotesDashboard,{notesScreenOptions} from '../screens/NotesDashboard';
 import AddNoteScreen,{addNoteScreenOptions} from '../screens/AddNoteScreen';
 import CameraScreen from '../screens/CameraScreen';
 import AudioScreen from '../screens/AudioScreen';
+import ReportProblemScreen, {rpScreenOptions} from "../screens/ReportProblemScreen";
+import HelpScreen,{helpScreenOptions} from "../screens/HelpScreen"
+import Settings,{settingsScreenOptions} from "../screens/Settings";
+
 
 import PhotoViewScreen from '../screens/PhotoViewScreen';
 const StackDocs = createStackNavigator();
 const StackNotes = createStackNavigator();
-
+const StackReport = createStackNavigator();
+const StackHelp = createStackNavigator();
+const StackSettings = createStackNavigator();
 
 export const DocsNavigator = () => {
     return (
@@ -18,8 +24,6 @@ export const DocsNavigator = () => {
         <StackDocs.Screen name="Camera" component={CameraScreen} />
         <StackDocs.Screen name="PhotoView" component={PhotoViewScreen} />
         <StackDocs.Screen name="Audio" component={AudioScreen} />
-
-
       </StackDocs.Navigator>
     )
   }
@@ -32,3 +36,27 @@ export const DocsNavigator = () => {
       </StackNotes.Navigator>
     )
 }
+
+export const SettingsNavigator= () => {
+  return (
+    <StackSettings.Navigator>
+      <StackSettings.Screen name="report" component={Settings} options={settingsScreenOptions}  />
+    </StackSettings.Navigator>
+  )
+  }
+
+export const ReportProblemNavigator= () => {
+  return (
+    <StackReport.Navigator>
+      <StackReport.Screen name="report" component={ReportProblemScreen} options={rpScreenOptions}  />
+    </StackReport.Navigator>
+  )
+  }
+
+  export const HelpNavigator= () => {
+    return (
+      <StackHelp.Navigator>
+        <StackHelp.Screen name="report" component={HelpScreen} options={helpScreenOptions}  />
+      </StackHelp.Navigator>
+    )
+    }
