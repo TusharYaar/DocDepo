@@ -1,12 +1,14 @@
 import React,{useEffect, useCallback} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AppLoading } from "expo-app-loading";
+
 import {useDispatch} from "react-redux";
 
 import { compareAsc } from 'date-fns'
 
-import {noUser,autoLoginUser} from "../store/actions/user";
+import {auth } from "../config"
+
+import {loginUser,noUser,autoLoginUser} from "../store/actions/user";
 
 const LoadingScreen = () => {  
     const dispatch = useDispatch();
@@ -19,11 +21,24 @@ const LoadingScreen = () => {
         if (compareAsc(new Date(data.expirationTime), new Date()) > 0) {
             dispatch(autoLoginUser(data))
         }
-        else dispatch(noUser());
+        else{
+          await auth.currentUser.getIdToken(true);
+          const user = auth.currentUser.toJSON();
+          const data = {
+            expirationTime: user.stsTokenManager.expirationTime,
+            accessToken: user.stsTokenManager.accessToken,
+            email: user.email,
+            apiKey: user.apiKey,
+            uid: user.uid,
+          };
+          dispatch(loginUser(data));
+        };
       }
       else dispatch(noUser());
-    } catch(e) {
-      // error reading value
+    } catch(err) {
+      Alert.alert('Error',err.message);
+      dispatch(noUser());
+      // error 
     }
   },[dispatch]);
     useEffect(() => {

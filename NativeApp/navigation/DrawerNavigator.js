@@ -12,7 +12,7 @@ import {Button} from "react-native-paper";
 
 import TabNavigator from "./TabNavigator";
 
-import { ReportProblemNavigator, HelpNavigator,SettingsNavigator } from "./StackNavigators"
+import { FeedbackNavigator, HelpNavigator,SettingsNavigator } from "./StackNavigators"
 
 import { useDispatch } from "react-redux";
 const Drawer = createDrawerNavigator();
@@ -36,7 +36,7 @@ const DrawerNavigator = (props) => {
     >
       <Drawer.Screen name="Dashboard" component={TabNavigator} />
       <Drawer.Screen name="Settings" component={SettingsNavigator} />
-      <Drawer.Screen name="Report Problem" component={ReportProblemNavigator} />
+      <Drawer.Screen name="Give Feedback" component={FeedbackNavigator} />
       <Drawer.Screen name="Help" component={HelpNavigator} />
 
     </Drawer.Navigator>

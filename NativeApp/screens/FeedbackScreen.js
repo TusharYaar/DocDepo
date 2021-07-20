@@ -3,21 +3,21 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import { Snackbar, FAB, IconButton } from "react-native-paper";
 
-const ReportProblemScreen = () => {
+const FeedbackScreen = () => {
     return (
         <View>
             <Text>
-                Report Problem Screen
+                Feedback Screen
             </Text>
         </View>
     )
 }
 
-export default ReportProblemScreen
+export default FeedbackScreen
 
 const styles = StyleSheet.create({})
 
-export const rpScreenOptions = ({ navigation }) => {
+export const feedbackScreenOptions = ({ navigation }) => {
     return {
       title: "Report a problem",
       headerLeft: () => (

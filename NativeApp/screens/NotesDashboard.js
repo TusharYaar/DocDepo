@@ -78,6 +78,8 @@ const NotesDashboard = (props) => {
   };
   const onDismissSnackBar = () =>
     setSnackbarValues({ value: "", visible: false });
+
+
   return (
     <View style={styles.screen}>
       {notes.length === 0 ? (

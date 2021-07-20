@@ -5,7 +5,7 @@ import NotesDashboard,{notesScreenOptions} from '../screens/NotesDashboard';
 import AddNoteScreen,{addNoteScreenOptions} from '../screens/AddNoteScreen';
 import CameraScreen from '../screens/CameraScreen';
 import AudioScreen from '../screens/AudioScreen';
-import ReportProblemScreen, {rpScreenOptions} from "../screens/ReportProblemScreen";
+import FeedbackScreen, {feedbackScreenOptions} from "../screens/FeedbackScreen";
 import HelpScreen,{helpScreenOptions} from "../screens/HelpScreen"
 import Settings,{settingsScreenOptions} from "../screens/Settings";
 
@@ -45,10 +45,10 @@ export const SettingsNavigator= () => {
   )
   }
 
-export const ReportProblemNavigator= () => {
+export const FeedbackNavigator= () => {
   return (
     <StackReport.Navigator>
-      <StackReport.Screen name="report" component={ReportProblemScreen} options={rpScreenOptions}  />
+      <StackReport.Screen name="report" component={FeedbackScreen} options={feedbackScreenOptions}  />
     </StackReport.Navigator>
   )
   }
