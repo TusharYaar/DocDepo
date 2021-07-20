@@ -16,8 +16,12 @@ const AddNoteScreen = (props) => {
     const dispatch = useDispatch();
 
     const fetchCopiedText = async () => {
-        const text = await Clipboard.getStringAsync();
-        setText(text);
+        try{
+            const text = await Clipboard.getStringAsync();
+            setText(text);
+        } catch(err){
+            Alert.alert("Cannot copy the text", err.message);
+        }
       };
     const handleChange = (text) => {
         setText(text);
