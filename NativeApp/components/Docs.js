@@ -17,7 +17,7 @@ const Docs = ({doc, isLoading,deleteDoc,downloadDoc,shareDoc}) => {
                 
                 <Button onPress={downloadDoc} mode={Platform.OS === "android" ? "contained" : "text"} disabled={isLoading} style={styles.button}>Download</Button>
       
-                <Button title="delete" color="red" mode={Platform.OS === "android" ? "contained" : "text"} onPress={deleteDoc} style={styles.button} disabled={isLoading}>Delete</Button>
+                <Button  color="red" mode={Platform.OS === "android" ? "contained" : "text"} onPress={deleteDoc} style={styles.button} disabled={isLoading}>Delete</Button>
               
                 </View>
             </Card.Actions>
