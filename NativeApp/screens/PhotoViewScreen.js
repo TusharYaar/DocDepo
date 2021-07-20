@@ -6,10 +6,10 @@ import {
   useWindowDimensions,
 } from "react-native";
 
-import { Button } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 
 const PhotoViewScreen = (props) => {
-  const { uri, width, height } = props.route.params;
+  const { uri } = props.route.params;
 
   const cameraStyle = {
     width: useWindowDimensions().width,
@@ -24,16 +24,20 @@ const PhotoViewScreen = (props) => {
         source={{ uri: uri }}
         style={{ ...styles.image, ...cameraStyle }}
       />
-      <Button
-        onPress={() => {
-          props.navigation.navigate("Camera");
-        }}
-      >
-        Go Back
-      </Button>
-      <Button onPress={uploadPhoto}> 
-          Upload Picture
-      </Button>
+      <View style={styles.actionButtons}>
+      <IconButton
+          icon="restart"
+          size={40}
+          onPress={() => {
+            props.navigation.navigate("Camera");
+          }}
+          />
+      <IconButton
+          icon="check-bold"
+          size={40}
+          onPress={uploadPhoto}
+          />
+      </View>
     </View>
   );
 };
@@ -46,4 +50,11 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  actionButtons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    flex: 1,
+  }
 });

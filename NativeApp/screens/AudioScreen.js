@@ -94,13 +94,12 @@ const AudioScreen = (props) => {
           style={{
             width: "100%", 
             height: "100%",
-            backgroundColor: '#fff',
           }}
           source={require('../assets/lottie/audioVisualizer.json')}
           loop
                />
       </View>
-      <View style={styles.container}>
+      <View style={{...styles.container, ...styles.border}}>
         { !audioURI ? 
         <IconButton
           color={recording ? "red" : "green"}
@@ -146,5 +145,10 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     flexDirection: "row"
+  },
+  border: {
+    borderWidth: 0,
+    borderColor: "black",
+    borderTopWidth: 2,
   }
 });
