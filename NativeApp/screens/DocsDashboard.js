@@ -7,6 +7,7 @@ import { addMultipleDocs, deleteDoc, addDoc } from "../store/actions/docs";
 
 import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
+import * as Sharing from 'expo-sharing';
 
 import { FAB, Snackbar } from "react-native-paper";
 
@@ -151,6 +152,29 @@ const DocsDashboard = (props) => {
       Alert.alert("Error", err.message);
     }
   };
+
+  const shareDoc = async (docURL, fileName) => {
+    const avalible = await Sharing.isAvailableAsync();
+    if (avalible) {
+      setSnackbarValues({
+        value: "Hold on, downloading file to share",
+        visible: true,
+      });
+      const {uri,status} = await FileSystem.downloadAsync(docURL, FileSystem.cacheDirectory + fileName);
+      if (status !== 200) Alert.alert("Error", "Error while downloading the file. Please Try again");
+      else {
+        Sharing.shareAsync(uri);
+      }
+    }
+    else 
+      Alert.alert("No sharing available", "The device does not have sharing options compatible with the app. We are extreamly sorry. Report the problem if you think the sharing should be avalible on this device.");
+  }
+
+
+
+
+
+
   return (
     <View style={styles.screen}>
       {docs.length === 0 ? (
@@ -164,6 +188,9 @@ const DocsDashboard = (props) => {
               isLoading={isLoading}
               deleteDoc={() => {
                 handleDelete(item.id, item.path);
+              }}
+              shareDoc={() => { 
+                shareDoc(item.url,item.name);
               }}
               downloadDoc={() => {
                 downloadDoc(item.url, item.name);

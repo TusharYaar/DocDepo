@@ -9,7 +9,7 @@ import {
 import { IconButton } from "react-native-paper";
 
 const PhotoViewScreen = (props) => {
-  const { uri } = props.route.params;
+  const { uri, width, height } = props.route.params;
 
   const cameraStyle = {
     width: useWindowDimensions().width,
