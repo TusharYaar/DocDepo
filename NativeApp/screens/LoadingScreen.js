@@ -1,5 +1,5 @@
 import React,{useEffect, useCallback} from 'react'
-import { StyleSheet, Text, View, Alert } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {useDispatch} from "react-redux";

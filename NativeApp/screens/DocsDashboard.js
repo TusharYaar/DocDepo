@@ -131,15 +131,6 @@ const DocsDashboard = (props) => {
     ]);
   };
 
-  const downloadDoc = (docURL, filename) => {
-    FileSystem.downloadAsync(docURL, FileSystem.documentDirectory + filename)
-      .then(({ uri }) => {
-        console.log("Finished downloading to ", uri);
-      })
-      .catch((error) => {
-        Alert.alert("Error", err.message);
-      });
-  };
 
   const handleDocumentPick = async () => {
     try {
@@ -191,9 +182,6 @@ const DocsDashboard = (props) => {
               }}
               shareDoc={() => { 
                 shareDoc(item.url,item.name);
-              }}
-              downloadDoc={() => {
-                downloadDoc(item.url, item.name);
               }}
             />
           )}
