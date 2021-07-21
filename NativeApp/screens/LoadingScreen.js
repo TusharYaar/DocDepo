@@ -36,7 +36,6 @@ const LoadingScreen = () => {
       }
       else dispatch(noUser());
     } catch(err) {
-      Alert.alert('Error',err.message);
       dispatch(noUser());
       // error 
     }
