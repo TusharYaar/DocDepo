@@ -21,9 +21,9 @@ export const DocsNavigator = () => {
     return (
         <StackDocs.Navigator>
         <StackDocs.Screen name="Docs" component={DocsDashboard} options={docsScreenOptions} />
-        <StackDocs.Screen name="Camera" component={CameraScreen} />
-        <StackDocs.Screen name="PhotoView" component={PhotoViewScreen} />
-        <StackDocs.Screen name="Audio" component={AudioScreen} />
+        <StackDocs.Screen name="Camera" component={CameraScreen} options={fontOptions}/>
+        <StackDocs.Screen name="PhotoView" component={PhotoViewScreen} options={fontOptions} />
+        <StackDocs.Screen name="Audio" component={AudioScreen} options={fontOptions}/>
       </StackDocs.Navigator>
     )
   }
@@ -59,4 +59,12 @@ export const FeedbackNavigator= () => {
         <StackHelp.Screen name="report" component={HelpScreen} options={helpScreenOptions}  />
       </StackHelp.Navigator>
     )
+    }
+
+
+    const fontOptions = {
+      headerTitleStyle: {
+        fontFamily: "Manrope_700Bold",
+        fontWeight: "normal",
+      }
     }

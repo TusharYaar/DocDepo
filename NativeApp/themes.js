@@ -46,6 +46,8 @@ THEMES.darkTheme = {
 };
 
 THEMES.lightTheme = {
+  value: "lightTheme",
+  label: "Light Theme",
   animation: {
     scale: 1,
   },

@@ -1,4 +1,4 @@
-import { SET_THEME } from "../actions/themes"
+import { SET_THEME } from "../actions/theme"
 
 const initialState = {
     value: "lightTheme"
@@ -6,7 +6,7 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
     switch (type) {
-
+        
     case SET_THEME:
         return { value :payload}
 

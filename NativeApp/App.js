@@ -1,13 +1,15 @@
-import React, {useState} from "react";
+import React, {useState , useEffect} from "react";
 import { LogBox } from "react-native";
 import 'react-native-gesture-handler';
 import { enableScreens } from 'react-native-screens';
-import { Provider as PaperProvider, } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from "react-redux";
 import { createStore, combineReducers,applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 
 import THEMES from "./themes";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 import {
@@ -26,13 +28,14 @@ import AppNavigator from "./navigation/AppNavigator";
 import userReducer from "./store/reducers/user";
 import notesReducer from "./store/reducers/notes";
 import docsReducer from "./store/reducers/docs"
+import themeReducer from "./store/reducers/theme"
 
 LogBox.ignoreLogs(['Setting a timer']);
 
 enableScreens(true);
 
 const App = () => {
-  const [currentTheme,setCurrentTheme] =useState("darkTheme");
+  const [currentTheme,setCurrentTheme] =useState("lightTheme");
   let [fontsLoaded] = useFonts({
     Manrope_300Light,
     Manrope_400Regular,
@@ -44,9 +47,18 @@ const App = () => {
     user: userReducer,
     notes: notesReducer,
     docs: docsReducer,
+    theme: themeReducer
   });
 
   const store = createStore(rootReducer,applyMiddleware(thunk));
+  
+  useEffect(() => {
+    const getTheme = async () => {
+      theme = await AsyncStorage.getItem("@docdepo_theme");
+      ["lightTheme","darkTheme"].includes(theme) ? setCurrentTheme(theme) : null;
+    }
+    getTheme();
+  })
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -55,7 +67,7 @@ const App = () => {
     <Provider store={store}>
       <StatusBar style={THEMES[currentTheme].dark ? "light": "dark"} />
       <PaperProvider theme={THEMES[currentTheme]}>
-      <AppNavigator theme={THEMES[currentTheme]} />
+      <AppNavigator theme={THEMES[currentTheme]}/>
       </PaperProvider>
     </Provider>
   );

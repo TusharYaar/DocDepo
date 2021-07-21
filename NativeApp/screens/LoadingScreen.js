@@ -9,13 +9,15 @@ import { compareAsc } from 'date-fns'
 import {auth } from "../config"
 
 import {loginUser,noUser,autoLoginUser} from "../store/actions/user";
-
+import {setInitialTheme} from "../store/actions/theme"
 const LoadingScreen = () => {  
     const dispatch = useDispatch();
     const getData = useCallback(async () => {
     try {
       const value = await AsyncStorage.getItem('@user_details');
-
+      const theme = await AsyncStorage.getItem('@docdepo_theme');
+      if (["lightTheme","darkTheme"].includes(theme))
+        dispatch(setInitialTheme(theme));
       if(value !== null) {
         data = JSON.parse(value);
         if (compareAsc(new Date(data.expirationTime), new Date()) > 0) {
