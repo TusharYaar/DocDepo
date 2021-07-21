@@ -1,15 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View, Platform } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
 import {Button, Card} from "react-native-paper"
 import {format } from "date-fns";
 
-import Body from "../components/Body"
+import DateText from "./DateText";
+import Body from "./Body"
 const Notes = ({note,copyToClipboard,deleteNote,disabled}) => {
     return (
 <Card style={styles.container}>
 <Card.Content>
-            <Text style={styles.date}>{format(new Date(note.createdAt.toDate()),"EEE MMM dd yyyy")}</Text>
+            <DateText>{format(new Date(note.createdAt.toDate()),"EEE MMM dd yyyy")}</DateText>
             <Body>{note.text}</Body>
             </Card.Content>
             <Card.Actions style={styles.buttonContainer}>
@@ -25,14 +26,9 @@ export default Notes;
 const styles = StyleSheet.create({
     container: {
        maxHeight: 500,
-       minHeight: 130,
+       minHeight: 140,
        width: "100%",
        marginVertical: 10,
-    },
-    date: {
-    fontSize: 14,
-    fontFamily: "Manrope_400Regular",
-    marginBottom: 5,
     },
     buttonContainer: {
     justifyContent: "flex-end",

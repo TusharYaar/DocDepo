@@ -251,8 +251,11 @@ export const docsScreenOptions = ({ navigation, route }) => {
       <IconButton
         onPress={() => navigation.toggleDrawer()}
         icon="menu"
-        color="black"
       />
     ),
+    headerTitleStyle: {
+      fontFamily: "Manrope_700Bold",
+      fontWeight: "normal",
+    },
   };
 };

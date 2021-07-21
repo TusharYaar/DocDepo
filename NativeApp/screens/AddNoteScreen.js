@@ -83,5 +83,9 @@ const styles = StyleSheet.create({
 export const addNoteScreenOptions = ({ navigation, route }) => {
     return { 
         title: "Add A Note" ,
+        headerTitleStyle: {
+            fontFamily: "Manrope_700Bold",
+            fontWeight: "normal",
+          },
     }
 }

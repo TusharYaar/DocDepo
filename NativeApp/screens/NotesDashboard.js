@@ -136,10 +136,13 @@ export const notesScreenOptions = ({ navigation }) => {
     title: "Notes",
     headerLeft: () => (
       <IconButton
-        onPress={() => navigation.toggleDrawer()}
-        icon="menu"
-        color="black"
+      onPress={() => navigation.toggleDrawer()}
+      icon="menu"
       />
-    ),
+      ),
+      headerTitleStyle: {
+      fontFamily: "Manrope_700Bold",
+      fontWeight: "normal",
+    },
   };
 };

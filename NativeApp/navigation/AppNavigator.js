@@ -7,10 +7,10 @@ import DrawerNavigator from "./DrawerNavigator"
 import LoginScreen from '../screens/LoginScreen';
 import LoadingScreen from '../screens/LoadingScreen'
 
-const AppNavigator= () => {
+const AppNavigator= ({theme}) => {
   const user = useSelector(state => state.user);
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       {!user.accessToken && !user.uid && user.autoLogin && <LoadingScreen />}
       {!user.accessToken && !user.uid && !user.autoLogin && <LoginScreen />}
       {!!user.accessToken && !!user.uid &&  <DrawerNavigator />}

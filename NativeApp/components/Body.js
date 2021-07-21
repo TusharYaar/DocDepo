@@ -1,9 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
-
+import { useTheme } from '@react-navigation/native';
 const Body = (props) => {
+    const { colors } = useTheme();
     return (
-            <Text {...props} style={styles.textStyle}>{props.children}</Text>
+            <Text {...props} style={{...styles.textStyle, color: colors.text}}>{props.children}</Text>
     )
 }
 

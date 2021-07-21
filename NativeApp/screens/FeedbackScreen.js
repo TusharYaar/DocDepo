@@ -97,8 +97,11 @@ export const feedbackScreenOptions = ({ navigation }) => {
         <IconButton
           onPress={() => navigation.toggleDrawer()}
           icon="menu"
-          color="black"
         />
       ),
+      headerTitleStyle: {
+        fontFamily: "Manrope_700Bold",
+        fontWeight: "normal",
+      },
     };
   };

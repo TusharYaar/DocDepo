@@ -4,13 +4,14 @@ import { Button, IconButton, Card } from "react-native-paper";
 import { format } from "date-fns";
 
 import Body from "../components/Body";
+import DateText from "../components/DateText";
 const Docs = ({ doc, isLoading, deleteDoc, shareDoc }) => {
   return (
     <Card style={styles.container}>
       <Card.Content>
-        <Text style={styles.date}>
+        <DateText style={styles.date}>
           {format(new Date(doc.createdAt.toDate()), "EEE MMM dd yyyy")}
-        </Text>
+        </DateText>
         <Body>{doc.name}</Body>
       </Card.Content>
       <Card.Actions style={styles.cardActions}>

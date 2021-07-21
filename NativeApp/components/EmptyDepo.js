@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import LottieView from "lottie-react-native";
+import { useTheme } from '@react-navigation/native';
 
 const EmptyDepo = () => {
+  const { colors } = useTheme();
   const visualizerRef = useRef(null);
   const [randomValue, setRandomValue] = useState(0.5);
   useEffect(() => {
@@ -35,7 +37,7 @@ const EmptyDepo = () => {
         speed={0.7}
         style={{
           width: "100%",
-          backgroundColor: "#f2f2f2",
+          backgroundColor: colors.background,
         }}
         source={require("../assets/lottie/emptyDepo.json")}
         onAnimationFinish={refreshVisualizer}
