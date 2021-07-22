@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,7 +12,7 @@ import { auth, CLIENT_ID,ANDROID_CLIENT_ID,googleAuthProvider } from "../config"
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-google-app-auth';
 
-
+import { useTheme } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import { loginUser } from "../store/actions/user";
 
@@ -27,6 +27,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const { colors } = useTheme();
 
   const saveUser = (resData)=> {
     const data = {
@@ -72,7 +73,7 @@ const LoginScreen = () => {
   }
 
   return (
-    <ScrollView style={styles.screen}>
+          <ScrollView style={{...styles.screen, backgroundColor: colors.background}}>
       <Header>Login</Header>
       <View style={styles.container}>
         <View style={styles.margin}>
