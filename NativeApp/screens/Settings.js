@@ -10,7 +10,6 @@ import { useTheme } from '@react-navigation/native';
 
 import THEMES from "../themes";
 
-import Body from '../components/Body';
 import ThemeCard from '../components/ThemeCard.js';
 const Settings = () => {
     const [allThemes, setThemes] = useState([]);
@@ -24,7 +23,7 @@ const Settings = () => {
     },[THEMES])
 
     const user = useSelector(state => state.user);
-    const currentTheme = useSelector((state) => state.theme);
+    const currentTheme = useSelector((state) => state.theme.value);
     const dispatch = useDispatch();
 
     const changeTheme = async (value) => {
@@ -32,8 +31,7 @@ const Settings = () => {
     }
     return (
         <View>
-          {value === currentTheme.value ? null :<Card><Card.Content><Body>Restart app for theme to take effect</Body></Card.Content></Card>}
-            <RadioButton.Group value={currentTheme.value} onValueChange={(value) => changeTheme(value)}>
+            <RadioButton.Group value={currentTheme} onValueChange={(value) => changeTheme(value)}>
             <FlatList data={allThemes} renderItem={item => <ThemeCard theme={item.item} changeTheme={changeTheme}/> } keyExtractor={item => item.value} /> 
             </RadioButton.Group>
         </View>
