@@ -51,7 +51,7 @@ const Sidebar = ({
       try {
         await Database.FEEDBACKS.add({
           user: userId,
-          email: userEmail,
+          userEmail: userEmail,
           feedback: filter.clean(response),
         });
         setSnackbarValues({ open: true, message: "Feedback sent successfully. Thank You", severity: "success" });
