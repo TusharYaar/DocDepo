@@ -2,7 +2,7 @@
   "expo": {
     "name": "Docdepo",
     "slug": "docdepo",
-    "version": "1.2.2",
+    "version": "1.2.4",
     "scheme": "docdepo",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -28,8 +28,8 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.tusharyaar.docdepo",
-      "versionCode": 1,
-      "permissions": ["CAMERA","RECORD_AUDIO"]
+      "versionCode": 2,
+      "permissions": ["CAMERA","RECORD_AUDIO", "READ_EXTERNAL_STORAGE","WRITE_EXTERNAL_STORAGE"]
     },
     "androidNavigationBar": {
       "visible": "sticky-immersive"

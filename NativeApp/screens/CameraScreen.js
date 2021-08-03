@@ -110,7 +110,7 @@ const CameraScreen = ({navigation}) => {
   return (
     <View style={styles.screen}>
       <PinchGestureHandler onGestureEvent={handleZoom} >
-        <View style={styles.background}>
+        <View>
       <Camera
         style={{ ...styles.camera, ...cameraStyle}}
         type={type}
@@ -127,17 +127,18 @@ const CameraScreen = ({navigation}) => {
       </Camera>
       </View>
     </PinchGestureHandler>
-      <View>
+      <View style={styles.actionContainer}>
         <View style={styles.buttonActions}>
           <IconButton onPress={flipCamera} icon={type === Camera.Constants.Type.back ? "camera-rear" : "camera-front"} />
           <IconButton onPress={toggleFlash} icon={flash.icon} />
+          <View style={styles.pictureButton}>
+        {isLoading ? <ActivityIndicator animating={true} size={56}/> : <IconButton icon="camera" onPress={takePicture} size={30}/>}
+        </View>
           <IconButton onPress={handleWhiteBalance} icon={whiteBalance.icon} />
           <Button onPress={resetZoom} mode={Platform.OS === "android" ? "contained" : "text"}>{(1 + zoom*9).toFixed(1)}</Button>
         </View>
       </View>
-        <View style={styles.pictureButton}>
-        {isLoading ? <ActivityIndicator animating={true} size={56}/> : <IconButton icon="camera" onPress={takePicture} size={40}/>}
-        </View>
+        
     </View>
   );
 };
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   background: {
     backgroundColor: "orange"
@@ -158,6 +159,10 @@ const styles = StyleSheet.create({
   pictureButton: {
     paddingVertical: 10,
     alignItems: "center",
+    justifyContent: "center"
+  },
+  actionContainer: {
+    flex: 1,
     justifyContent: "center"
   }
 });
