@@ -2,12 +2,12 @@
   "expo": {
     "name": "Docdepo",
     "slug": "docdepo",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "scheme": "docdepo",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/adaptive-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
