@@ -4,7 +4,7 @@
     "slug": "docdepo",
     "version": "1.2.2",
     "scheme": "docdepo",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/adaptive-icon.png",
@@ -28,7 +28,11 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.tusharyaar.docdepo",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": ["CAMERA","RECORD_AUDIO"]
+    },
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
     },
     "web": {
       "favicon": "./assets/favicon.png"
