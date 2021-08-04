@@ -117,7 +117,7 @@ const HelpScreen = () => {
       </View>
       <View style={styles.section}>
         <Body>
-           Made by Tusharyaar
+           Made by Tushar S Agrawal (Tusharyaar)
         </Body>
       </View>
     </ScrollView>

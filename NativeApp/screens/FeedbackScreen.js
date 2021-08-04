@@ -58,9 +58,6 @@ const FeedbackScreen = () => {
       <View style={styles.screen}>
         
         <ScrollView >
-            <Header>
-                Feedback
-            </Header>
             <View style={styles.container}>
             <TextInput
       label="Feedback"

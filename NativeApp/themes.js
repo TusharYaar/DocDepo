@@ -1,7 +1,7 @@
 let THEMES = {};
 const fonts = {
     light: {
-      fontFamily: "sans-serif-light",
+      fontFamily: " Manrope_300Light",
       fontWeight: "normal",
     },
     medium: {
@@ -9,7 +9,7 @@ const fonts = {
       fontWeight: "normal",
     },
     regular: {
-      fontFamily: "sans-serif",
+      fontFamily: "Manrope_400Regular",
       fontWeight: "normal",
     },
     thin: {

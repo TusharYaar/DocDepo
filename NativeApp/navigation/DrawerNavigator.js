@@ -9,6 +9,8 @@ import {
 
 import {Button} from "react-native-paper";
 
+import CustomDrawer from "./CustomDrawer";
+
 
 import TabNavigator from "./TabNavigator";
 
@@ -23,16 +25,7 @@ const DrawerNavigator = (props) => {
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"
-      drawerContent={(props) => {
-        return (
-          <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-            <Button onPress={() => {
-                dispatch(logoutUser());
-              }}>Logout</Button>
-          </DrawerContentScrollView>
-        );
-      }}
+      drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen name="Dashboard" component={TabNavigator} />
       <Drawer.Screen name="Settings" component={SettingsNavigator} />
