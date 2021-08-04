@@ -11,6 +11,8 @@ import * as Sharing from 'expo-sharing';
 
 import { FAB, Snackbar,IconButton } from "react-native-paper";
 
+import {PanGestureHandler } from 'react-native-gesture-handler';
+
 
 import Docs from "../components/Docs";
 import EmptyDepo from "../components/EmptyDepo";
@@ -161,12 +163,17 @@ const DocsDashboard = (props) => {
       Alert.alert("No sharing available", "The device does not have sharing options compatible with the app. We are extreamly sorry. Report the problem if you think the sharing should be avalible on this device.");
   }
 
-
+  const handleSwipe = (event) => {
+    if (event.nativeEvent.translationX === 0) return;
+    if (event.nativeEvent.translationX < 10) return;
+    else if(event.nativeEvent.translationX > 10)  props.navigation.jumpTo("Notes");
+  };
 
 
 
 
   return (
+    <PanGestureHandler onGestureEvent={handleSwipe} maxPointers={1} minDist={30}>
     <View style={styles.screen}>
       {docs.length === 0 ? (
         <EmptyDepo />
@@ -227,6 +234,7 @@ const DocsDashboard = (props) => {
         {snackbarValues.value}
       </Snackbar>
     </View>
+    </PanGestureHandler>
   );
 };
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, FlatList, Alert } from "react-native";
 import { Snackbar, FAB, IconButton } from "react-native-paper";
+import {PanGestureHandler } from 'react-native-gesture-handler';
+import { DrawerActions } from '@react-navigation/native';
 import * as Clipboard from "expo-clipboard";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -79,8 +81,14 @@ const NotesDashboard = (props) => {
   const onDismissSnackBar = () =>
     setSnackbarValues({ value: "", visible: false });
 
+  const handleSwipe = (event) => {
+    if (event.nativeEvent.translationX === 0) return;
+    if(event.nativeEvent.translationX < 10)  props.navigation.jumpTo("Docs");
+    else if (event.nativeEvent.translationX > 10)  props.navigation.dispatch(DrawerActions.openDrawer());
+  };
 
   return (
+      <PanGestureHandler onGestureEvent={handleSwipe} maxPointers={1} minDist={30}>
     <View style={styles.screen}>
       {notes.length === 0 ? (
         <EmptyDepo />
@@ -112,6 +120,7 @@ const NotesDashboard = (props) => {
         {snackbarValues.value}
       </Snackbar>
     </View>
+      </PanGestureHandler> 
   );
 };
 

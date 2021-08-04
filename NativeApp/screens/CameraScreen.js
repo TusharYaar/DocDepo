@@ -10,7 +10,7 @@ import { Camera } from "expo-camera";
 import { useIsFocused } from '@react-navigation/native';
 import { Button,IconButton, ActivityIndicator } from "react-native-paper";
 
-import {PinchGestureHandler } from 'react-native-gesture-handler'
+import {PinchGestureHandler } from 'react-native-gesture-handler';
 
 const CameraScreen = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState(null);
