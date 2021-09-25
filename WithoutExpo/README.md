@@ -1,7 +1,7 @@
 # DocDepo native app (Expo)
 
-This app _**uses expo**_ and react native to make the app.
-For only react native app search for _withoutExpo_ folder
+This app _**does not uses expo**_ and react native to make the app.
+For only react native app search for _NativeApp_ folder
 
 config.js is required for the app to run and contains the following fields:
 
