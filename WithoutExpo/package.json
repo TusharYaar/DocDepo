@@ -1,9 +1,8 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
@@ -35,7 +34,7 @@
     "firebase": "8.2.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native": "~0.63.4",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "~2.2.0",
@@ -45,10 +44,15 @@
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
-    "lottie-react-native": "4.0.2"
+    "lottie-react-native": "4.0.2",
+    "expo-splash-screen": "~0.11.2",
+    "expo-updates": "~0.8.1",
+    "react-native-unimodules": "0.14.10"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
   },
-  "private": true
+  "private": true,
+  "name": "WithoutExpo",
+  "version": "1.0.0"
 }
