@@ -1,20 +1,22 @@
 import React from "react";
 
-
 import {
   createDrawerNavigator,
   DrawerItemList,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 
-import {Button} from "react-native-paper";
+import { Button } from "react-native-paper";
 
 import CustomDrawer from "./CustomDrawer";
 
-
 import TabNavigator from "./TabNavigator";
 
-import { FeedbackNavigator, HelpNavigator,SettingsNavigator } from "./StackNavigators"
+import {
+  FeedbackNavigator,
+  HelpNavigator,
+  SettingsNavigator,
+} from "./StackNavigators";
 
 import { useDispatch } from "react-redux";
 const Drawer = createDrawerNavigator();
@@ -31,7 +33,6 @@ const DrawerNavigator = (props) => {
       <Drawer.Screen name="Settings" component={SettingsNavigator} />
       <Drawer.Screen name="Give Feedback" component={FeedbackNavigator} />
       <Drawer.Screen name="Help" component={HelpNavigator} />
-
     </Drawer.Navigator>
   );
 };

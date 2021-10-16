@@ -1,26 +1,26 @@
-import {LOGIN, LOGOUT, NO_USER, AUTO_LOGIN} from "../actions/user";
+import { LOGIN, LOGOUT, NO_USER, AUTO_LOGIN } from "../actions/user";
 const initialState = {
-    accessToken: null,
-    expirationTime: null,
-    email: null,
-    apiKey: null,
-    autoLogin: true,
-    uid: null,
-}
+  accessToken: null,
+  expirationTime: null,
+  email: null,
+  apiKey: null,
+  autoLogin: false,
+  uid: null,
+};
 
 export default (state = initialState, { type, payload }) => {
-    switch (type) {
+  switch (type) {
     case LOGIN:
-        return {...payload, autoLogin: false }
+      return { ...payload };
     case LOGOUT:
-        return {...initialState, autoLogin: false};
+      return { ...initialState };
     case NO_USER: {
-        return {...initialState, autoLogin: false};
+      return { ...initialState };
     }
     case AUTO_LOGIN: {
-        return {...initialState, autoLogin: true};
+      return { ...initialState, autoLogin: true };
     }
     default:
-        return state
-    }
-}
+      return state;
+  }
+};

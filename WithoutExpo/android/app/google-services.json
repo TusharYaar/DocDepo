@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:920988754215:android:ed665d0f6910b47fe24902",
+        "mobilesdk_app_id": "1:920988754215:android:82aaaf555dd33909e24902",
         "android_client_info": {
-          "package_name": "com.tusharyaar.decdepo"
+          "package_name": "com.tusharyaar.docdepo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "920988754215-0gosaib3s2ksrk68u48g3lvc4v3dcsom.apps.googleusercontent.com",
+          "client_id": "920988754215-hl9qdhrkn4ps3et4e3htrt3dt2phicqg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.tusharyaar.decdepo",
-            "certificate_hash": "d5f936f626c0ab67f0604d2eb112c3bc6a1d26b8"
+            "package_name": "com.tusharyaar.docdepo",
+            "certificate_hash": "475f2c9a3be82f72ac3c7f2253994971f464f479"
           }
         },
         {

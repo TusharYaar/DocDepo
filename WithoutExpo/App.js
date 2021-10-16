@@ -1,11 +1,12 @@
 import React from "react";
 import { LogBox } from "react-native";
-import 'react-native-gesture-handler';
-import { enableScreens } from 'react-native-screens';
+import "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
 import { Provider } from "react-redux";
-import { createStore, combineReducers,applyMiddleware } from "redux";
-import thunk from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import {
   useFonts,
@@ -21,12 +22,16 @@ import AppNavigator from "./navigation/AppNavigator";
 
 import userReducer from "./store/reducers/user";
 import notesReducer from "./store/reducers/notes";
-import docsReducer from "./store/reducers/docs"
-import themeReducer from "./store/reducers/theme"
+import docsReducer from "./store/reducers/docs";
+import themeReducer from "./store/reducers/theme";
 
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(["Setting a timer"]);
 
 enableScreens(true);
+GoogleSignin.configure({
+  webClientId:
+    "920988754215-r6i9ptnrn1jvv5cdsnr9sdja2hvv8vrh.apps.googleusercontent.com",
+});
 
 const App = () => {
   let [fontsLoaded] = useFonts({
@@ -40,17 +45,17 @@ const App = () => {
     user: userReducer,
     notes: notesReducer,
     docs: docsReducer,
-    theme: themeReducer
+    theme: themeReducer,
   });
 
-  const store = createStore(rootReducer,applyMiddleware(thunk));
-  
+  const store = createStore(rootReducer, applyMiddleware(thunk));
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
   return (
-    <Provider store={store}>  
-      <AppNavigator/>
+    <Provider store={store}>
+      <AppNavigator />
     </Provider>
   );
 };

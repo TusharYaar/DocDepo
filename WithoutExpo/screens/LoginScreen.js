@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,12 +7,13 @@ import {
   StatusBar,
   Platform,
 } from "react-native";
-import { TextInput, Button,ActivityIndicator } from "react-native-paper";
-import { auth, CLIENT_ID,ANDROID_CLIENT_ID,googleAuthProvider } from "../config";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-google-app-auth';
+import { TextInput, Button, ActivityIndicator } from "react-native-paper";
+// import { auth, CLIENT_ID,ANDROID_CLIENT_ID,googleAuthProvider } from "../config";
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import * as WebBrowser from "expo-web-browser";
 
-import { useTheme } from '@react-navigation/native';
+import { useTheme } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../store/actions/user";
 
@@ -29,7 +30,18 @@ const LoginScreen = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const { colors } = useTheme();
 
-  const saveUser = (resData)=> {
+  const onAuthStateChanged = (user) => {
+    if (user) {
+      const { email, uid } = user;
+      dispatch(loginUser({ email, uid }));
+    }
+  };
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  const saveUser = (resData) => {
     const data = {
       expirationTime: resData.stsTokenManager.expirationTime,
       accessToken: resData.stsTokenManager.accessToken,
@@ -38,42 +50,39 @@ const LoginScreen = () => {
       uid: resData.uid,
     };
     dispatch(loginUser(data));
-  }
-
+  };
 
   const handleLogin = async () => {
-    setLoading(true);
+    if (email === "" || password === "") {
+      Alert.alert("Empty Fields", "Please enter email and password");
+      return;
+    }
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      const resData = auth.currentUser.toJSON();
-      saveUser(resData);
+      setLoading(true);
+      await auth().signInWithEmailAndPassword(email, password);
     } catch (err) {
-      Alert.alert("Error",err.message);
+      Alert.alert("Error", err.message);
       setLoading(false);
     }
   };
   const handleGoogleLogin = async () => {
     try {
       setGoogleLoading(true);
-      const googleUser = await Google.logInAsync({
-        androidClientId: CLIENT_ID,
-        androidStandaloneAppClientId: ANDROID_CLIENT_ID,
-        scopes: ['profile', 'email']
-      });
-      if (googleUser.type === 'success') {
-        const credential = await googleAuthProvider.credential(googleUser.idToken);
-        await auth.signInWithCredential(credential);
-        const user = auth.currentUser.toJSON();
-        saveUser(user);
-      }
+      const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
     } catch (err) {
+      console.log(err);
       Alert.alert("Error", err.message);
+      setGoogleLoading(false);
     }
-    setGoogleLoading(false);
-  }
+  };
 
   return (
-          <ScrollView style={{...styles.screen, backgroundColor: colors.background}}>
+    <ScrollView
+      style={{ ...styles.screen, backgroundColor: colors.background }}
+    >
       <Header>Login</Header>
       <View style={styles.container}>
         <View style={styles.margin}>
@@ -103,7 +112,7 @@ const LoginScreen = () => {
       </View>
       <View>
         {isLoading ? (
-          <ActivityIndicator animating={true}/>
+          <ActivityIndicator animating={true} />
         ) : (
           <Button
             mode={Platform.OS === "android" ? "contained" : "text"}
@@ -114,17 +123,18 @@ const LoginScreen = () => {
         )}
       </View>
       <View style={styles.margin}>
-      {
-        googleLoading ? <ActivityIndicator animating={true} /> : 
-      <Button
-      mode={Platform.OS === "android" ? "contained" : "text"}
-      onPress={handleGoogleLogin}
-      icon="google"
-      >
-        Sign in with Google
-      </Button>
-        }
-          </View>
+        {googleLoading ? (
+          <ActivityIndicator animating={true} />
+        ) : (
+          <Button
+            mode={Platform.OS === "android" ? "contained" : "text"}
+            onPress={handleGoogleLogin}
+            icon="google"
+          >
+            Sign in with Google
+          </Button>
+        )}
+      </View>
     </ScrollView>
   );
 };
