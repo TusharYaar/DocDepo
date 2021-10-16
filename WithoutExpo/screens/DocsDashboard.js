@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, FlatList, Alert } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
-import { storage, TIMESTAMP } from "../config";
+import storage from "@react-native-firebase/storage";
 import { useSelector, useDispatch } from "react-redux";
 import { addMultipleDocs, deleteDoc, addDoc } from "../store/actions/docs";
 
@@ -75,19 +75,19 @@ const DocsDashboard = (props) => {
         value: "Uploading... Please wait",
         visible: true,
       });
-      const fileRef = storage.child(`${userId}/${name}`);
-      const uploadTask = await fileRef.put(file);
-      const url = await uploadTask.ref.getDownloadURL();
+      const fileRef = storage().ref(`${userId}/${name}`);
+      await fileRef.putFile(uri);
+      const url = await fileRef.getDownloadURL();
       const doc = {
         name,
         url,
         userEmail,
         user: userId,
         type,
-        createdAt: TIMESTAMP.now(),
+        createdAt: firestore.Timestamp.now(),
         path: `${userId}/${name}`,
       };
-      const ref = await firestore.collection("docsDepo").add(doc);
+      const ref = await firestore().collection("docsDepo").add(doc);
       dispatch(addDoc({ id: ref.id, ...doc }));
       setSnackbarValues({
         value: "Document Uploaded to you depo",
@@ -112,7 +112,7 @@ const DocsDashboard = (props) => {
     setIsLoading(true);
     try {
       await firestore().collection("docsDepo").doc(doc).delete();
-      await storage.child(path).delete();
+      await storage().ref(path).delete();
       dispatch(deleteDoc({ id: doc }));
     } catch (err) {
       Alert.alert("Error", err.message);

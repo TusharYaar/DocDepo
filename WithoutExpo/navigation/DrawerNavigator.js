@@ -1,12 +1,6 @@
 import React from "react";
 
-import {
-  createDrawerNavigator,
-  DrawerItemList,
-  DrawerContentScrollView,
-} from "@react-navigation/drawer";
-
-import { Button } from "react-native-paper";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawer from "./CustomDrawer";
 
@@ -18,12 +12,9 @@ import {
   SettingsNavigator,
 } from "./StackNavigators";
 
-import { useDispatch } from "react-redux";
 const Drawer = createDrawerNavigator();
-import { logoutUser } from "../store/actions/user";
 
 const DrawerNavigator = (props) => {
-  const dispatch = useDispatch();
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"

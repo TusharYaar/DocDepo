@@ -3,13 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import auth from "@react-native-firebase/auth";
 
-import {
-  Avatar,
-  Button,
-  Headline,
-  Caption,
-  Subheading,
-} from "react-native-paper";
+import { Avatar, Button, Caption } from "react-native-paper";
 
 import {
   DrawerContentScrollView,

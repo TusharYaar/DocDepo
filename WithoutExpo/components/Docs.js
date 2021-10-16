@@ -10,7 +10,7 @@ const Docs = ({ doc, isLoading, deleteDoc, shareDoc }) => {
     <Card style={styles.container}>
       <Card.Content>
         <DateText style={styles.date}>
-          {format(new Date(doc.createdAt.toDate()), "EEE MMM dd yyyy")}
+          {format(new Date(doc.createdAt.toDate()), "EEE MMM dd, yyyy")}
         </DateText>
         <Body>{doc.name}</Body>
       </Card.Content>
