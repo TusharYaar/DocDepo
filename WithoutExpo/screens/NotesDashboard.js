@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, FlatList, Alert } from "react-native";
 import { Snackbar, FAB, IconButton } from "react-native-paper";
-import {PanGestureHandler } from 'react-native-gesture-handler';
-import { DrawerActions } from '@react-navigation/native';
+import { PanGestureHandler } from "react-native-gesture-handler";
+import { DrawerActions } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 
 import { useSelector, useDispatch } from "react-redux";
 import { addMultipleNotes, deleteNote } from "../store/actions/notes";
-import { firestore } from "../config";
+import firestore from "@react-native-firebase/firestore";
 
 import Notes from "../components/Notes";
 import EmptyDepo from "../components/EmptyDepo";
@@ -25,7 +25,7 @@ const NotesDashboard = (props) => {
   const fetchDocsFromFirestore = useCallback(async () => {
     setIsLoading(true);
     try {
-      const querySnapshot = await firestore
+      const querySnapshot = await firestore()
         .collection("notesDepo")
         .where("user", "==", userId)
         .get();
@@ -52,7 +52,7 @@ const NotesDashboard = (props) => {
   const handleDeleteFromCollection = async (note) => {
     setIsLoading(true);
     try {
-      await firestore.collection("notesDepo").doc(note).delete();
+      await firestore().collection("notesDepo").doc(note).delete();
       dispatch(deleteNote({ id: note }));
       setSnackbarValues({ value: "Note Deleted", visible: true });
     } catch (err) {
@@ -83,44 +83,49 @@ const NotesDashboard = (props) => {
 
   const handleSwipe = (event) => {
     if (event.nativeEvent.translationX === 0) return;
-    if(event.nativeEvent.translationX < 10)  props.navigation.jumpTo("Docs");
-    else if (event.nativeEvent.translationX > 10)  props.navigation.dispatch(DrawerActions.openDrawer());
+    if (event.nativeEvent.translationX < 10) props.navigation.jumpTo("Docs");
+    else if (event.nativeEvent.translationX > 10)
+      props.navigation.dispatch(DrawerActions.openDrawer());
   };
 
   return (
-      <PanGestureHandler onGestureEvent={handleSwipe} maxPointers={1} minDist={30}>
-    <View style={styles.screen}>
-      {notes.length === 0 ? (
-        <EmptyDepo />
-      ) : (
-        <FlatList
-          data={notes}
-          renderItem={({ item }) => (
-            <Notes
-              note={item}
-              copyToClipboard={() => copyToClipboard(item.text)}
-              deleteNote={() => handleDelete(item.id)}
-              disabled={isLoading}
-            />
-          )}
-          refreshing={isLoading}
-          onRefresh={fetchDocsFromFirestore}
+    <PanGestureHandler
+      onGestureEvent={handleSwipe}
+      maxPointers={1}
+      minDist={30}
+    >
+      <View style={styles.screen}>
+        {notes.length === 0 ? (
+          <EmptyDepo />
+        ) : (
+          <FlatList
+            data={notes}
+            renderItem={({ item }) => (
+              <Notes
+                note={item}
+                copyToClipboard={() => copyToClipboard(item.text)}
+                deleteNote={() => handleDelete(item.id)}
+                disabled={isLoading}
+              />
+            )}
+            refreshing={isLoading}
+            onRefresh={fetchDocsFromFirestore}
+          />
+        )}
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          onPress={() => navigation.navigate("AddNote")}
         />
-      )}
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => navigation.navigate("AddNote")}
-      />
-      <Snackbar
-        visible={snackbarValues.visible}
-        onDismiss={onDismissSnackBar}
-        duration={4000}
-      >
-        {snackbarValues.value}
-      </Snackbar>
-    </View>
-      </PanGestureHandler> 
+        <Snackbar
+          visible={snackbarValues.visible}
+          onDismiss={onDismissSnackBar}
+          duration={4000}
+        >
+          {snackbarValues.value}
+        </Snackbar>
+      </View>
+    </PanGestureHandler>
   );
 };
 
@@ -144,12 +149,9 @@ export const notesScreenOptions = ({ navigation }) => {
   return {
     title: "Notes",
     headerLeft: () => (
-      <IconButton
-      onPress={() => navigation.toggleDrawer()}
-      icon="menu"
-      />
-      ),
-      headerTitleStyle: {
+      <IconButton onPress={() => navigation.toggleDrawer()} icon="menu" />
+    ),
+    headerTitleStyle: {
       fontFamily: "Manrope_700Bold",
       fontWeight: "normal",
     },

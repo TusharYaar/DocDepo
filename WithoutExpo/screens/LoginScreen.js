@@ -8,7 +8,6 @@ import {
   Platform,
 } from "react-native";
 import { TextInput, Button, ActivityIndicator } from "react-native-paper";
-// import { auth, CLIENT_ID,ANDROID_CLIENT_ID,googleAuthProvider } from "../config";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as WebBrowser from "expo-web-browser";
@@ -40,17 +39,6 @@ const LoginScreen = () => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-
-  const saveUser = (resData) => {
-    const data = {
-      expirationTime: resData.stsTokenManager.expirationTime,
-      accessToken: resData.stsTokenManager.accessToken,
-      email: resData.email,
-      apiKey: resData.apiKey,
-      uid: resData.uid,
-    };
-    dispatch(loginUser(data));
-  };
 
   const handleLogin = async () => {
     if (email === "" || password === "") {
