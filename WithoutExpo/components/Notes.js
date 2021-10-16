@@ -2,14 +2,19 @@ import React from "react";
 import { StyleSheet, Platform } from "react-native";
 
 import { Button, Card } from "react-native-paper";
-import { format } from "date-fns";
+import { format, compareAsc } from "date-fns";
 
+import NewTag from "./NewTag";
 import DateText from "./DateText";
 import Body from "./Body";
 const Notes = ({ note, copyToClipboard, deleteNote, disabled }) => {
   return (
     <Card style={styles.container}>
       <Card.Content>
+        {compareAsc(
+          new Date(note.createdAt.toDate()),
+          new Date(note.lastLogin)
+        ) > -1 && <NewTag />}
         <DateText>
           {format(new Date(note.createdAt.toDate()), "EEE MMM dd, yyyy")}
         </DateText>

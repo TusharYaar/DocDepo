@@ -56,7 +56,6 @@ const DocsDashboard = (props) => {
           new Date(a.createdAt.toDate()),
           new Date(b.createdAt.toDate())
         );
-        // new Date(doc.createdAt.toDate()
       });
       dispatch(addMultipleDocs(arr));
       setIsLoading(false);
@@ -98,7 +97,7 @@ const DocsDashboard = (props) => {
         path: `${userId}/${name}`,
       };
       const ref = await firestore().collection("docsDepo").add(doc);
-      dispatch(addDoc({ id: ref.id, ...doc }));
+      dispatch(addDoc({ id: ref.id, ...doc, lastLogin }));
       setSnackbarValues({
         value: "Document Uploaded to you depo",
         visible: true,

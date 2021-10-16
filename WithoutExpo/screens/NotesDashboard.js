@@ -5,6 +5,8 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 import { DrawerActions } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 
+import { compareDesc } from "date-fns";
+
 import { useSelector, useDispatch } from "react-redux";
 import { addMultipleNotes, deleteNote } from "../store/actions/notes";
 import firestore from "@react-native-firebase/firestore";
@@ -20,6 +22,7 @@ const NotesDashboard = (props) => {
     visible: false,
   });
   const userId = useSelector((state) => state.user.uid);
+  const lastLogin = useSelector((state) => state.user.lastLogin);
   const dispatch = useDispatch();
   const notes = useSelector((state) => state.notes.notes);
   const fetchDocsFromFirestore = useCallback(async () => {
@@ -31,7 +34,13 @@ const NotesDashboard = (props) => {
         .get();
       let arr = [];
       querySnapshot.forEach((doc) => {
-        arr.push({ id: doc.id, ...doc.data() });
+        arr.push({ id: doc.id, ...doc.data(), lastLogin });
+      });
+      arr.sort((a, b) => {
+        return compareDesc(
+          new Date(a.createdAt.toDate()),
+          new Date(b.createdAt.toDate())
+        );
       });
       dispatch(addMultipleNotes(arr));
       setIsLoading(false);

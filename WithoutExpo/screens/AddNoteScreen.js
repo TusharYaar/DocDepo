@@ -11,6 +11,7 @@ import firestore from "@react-native-firebase/firestore";
 
 const AddNoteScreen = (props) => {
   const user = useSelector((state) => state.user);
+  const lastLogin = useSelector((state) => state.user.lastLogin);
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const AddNoteScreen = (props) => {
         createdAt: firestore.Timestamp.now(),
       };
       const ref = await firestore().collection("notesDepo").add(note);
-      dispatch(addNote({ id: ref.id, ...note }));
+      dispatch(addNote({ id: ref.id, ...note, lastLogin }));
       props.navigation.goBack();
     } catch (err) {
       setIsLoading(false);
@@ -80,7 +81,7 @@ const AddNoteScreen = (props) => {
           onPress={handleSubmit}
           disabled={isLoading || text.length < 3 || text.length > 120}
         >
-          Add Note{" "}
+          Add Note
         </Button>
       </View>
     </View>

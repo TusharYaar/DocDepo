@@ -1,19 +1,18 @@
-import {ADD_NOTE, DELETE_NOTE,SET_NOTES } from "../actions/notes";
+import { ADD_NOTE, DELETE_NOTE, SET_NOTES } from "../actions/notes";
 
 const initialState = {
-    notes : [],
-}
+  notes: [],
+};
 
 export default (state = initialState, { type, payload }) => {
-    switch (type) {
-
+  switch (type) {
     case ADD_NOTE:
-        return {notes : [...state.notes, payload]}
+      return { notes: [payload, ...state.notes] };
     case DELETE_NOTE:
-        return {notes : state.notes.filter(note => note.id !== payload.id)}
+      return { notes: state.notes.filter((note) => note.id !== payload.id) };
     case SET_NOTES:
-        return {notes : [...payload]}
+      return { notes: [...payload] };
     default:
-        return state
-    }
-}
+      return state;
+  }
+};
