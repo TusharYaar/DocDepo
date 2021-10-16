@@ -1,10 +1,7 @@
-import { LOGIN, LOGOUT, NO_USER, AUTO_LOGIN } from "../actions/user";
+import { LOGIN, LOGOUT, NO_USER } from "../actions/user";
 const initialState = {
-  accessToken: null,
-  expirationTime: null,
   email: null,
-  apiKey: null,
-  autoLogin: false,
+  lastLogin: null,
   uid: null,
 };
 
@@ -16,9 +13,6 @@ export default (state = initialState, { type, payload }) => {
       return { ...initialState };
     case NO_USER: {
       return { ...initialState };
-    }
-    case AUTO_LOGIN: {
-      return { ...initialState, autoLogin: true };
     }
     default:
       return state;

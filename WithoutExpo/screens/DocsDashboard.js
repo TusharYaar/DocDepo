@@ -6,6 +6,8 @@ import storage from "@react-native-firebase/storage";
 import { useSelector, useDispatch } from "react-redux";
 import { addMultipleDocs, deleteDoc, addDoc } from "../store/actions/docs";
 
+import { compareDesc } from "date-fns";
+
 import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
 import * as Sharing from "expo-sharing";
@@ -28,6 +30,7 @@ const DocsDashboard = (props) => {
     visible: false,
   });
   const userId = useSelector((state) => state.user.uid);
+  const lastLogin = useSelector((state) => state.user.lastLogin);
   const userEmail = useSelector((state) => state.user.email);
   const docs = useSelector((state) => state.docs.docs);
 
@@ -46,7 +49,14 @@ const DocsDashboard = (props) => {
         .get();
       let arr = [];
       querySnapshot.forEach((doc) => {
-        arr.push({ id: doc.id, ...doc.data() });
+        arr.push({ id: doc.id, ...doc.data(), lastLogin });
+      });
+      arr.sort((a, b) => {
+        return compareDesc(
+          new Date(a.createdAt.toDate()),
+          new Date(b.createdAt.toDate())
+        );
+        // new Date(doc.createdAt.toDate()
       });
       dispatch(addMultipleDocs(arr));
       setIsLoading(false);
