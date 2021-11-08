@@ -2,8 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import TabNavigator from "./TabNavigator";
-import DocsDashboard, { docsScreenOptions } from "../screens/DocsDashboard";
-import NotesDashboard, { notesScreenOptions } from "../screens/NotesDashboard";
+import { docsScreenOptions } from "../screens/DocsDashboard";
 import AddNoteScreen, { addNoteScreenOptions } from "../screens/AddNoteScreen";
 import CameraScreen from "../screens/CameraScreen";
 import AudioScreen from "../screens/AudioScreen";
