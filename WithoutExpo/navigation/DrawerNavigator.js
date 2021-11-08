@@ -4,9 +4,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawer from "./CustomDrawer";
 
-import TabNavigator from "./TabNavigator";
-
 import {
+  AppStackNavigator,
   FeedbackNavigator,
   HelpNavigator,
   SettingsNavigator,
@@ -20,7 +19,7 @@ const DrawerNavigator = (props) => {
       initialRouteName="Dashboard"
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
-      <Drawer.Screen name="Dashboard" component={TabNavigator} />
+      <Drawer.Screen name="Dashboard" component={AppStackNavigator} />
       <Drawer.Screen name="Settings" component={SettingsNavigator} />
       <Drawer.Screen name="Give Feedback" component={FeedbackNavigator} />
       <Drawer.Screen name="Help" component={HelpNavigator} />

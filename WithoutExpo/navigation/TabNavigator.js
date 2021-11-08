@@ -1,16 +1,17 @@
 import React from "react";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { NotesNavigator, DocsNavigator } from "./StackNavigators";
-
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+// import { NotesNavigator, DocsNavigator } from "./StackNavigators";
+import DocsDashboard, { docsScreenOptions } from "../screens/DocsDashboard";
+import NotesDashboard, { notesScreenOptions } from "../screens/NotesDashboard";
 import IconButton from "../components/IconButton";
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 const TabNavigator = () => {
   return (
     <Tab.Navigator options={{ shifting: true }}>
       <Tab.Screen
         name="Notes"
-        component={NotesNavigator}
+        component={NotesDashboard}
         options={{
           tabBarIcon: ({ color }) => (
             <IconButton
@@ -24,7 +25,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Docs"
-        component={DocsNavigator}
+        component={DocsDashboard}
         options={{
           tabBarIcon: ({ color }) => (
             <IconButton

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, FlatList, Alert } from "react-native";
-import { Snackbar, FAB, IconButton } from "react-native-paper";
-import { PanGestureHandler } from "react-native-gesture-handler";
-import { DrawerActions } from "@react-navigation/native";
+import { Snackbar, FAB } from "react-native-paper";
 import * as Clipboard from "expo-clipboard";
 
 import { compareDesc } from "date-fns";
@@ -90,51 +88,38 @@ const NotesDashboard = (props) => {
   const onDismissSnackBar = () =>
     setSnackbarValues({ value: "", visible: false });
 
-  const handleSwipe = (event) => {
-    if (event.nativeEvent.translationX === 0) return;
-    if (event.nativeEvent.translationX < 10) props.navigation.jumpTo("Docs");
-    else if (event.nativeEvent.translationX > 10)
-      props.navigation.dispatch(DrawerActions.openDrawer());
-  };
-
   return (
-    <PanGestureHandler
-      onGestureEvent={handleSwipe}
-      maxPointers={1}
-      minDist={30}
-    >
-      <View style={styles.screen}>
-        {notes.length === 0 ? (
-          <EmptyDepo />
-        ) : (
-          <FlatList
-            data={notes}
-            renderItem={({ item }) => (
-              <Notes
-                note={item}
-                copyToClipboard={() => copyToClipboard(item.text)}
-                deleteNote={() => handleDelete(item.id)}
-                disabled={isLoading}
-              />
-            )}
-            refreshing={isLoading}
-            onRefresh={fetchDocsFromFirestore}
-          />
-        )}
-        <FAB
-          style={styles.fab}
-          icon="plus"
-          onPress={() => navigation.navigate("AddNote")}
+    <View style={styles.screen}>
+      {notes.length === 0 ? (
+        <EmptyDepo />
+      ) : (
+        <FlatList
+          data={notes}
+          renderItem={({ item }) => (
+            <Notes
+              note={item}
+              copyToClipboard={() => copyToClipboard(item.text)}
+              deleteNote={() => handleDelete(item.id)}
+              disabled={isLoading}
+            />
+          )}
+          refreshing={isLoading}
+          onRefresh={fetchDocsFromFirestore}
         />
-        <Snackbar
-          visible={snackbarValues.visible}
-          onDismiss={onDismissSnackBar}
-          duration={4000}
-        >
-          {snackbarValues.value}
-        </Snackbar>
-      </View>
-    </PanGestureHandler>
+      )}
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={() => navigation.navigate("AddNote")}
+      />
+      <Snackbar
+        visible={snackbarValues.visible}
+        onDismiss={onDismissSnackBar}
+        duration={4000}
+      >
+        {snackbarValues.value}
+      </Snackbar>
+    </View>
   );
 };
 
@@ -153,16 +138,3 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 });
-
-export const notesScreenOptions = ({ navigation }) => {
-  return {
-    title: "Notes",
-    headerLeft: () => (
-      <IconButton onPress={() => navigation.toggleDrawer()} icon="menu" />
-    ),
-    headerTitleStyle: {
-      fontFamily: "Manrope_700Bold",
-      fontWeight: "normal",
-    },
-  };
-};

@@ -2,7 +2,7 @@ import React from "react";
 
 import { StyleSheet, ScrollView, View } from "react-native";
 
-import { IconButton } from "react-native-paper";
+import { IconButton, Divider } from "react-native-paper";
 
 import Title from "../components/Title";
 import Body from "../components/Body";
@@ -45,6 +45,7 @@ const HelpScreen = () => {
           alert/dialog box.
         </Body>
       </View>
+      <Divider />
       {/* //////////////////////////////////Notes Complete */}
       <View style={styles.section}>
         <Header> Docs </Header>
@@ -57,20 +58,26 @@ const HelpScreen = () => {
       </View>
       <View style={styles.section}>
         <Title>Refreshing Docs</Title>
-        <Body>The app does not have an auto refresh, and thus you have to scroll to refresh the docs, similar to notes.</Body>
+        <Body>
+          The app does not have an auto refresh, and thus you have to scroll to
+          refresh the docs, similar to notes.
+        </Body>
       </View>
       <View style={styles.section}>
         <Title>Share Notes</Title>
         <Body>
-          You can easily share Docs with apps that suppot sharing. Clicking on share button on the doc you want to share and choose the app you want to share with.
-          It will first download the file from the server and then share the file instead of url.  
+          You can easily share Docs with apps that suppot sharing. Clicking on
+          share button on the doc you want to share and choose the app you want
+          to share with. It will first download the file from the server and
+          then share the file instead of url.
         </Body>
       </View>
       <View style={styles.section}>
         <Title>Downloading Docs</Title>
         <Body>
-            This is tricky. The technologies used to build this app doesnot allow a convenient way to download docs to user accessible folder. Thus to download a 
-            doc, click on share and then save to device. 
+          This is tricky. The technologies used to build this app doesnot allow
+          a convenient way to download docs to user accessible folder. Thus to
+          download a doc, click on share and then save to device.
         </Body>
       </View>
       <View style={styles.section}>
@@ -81,44 +88,51 @@ const HelpScreen = () => {
           alert/dialog box.
         </Body>
       </View>
-      {/* //////////////////////////////////// */}
       <View style={styles.section}>
+        <Divider />
+
         <Header> Pictures </Header>
         <Title>Clicking Pictures</Title>
         <Body>
-         You can also click a picture from the app and upload it to the server. The clicked picture doesnot get saved to you gallery.
-
+          You can also click a picture from the app and upload it to the server.
+          The clicked picture doesnot get saved to you gallery.
         </Body>
       </View>
       <View style={styles.section}>
+        <Divider />
+
         <Header> Audio </Header>
         <Title>Recording Audio</Title>
         <Body>
-          You can also record audio from the app and upload it to the server. Its very simple. 
+          You can also record audio from the app and upload it to the server.
+          Its very simple.
         </Body>
       </View>
       <View style={styles.section}>
+        <Divider />
+
         <Header> Feedback </Header>
         <Title>Giving Feedback</Title>
         <Body>
-         The app is a learning tool for me and thus feedback is very important. 
-         You can give feedback by clicking the feedback button from the drawer.
-         You can also report any errors you faced from the feedback only. Giving feedback also included
-         imformation about you operating system, to help me diagonose the problem. 
+          This app is a learning tool for me and thus feedback is very
+          important. You can give feedback by clicking the feedback button from
+          the drawer. You can also report any errors you faced from the feedback
+          only. Giving feedback also included imformation about you operating
+          system, to help me diagonose the problem.
         </Body>
       </View>
       <View style={styles.section}>
+        <Divider />
+
         <Header> Theme </Header>
         <Title>Setting Theme</Title>
         <Body>
-          You can choose between a light and a dark theme from the settings menu.
-          Changing themes require you to restart the app.     
+          You can choose between a light and a dark theme from the settings
+          menu. Changing themes require you to restart the app.
         </Body>
       </View>
       <View style={styles.section}>
-        <Body>
-           Made by Tushar S Agrawal (Tusharyaar)
-        </Body>
+        <Body>Made by Tushar S Agrawal (Tusharyaar)</Body>
       </View>
     </ScrollView>
   );

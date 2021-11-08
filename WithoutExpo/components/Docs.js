@@ -7,10 +7,6 @@ import DateText from "../components/DateText";
 import NewTag from "./NewTag";
 
 const Docs = ({ doc, isLoading, deleteDoc, shareDoc }) => {
-  console.log(
-    compareAsc(new Date(doc.createdAt.toDate()), new Date(doc.lastLogin))
-  );
-
   return (
     <Card style={styles.container}>
       <Card.Content>

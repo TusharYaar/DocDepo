@@ -14,8 +14,6 @@ import * as Sharing from "expo-sharing";
 
 import { FAB, Snackbar, IconButton } from "react-native-paper";
 
-import { PanGestureHandler } from "react-native-gesture-handler";
-
 import Docs from "../components/Docs";
 import EmptyDepo from "../components/EmptyDepo";
 
@@ -179,81 +177,67 @@ const DocsDashboard = (props) => {
         "The device does not have sharing options compatible with the app. We are extreamly sorry. Report the problem if you think the sharing should be avalible on this device."
       );
   };
-
-  const handleSwipe = (event) => {
-    if (event.nativeEvent.translationX === 0) return;
-    if (event.nativeEvent.translationX < 10) return;
-    else if (event.nativeEvent.translationX > 10)
-      props.navigation.jumpTo("Notes");
-  };
-
   return (
-    <PanGestureHandler
-      onGestureEvent={handleSwipe}
-      maxPointers={1}
-      minDist={30}
-    >
-      <View style={styles.screen}>
-        {docs.length === 0 ? (
-          <EmptyDepo />
-        ) : (
-          <FlatList
-            data={docs}
-            renderItem={({ item }) => (
-              <Docs
-                doc={item}
-                isLoading={isLoading}
-                deleteDoc={() => {
-                  handleDelete(item.id, item.path);
-                }}
-                shareDoc={() => {
-                  shareDoc(item.url, item.name);
-                }}
-              />
-            )}
-            refreshing={isLoading}
-            onRefresh={fetchDocsFromFirestore}
-          />
-        )}
-        <FAB.Group
-          style={styles.fab}
-          visible={!isUploading}
-          open={fabOpen.open}
-          icon={fabOpen.open ? "file-cancel" : "plus"}
-          actions={[
-            {
-              icon: "camera-enhance",
-              label: "Camera",
-              onPress: () => navigation.navigate("Camera"),
-              small: false,
-            },
-            {
-              icon: "microphone-plus",
-              label: "Audio",
-              onPress: () => navigation.navigate("Audio"),
-              small: false,
-            },
-            {
-              icon: "file-document-outline",
-              label: "Document",
-              onPress: handleDocumentPick,
-              small: false,
-            },
-          ]}
-          onStateChange={onFabStateChange}
+    <View style={styles.screen}>
+      {docs.length === 0 ? (
+        <EmptyDepo />
+      ) : (
+        <FlatList
+          data={docs}
+          renderItem={({ item }) => (
+            <Docs
+              doc={item}
+              isLoading={isLoading}
+              deleteDoc={() => {
+                handleDelete(item.id, item.path);
+              }}
+              shareDoc={() => {
+                shareDoc(item.url, item.name);
+              }}
+            />
+          )}
+          refreshing={isLoading}
+          onRefresh={fetchDocsFromFirestore}
         />
-        <Snackbar
-          visible={snackbarValues.visible}
-          onDismiss={onDismissSnackBar}
-          action={{
-            label: "Hide",
-            onPress: onDismissSnackBar,
-          }}
-        >
-          {snackbarValues.value}
-        </Snackbar>
-      </View>
-    </PanGestureHandler>
+      )}
+      <FAB.Group
+        style={styles.fab}
+        visible={!isUploading}
+        open={fabOpen.open}
+        icon={fabOpen.open ? "file-cancel" : "plus"}
+        actions={[
+          {
+            icon: "camera-enhance",
+            label: "Camera",
+            onPress: () => navigation.navigate("Camera"),
+            small: false,
+          },
+          {
+            icon: "microphone-plus",
+            label: "Audio",
+            onPress: () => navigation.navigate("Audio"),
+            small: false,
+          },
+          {
+            icon: "file-document-outline",
+            label: "Document",
+            onPress: handleDocumentPick,
+            small: false,
+          },
+        ]}
+        onStateChange={onFabStateChange}
+      />
+      <Snackbar
+        visible={snackbarValues.visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Hide",
+          onPress: onDismissSnackBar,
+        }}
+      >
+        {snackbarValues.value}
+      </Snackbar>
+    </View>
   );
 };
 
@@ -273,7 +257,7 @@ const styles = StyleSheet.create({
 
 export const docsScreenOptions = ({ navigation, route }) => {
   return {
-    title: "Docs",
+    title: "Dashboard",
     headerLeft: () => (
       <IconButton onPress={() => navigation.toggleDrawer()} icon="menu" />
     ),

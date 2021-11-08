@@ -1,5 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import TabNavigator from "./TabNavigator";
 import DocsDashboard, { docsScreenOptions } from "../screens/DocsDashboard";
 import NotesDashboard, { notesScreenOptions } from "../screens/NotesDashboard";
 import AddNoteScreen, { addNoteScreenOptions } from "../screens/AddNoteScreen";
@@ -12,53 +14,40 @@ import HelpScreen, { helpScreenOptions } from "../screens/HelpScreen";
 import Settings, { settingsScreenOptions } from "../screens/Settings";
 
 import PhotoViewScreen from "../screens/PhotoViewScreen";
-const StackDocs = createStackNavigator();
-const StackNotes = createStackNavigator();
+const AppStack = createStackNavigator();
 const StackReport = createStackNavigator();
 const StackHelp = createStackNavigator();
 const StackSettings = createStackNavigator();
 
-export const DocsNavigator = () => {
+export const AppStackNavigator = () => {
   return (
-    <StackDocs.Navigator>
-      <StackDocs.Screen
-        name="Docs"
-        component={DocsDashboard}
+    <AppStack.Navigator>
+      <AppStack.Screen
+        name="Dashboard"
+        component={TabNavigator}
         options={docsScreenOptions}
       />
-      <StackDocs.Screen
+      <AppStack.Screen
         name="Camera"
         component={CameraScreen}
         options={fontOptions}
       />
-      <StackDocs.Screen
+      <AppStack.Screen
         name="PhotoView"
         component={PhotoViewScreen}
         options={fontOptions}
       />
-      <StackDocs.Screen
+      <AppStack.Screen
         name="Audio"
         component={AudioScreen}
         options={fontOptions}
       />
-    </StackDocs.Navigator>
-  );
-};
-
-export const NotesNavigator = () => {
-  return (
-    <StackNotes.Navigator>
-      <StackNotes.Screen
-        name="Notes"
-        component={NotesDashboard}
-        options={notesScreenOptions}
-      />
-      <StackDocs.Screen
+      <AppStack.Screen
         name="AddNote"
         component={AddNoteScreen}
         options={addNoteScreenOptions}
       />
-    </StackNotes.Navigator>
+    </AppStack.Navigator>
   );
 };
 
