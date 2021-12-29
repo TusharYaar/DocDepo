@@ -1,45 +1,46 @@
-import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import TabNavigator from './TabNavigator';
-import {docsScreenOptions} from '../screens/DocsDashboard';
-import AddNoteScreen, {addNoteScreenOptions} from '../screens/AddNoteScreen';
-// import CameraScreen from '../screens/CameraScreen';
-// import AudioScreen from '../screens/AudioScreen';
-import FeedbackScreen, {feedbackScreenOptions} from '../screens/FeedbackScreen';
-import HelpScreen, {helpScreenOptions} from '../screens/HelpScreen';
-import Settings, {settingsScreenOptions} from '../screens/Settings';
+import TabNavigator from "./TabNavigator";
+import { docsScreenOptions } from "../screens/DocsDashboard";
+import AddNoteScreen, { addNoteScreenOptions } from "../screens/AddNoteScreen";
+import CameraScreen from "../screens/CameraScreen";
+import AudioScreen from "../screens/AudioScreen";
+import FeedbackScreen, {
+  feedbackScreenOptions,
+} from "../screens/FeedbackScreen";
+import HelpScreen, { helpScreenOptions } from "../screens/HelpScreen";
+import Settings, { settingsScreenOptions } from "../screens/Settings";
 
-// import PhotoViewScreen from '../screens/PhotoViewScreen';
-const AppStack = createNativeStackNavigator();
-const StackReport = createNativeStackNavigator();
-const StackHelp = createNativeStackNavigator();
-const StackSettings = createNativeStackNavigator();
+import PhotoViewScreen from "../screens/PhotoViewScreen";
+const AppStack = createStackNavigator();
+const StackReport = createStackNavigator();
+const StackHelp = createStackNavigator();
+const StackSettings = createStackNavigator();
 
 export const AppStackNavigator = () => {
   return (
     <AppStack.Navigator>
       <AppStack.Screen
-        name="Tabs"
+        name="Dashboard"
         component={TabNavigator}
         options={docsScreenOptions}
       />
-      {/* <AppStack.Screen
+      <AppStack.Screen
         name="Camera"
         component={CameraScreen}
         options={fontOptions}
-      /> */}
-      {/*
+      />
       <AppStack.Screen
         name="PhotoView"
         component={PhotoViewScreen}
         options={fontOptions}
-      />*/}
-      {/* <AppStack.Screen
+      />
+      <AppStack.Screen
         name="Audio"
         component={AudioScreen}
         options={fontOptions}
-      /> */}
+      />
       <AppStack.Screen
         name="AddNote"
         component={AddNoteScreen}
@@ -53,7 +54,7 @@ export const SettingsNavigator = () => {
   return (
     <StackSettings.Navigator>
       <StackSettings.Screen
-        name="SettingsScreen"
+        name="report"
         component={Settings}
         options={settingsScreenOptions}
       />
@@ -65,7 +66,7 @@ export const FeedbackNavigator = () => {
   return (
     <StackReport.Navigator>
       <StackReport.Screen
-        name="FeedbackScreen"
+        name="report"
         component={FeedbackScreen}
         options={feedbackScreenOptions}
       />
@@ -77,7 +78,7 @@ export const HelpNavigator = () => {
   return (
     <StackHelp.Navigator>
       <StackHelp.Screen
-        name="HelpScreen"
+        name="report"
         component={HelpScreen}
         options={helpScreenOptions}
       />
@@ -87,7 +88,7 @@ export const HelpNavigator = () => {
 
 const fontOptions = {
   headerTitleStyle: {
-    fontFamily: 'Manrope_700Bold',
-    fontWeight: 'normal',
+    fontFamily: "Manrope_700Bold",
+    fontWeight: "normal",
   },
 };
