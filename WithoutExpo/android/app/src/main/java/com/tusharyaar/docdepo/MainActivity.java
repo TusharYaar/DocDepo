@@ -1,4 +1,4 @@
-package com.tusharyaar.me;
+package com.tusharyaar.docdepo;
 
 import com.facebook.react.ReactActivity;
 

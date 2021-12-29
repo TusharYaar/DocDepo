@@ -43,6 +43,7 @@ buck-out/
 !debug.keystore
 *.jks
 gradle.properties
+google-services.json
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
