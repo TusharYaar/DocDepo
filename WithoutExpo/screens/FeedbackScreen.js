@@ -12,10 +12,9 @@ import {IconButton, Button, TextInput} from 'react-native-paper';
 
 import LottieView from 'lottie-react-native';
 
-import Header from '../components/Header';
 import {useSelector} from 'react-redux';
 
-// import { firestore } from "../config";
+import firestore from '@react-native-firebase/firestore';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -30,16 +29,17 @@ const FeedbackScreen = () => {
 
   const submitFeedback = async () => {
     setIsLoading(true);
+    console.log('feedback');
     try {
-      // await firestore.collection("feedbacks").add({
-      //   feedback,
-      //   windowHeight,
-      //   windowWidth,
-      //   OS: Platform.OS,
-      //   version: Platform.Version,
-      //   user,
-      //   userEmail,
-      // });
+      await firestore().collection('feedbacks').add({
+        feedback,
+        windowHeight,
+        windowWidth,
+        OS: Platform.OS,
+        version: Platform.Version,
+        user,
+        userEmail,
+      });
       setFeedback('');
       setPlayAnimation(true);
       visualizerRef.current.play();
