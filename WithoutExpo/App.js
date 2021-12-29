@@ -1,46 +1,37 @@
-import React from "react";
-import { LogBox } from "react-native";
-import "react-native-gesture-handler";
-import { enableScreens } from "react-native-screens";
-import { Provider } from "react-redux";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+import React from 'react';
+import 'react-native-gesture-handler';
+import {enableScreens} from 'react-native-screens';
+import {Provider} from 'react-redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+// import QuickActions from "react-native-quick-actions";
+import thunk from 'redux-thunk';
 
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import AppNavigator from './navigation/AppNavigator';
 
-import {
-  useFonts,
-  Manrope_300Light,
-  Manrope_400Regular,
-  Manrope_700Bold,
-  Manrope_800ExtraBold,
-} from "@expo-google-fonts/manrope";
+import userReducer from './store/reducers/user';
+import notesReducer from './store/reducers/notes';
+import docsReducer from './store/reducers/docs';
+import themeReducer from './store/reducers/theme';
 
-import AppLoading from "expo-app-loading";
-
-import AppNavigator from "./navigation/AppNavigator";
-
-import userReducer from "./store/reducers/user";
-import notesReducer from "./store/reducers/notes";
-import docsReducer from "./store/reducers/docs";
-import themeReducer from "./store/reducers/theme";
-
-LogBox.ignoreLogs(["Setting a timer"]);
+// LogBox.ignoreLogs(['Setting a timer']);
 
 enableScreens(true);
-GoogleSignin.configure({
-  webClientId:
-    "920988754215-r6i9ptnrn1jvv5cdsnr9sdja2hvv8vrh.apps.googleusercontent.com",
-});
+
+// QuickActions.setShortcutItems([
+//   {
+//     type: 'Orders', // Required
+//     title: 'See your orders', // Optional, if empty, `type` will be used instead
+//     subtitle: "See orders you've made",
+//     icon: 'Compose', // Icons instructions below
+//     userInfo: {
+//       url: 'app://orders', // Provide any custom data like deep linking URL
+//     },
+//   },
+// ]);
+
+// QuickActions.clearShortcutItems();
 
 const App = () => {
-  let [fontsLoaded] = useFonts({
-    Manrope_300Light,
-    Manrope_400Regular,
-    Manrope_700Bold,
-    Manrope_800ExtraBold,
-  });
-
   const rootReducer = combineReducers({
     user: userReducer,
     notes: notesReducer,
@@ -50,9 +41,6 @@ const App = () => {
 
   const store = createStore(rootReducer, applyMiddleware(thunk));
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
     <Provider store={store}>
       <AppNavigator />

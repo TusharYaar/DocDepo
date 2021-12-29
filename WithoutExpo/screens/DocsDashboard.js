@@ -1,85 +1,85 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, View, FlatList, Alert } from "react-native";
+import React, {useState, useEffect, useCallback} from 'react';
+import {StyleSheet, View, FlatList, Alert} from 'react-native';
 
-import firestore from "@react-native-firebase/firestore";
-import storage from "@react-native-firebase/storage";
-import { useSelector, useDispatch } from "react-redux";
-import { addMultipleDocs, deleteDoc, addDoc } from "../store/actions/docs";
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import {useSelector, useDispatch} from 'react-redux';
+import {addMultipleDocs, deleteDoc, addDoc} from '../store/actions/docs';
 
-import { compareDesc } from "date-fns";
+import {compareDesc} from 'date-fns';
 
-import * as FileSystem from "expo-file-system";
-import * as DocumentPicker from "expo-document-picker";
-import * as Sharing from "expo-sharing";
+// import * as FileSystem from "expo-file-system";
+// import * as DocumentPicker from "expo-document-picker";
+// import * as Sharing from "expo-sharing";
 
-import { FAB, Snackbar, IconButton } from "react-native-paper";
+import {FAB, Snackbar, IconButton} from 'react-native-paper';
 
-import Docs from "../components/Docs";
-import EmptyDepo from "../components/EmptyDepo";
+import Docs from '../components/Docs';
+import EmptyDepo from '../components/EmptyDepo';
 
-const DocsDashboard = (props) => {
-  const { navigation, route } = props;
-  const { params } = route;
+const DocsDashboard = props => {
+  const {navigation, route} = props;
+  const {params} = route;
   const [isLoading, setIsLoading] = useState(false);
-  const [fabOpen, setFabOpen] = useState({ open: false });
+  const [fabOpen, setFabOpen] = useState({open: false});
   const [isUploading, setIsUploading] = useState(null);
   const [snackbarValues, setSnackbarValues] = useState({
-    value: "Copied",
+    value: 'Copied',
     visible: false,
   });
-  const userId = useSelector((state) => state.user.uid);
-  const lastLogin = useSelector((state) => state.user.lastLogin);
-  const userEmail = useSelector((state) => state.user.email);
-  const docs = useSelector((state) => state.docs.docs);
+  const userId = useSelector(state => state.user.uid);
+  const lastLogin = useSelector(state => state.user.lastLogin);
+  const userEmail = useSelector(state => state.user.email);
+  const docs = useSelector(state => state.docs.docs);
 
   const dispatch = useDispatch();
 
-  const onFabStateChange = ({ open }) => setFabOpen({ open });
+  const onFabStateChange = ({open}) => setFabOpen({open});
   const onDismissSnackBar = () =>
-    setSnackbarValues({ value: "Copied", visible: false });
+    setSnackbarValues({value: 'Copied', visible: false});
 
   const fetchDocsFromFirestore = useCallback(async () => {
     setIsLoading(true);
     try {
       const querySnapshot = await firestore()
-        .collection("docsDepo")
-        .where("user", "==", userId)
+        .collection('docsDepo')
+        .where('user', '==', userId)
         .get();
       let arr = [];
-      querySnapshot.forEach((doc) => {
-        arr.push({ id: doc.id, ...doc.data(), lastLogin });
+      querySnapshot.forEach(doc => {
+        arr.push({id: doc.id, ...doc.data(), lastLogin});
       });
       arr.sort((a, b) => {
         return compareDesc(
           new Date(a.createdAt.toDate()),
-          new Date(b.createdAt.toDate())
+          new Date(b.createdAt.toDate()),
         );
       });
       dispatch(addMultipleDocs(arr));
       setIsLoading(false);
     } catch (err) {
-      Alert.alert("Error", err.message);
+      Alert.alert('Error', err.message);
     }
   }, [firestore, dispatch, userId]);
 
   const handleUploadDocs = useCallback(
-    async (uri) => {
+    async uri => {
       const fetchResponse = await fetch(uri);
       const file = await fetchResponse.blob();
-      const { name, size, type } = file._data;
+      const {name, size, type} = file._data;
       if (size > 52428800) {
         Alert.alert(
-          "File Too Large",
-          "The file size should be smaller than 50MB"
+          'File Too Large',
+          'The file size should be smaller than 50MB',
         );
         return;
       }
-      if (docs.findIndex((doc) => doc.name === name) > -1) {
+      if (docs.findIndex(doc => doc.name === name) > -1) {
         return;
       }
       setIsUploading(true);
       setSnackbarValues({
-        value: "Uploading... Please wait",
+        value: 'Uploading... Please wait',
         visible: true,
       });
       const fileRef = storage().ref(`${userId}/${name}`);
@@ -94,15 +94,15 @@ const DocsDashboard = (props) => {
         createdAt: firestore.Timestamp.now(),
         path: `${userId}/${name}`,
       };
-      const ref = await firestore().collection("docsDepo").add(doc);
-      dispatch(addDoc({ id: ref.id, ...doc, lastLogin }));
+      const ref = await firestore().collection('docsDepo').add(doc);
+      dispatch(addDoc({id: ref.id, ...doc, lastLogin}));
       setSnackbarValues({
-        value: "Document Uploaded to you depo",
+        value: 'Document Uploaded to you depo',
         visible: true,
       });
       setIsUploading(false);
     },
-    [userId, userEmail]
+    [userId, userEmail],
   );
 
   useEffect(() => {
@@ -118,37 +118,37 @@ const DocsDashboard = (props) => {
   const handleDeleteFromCollection = async (doc, path) => {
     setIsLoading(true);
     try {
-      await firestore().collection("docsDepo").doc(doc).delete();
+      await firestore().collection('docsDepo').doc(doc).delete();
       await storage().ref(path).delete();
-      dispatch(deleteDoc({ id: doc }));
+      dispatch(deleteDoc({id: doc}));
     } catch (err) {
-      Alert.alert("Error", err.message);
+      Alert.alert('Error', err.message);
     }
     setIsLoading(false);
   };
   const handleDelete = (doc, path) => {
-    Alert.alert("Delete doc", "This doc will be deleted", [
+    Alert.alert('Delete doc', 'This doc will be deleted', [
       {
-        text: "Cancel",
-        style: "cancel",
+        text: 'Cancel',
+        style: 'cancel',
       },
       {
-        text: "Ok",
+        text: 'Ok',
         onPress: () => handleDeleteFromCollection(doc, path),
-        style: "destructive",
+        style: 'destructive',
       },
     ]);
   };
 
   const handleDocumentPick = async () => {
     try {
-      const { type, uri } = await DocumentPicker.getDocumentAsync({
+      const {type, uri} = await DocumentPicker.getDocumentAsync({
         copyToCacheDirectory: false,
       });
-      if (type != "success") return;
+      if (type != 'success') return;
       handleUploadDocs(uri);
     } catch (err) {
-      Alert.alert("Error", err.message);
+      Alert.alert('Error', err.message);
     }
   };
 
@@ -156,25 +156,25 @@ const DocsDashboard = (props) => {
     const avalible = await Sharing.isAvailableAsync();
     if (avalible) {
       setSnackbarValues({
-        value: "Hold on, downloading file to share",
+        value: 'Hold on, downloading file to share',
         visible: true,
       });
-      const { uri, status } = await FileSystem.downloadAsync(
+      const {uri, status} = await FileSystem.downloadAsync(
         docURL,
-        FileSystem.cacheDirectory + fileName
+        FileSystem.cacheDirectory + fileName,
       );
       if (status !== 200)
         Alert.alert(
-          "Error",
-          "Error while downloading the file. Please Try again"
+          'Error',
+          'Error while downloading the file. Please Try again',
         );
       else {
         Sharing.shareAsync(uri);
       }
     } else
       Alert.alert(
-        "No sharing available",
-        "The device does not have sharing options compatible with the app. We are extreamly sorry. Report the problem if you think the sharing should be avalible on this device."
+        'No sharing available',
+        'The device does not have sharing options compatible with the app. We are extreamly sorry. Report the problem if you think the sharing should be avalible on this device.',
       );
   };
   return (
@@ -184,7 +184,7 @@ const DocsDashboard = (props) => {
       ) : (
         <FlatList
           data={docs}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <Docs
               doc={item}
               isLoading={isLoading}
@@ -204,23 +204,23 @@ const DocsDashboard = (props) => {
         style={styles.fab}
         visible={!isUploading}
         open={fabOpen.open}
-        icon={fabOpen.open ? "file-cancel" : "plus"}
+        icon={fabOpen.open ? 'file-cancel' : 'plus'}
         actions={[
           {
-            icon: "camera-enhance",
-            label: "Camera",
-            onPress: () => navigation.navigate("Camera"),
+            icon: 'camera-enhance',
+            label: 'Camera',
+            onPress: () => navigation.navigate('Camera'),
             small: false,
           },
           {
-            icon: "microphone-plus",
-            label: "Audio",
-            onPress: () => navigation.navigate("Audio"),
+            icon: 'microphone-plus',
+            label: 'Audio',
+            onPress: () => navigation.navigate('Audio'),
             small: false,
           },
           {
-            icon: "file-document-outline",
-            label: "Document",
+            icon: 'file-document-outline',
+            label: 'Document',
             onPress: handleDocumentPick,
             small: false,
           },
@@ -231,10 +231,9 @@ const DocsDashboard = (props) => {
         visible={snackbarValues.visible}
         onDismiss={onDismissSnackBar}
         action={{
-          label: "Hide",
+          label: 'Hide',
           onPress: onDismissSnackBar,
-        }}
-      >
+        }}>
         {snackbarValues.value}
       </Snackbar>
     </View>
@@ -244,7 +243,7 @@ const DocsDashboard = (props) => {
 export default DocsDashboard;
 
 const styles = StyleSheet.create({
-  drawerIcon: { marginLeft: 10 },
+  drawerIcon: {marginLeft: 10},
   screen: {
     flex: 1,
     padding: 10,
@@ -255,15 +254,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export const docsScreenOptions = ({ navigation, route }) => {
+export const docsScreenOptions = ({navigation, route}) => {
   return {
-    title: "Dashboard",
+    title: 'Dashboard',
     headerLeft: () => (
       <IconButton onPress={() => navigation.toggleDrawer()} icon="menu" />
     ),
     headerTitleStyle: {
-      fontFamily: "Manrope_700Bold",
-      fontWeight: "normal",
+      fontFamily: 'Manrope_700Bold',
+      fontWeight: 'normal',
     },
   };
 };

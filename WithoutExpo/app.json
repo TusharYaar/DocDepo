@@ -1,43 +1,4 @@
 {
-  "expo": {
-    "name": "Docdepo",
-    "slug": "docdepo",
-    "version": "1.6.0",
-    "scheme": "docdepo",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.tusharyaar.docdepo",
-      "buildNumber": "1.1.0"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.tusharyaar.docdepo",
-      "versionCode": 6,
-      "permissions": ["CAMERA","RECORD_AUDIO", "READ_EXTERNAL_STORAGE","WRITE_EXTERNAL_STORAGE"]
-    },
-    "androidNavigationBar": {
-      "visible": "sticky-immersive"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "description": "This is a mobile app for docdepo.",
-    "githubUrl": "https://github.com/TusharYaar/DocDepo"
-  }
+  "name": "WithoutExpo",
+  "displayName": "Docdepo"
 }
