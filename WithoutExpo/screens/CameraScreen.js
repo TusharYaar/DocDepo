@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   Platform,
 } from 'react-native';
-import {Camera} from 'expo-camera';
+import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 import {useIsFocused} from '@react-navigation/native';
 import {Button, IconButton, ActivityIndicator} from 'react-native-paper';
 

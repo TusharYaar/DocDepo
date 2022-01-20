@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './TabNavigator';
 import {docsScreenOptions} from '../screens/DocsDashboard';
 import AddNoteScreen, {addNoteScreenOptions} from '../screens/AddNoteScreen';
-// import CameraScreen from '../screens/CameraScreen';
+import CameraScreen from '../screens/CameraScreen';
 // import AudioScreen from '../screens/AudioScreen';
 import FeedbackScreen, {feedbackScreenOptions} from '../screens/FeedbackScreen';
 import HelpScreen, {helpScreenOptions} from '../screens/HelpScreen';
@@ -24,11 +24,11 @@ export const AppStackNavigator = () => {
         component={TabNavigator}
         options={docsScreenOptions}
       />
-      {/* <AppStack.Screen
+      <AppStack.Screen
         name="Camera"
         component={CameraScreen}
         options={fontOptions}
-      /> */}
+      />
       {/*
       <AppStack.Screen
         name="PhotoView"
