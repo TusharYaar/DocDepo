@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Provider as PaperProvider} from 'react-native-paper';
@@ -25,16 +25,23 @@ const AppNavigator = () => {
     getTheme();
   }, [dispatch]);
   return (
-    <PaperProvider theme={THEMES[currentTheme]}>
-      <StatusBar
-        backgroundColor={THEMES[currentTheme].colors.surface}
-        barStyle={THEMES[currentTheme].dark ? 'light-content' : 'dark-content'}
-      />
-      <NavigationContainer theme={THEMES[currentTheme]}>
-        {!user.uid && <LoginScreen />}
-        {!!user.uid && <DrawerNavigator />}
-      </NavigationContainer>
-    </PaperProvider>
+    <>
+      <PaperProvider theme={THEMES[currentTheme]}>
+        <StatusBar
+          animated={true}
+          backgroundColor={THEMES[currentTheme].colors.background}
+          // hidden={true}
+          barStyle={
+            THEMES[currentTheme].dark ? 'light-content' : 'dark-content'
+          }
+        />
+        {/* {console.log(THEMES[currentTheme])} */}
+        <NavigationContainer theme={THEMES[currentTheme]}>
+          {!user.uid && <LoginScreen />}
+          {!!user.uid && <DrawerNavigator />}
+        </NavigationContainer>
+      </PaperProvider>
+    </>
   );
 };
 

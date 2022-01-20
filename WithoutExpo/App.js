@@ -12,7 +12,6 @@ import userReducer from './store/reducers/user';
 import notesReducer from './store/reducers/notes';
 import docsReducer from './store/reducers/docs';
 import themeReducer from './store/reducers/theme';
-
 // LogBox.ignoreLogs(['Setting a timer']);
 
 enableScreens(true);

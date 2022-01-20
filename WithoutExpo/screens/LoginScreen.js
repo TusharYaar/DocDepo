@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Alert,
-  StatusBar,
-  Platform,
-} from 'react-native';
+import {StyleSheet, View, ScrollView, Alert, Platform} from 'react-native';
 import {TextInput, Button, ActivityIndicator} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -20,7 +13,7 @@ import Body from '../components/Body';
 
 GoogleSignin.configure({
   webClientId:
-    '920988754215-r6i9ptnrn1jvv5cdsnr9sdja2hvv8vrh.apps.googleusercontent.com',
+    '920988754215-gb2rl2a580cr63qh21pf5idl0jmc3pqn.apps.googleusercontent.com',
 });
 
 const LoginScreen = () => {
@@ -59,9 +52,11 @@ const LoginScreen = () => {
     try {
       setGoogleLoading(true);
       const {idToken} = await GoogleSignin.signIn();
+
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
       // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
+      auth().signInWithCredential(googleCredential);
     } catch (err) {
       Alert.alert('Error', err.message);
       setGoogleLoading(false);
@@ -70,11 +65,6 @@ const LoginScreen = () => {
 
   return (
     <ScrollView style={{...styles.screen, backgroundColor: colors.background}}>
-      <StatusBar
-        animated={true}
-        backgroundColor="#61dafb"
-        barStyle={'dark-content'}
-      />
       <Header>Login</Header>
       <View style={styles.container}>
         <View style={styles.margin}>
@@ -135,7 +125,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 10,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + 10 : 10,
   },
   input: {
     marginVertical: 12,
