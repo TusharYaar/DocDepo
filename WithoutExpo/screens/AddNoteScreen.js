@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Alert, Platform } from "react-native";
+import React, {useState} from 'react';
+import {StyleSheet, View, Alert, Platform} from 'react-native';
 
-import { TextInput, Button } from "react-native-paper";
+import {TextInput, Button} from 'react-native-paper';
 
-import * as Clipboard from "expo-clipboard";
-import { useSelector, useDispatch } from "react-redux";
-import { addNote } from "../store/actions/notes";
+import Clipboard from '@react-native-clipboard/clipboard';
+import {useSelector, useDispatch} from 'react-redux';
+import {addNote} from '../store/actions/notes';
 
-import firestore from "@react-native-firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
 
-const AddNoteScreen = (props) => {
-  const user = useSelector((state) => state.user);
-  const lastLogin = useSelector((state) => state.user.lastLogin);
-  const [text, setText] = useState("");
+const AddNoteScreen = props => {
+  const user = useSelector(state => state.user);
+  const lastLogin = useSelector(state => state.user.lastLogin);
+  const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const fetchCopiedText = async () => {
     try {
-      const text = await Clipboard.getStringAsync();
+      const text = await Clipboard.getString();
       setText(text);
     } catch (err) {
-      Alert.alert("Cannot copy the text", err.message);
+      Alert.alert('Cannot copy the text', err.message);
     }
   };
-  const handleChange = (text) => {
+  const handleChange = text => {
     setText(text);
   };
   const handleSubmit = async () => {
@@ -37,15 +37,15 @@ const AddNoteScreen = (props) => {
         isImportant: false,
         createdAt: firestore.Timestamp.now(),
       };
-      const ref = await firestore().collection("notesDepo").add(note);
-      dispatch(addNote({ id: ref.id, ...note, lastLogin }));
+      const ref = await firestore().collection('notesDepo').add(note);
+      dispatch(addNote({id: ref.id, ...note, lastLogin}));
       props.navigation.goBack();
     } catch (err) {
       setIsLoading(false);
-      Alert.alert("Error", err.message, [
+      Alert.alert('Error', err.message, [
         {
-          text: "Ok",
-          style: "cancel",
+          text: 'Ok',
+          style: 'cancel',
         },
       ]);
     }
@@ -69,18 +69,16 @@ const AddNoteScreen = (props) => {
           title=""
           onPress={fetchCopiedText}
           disabled={isLoading}
-          mode={Platform.OS === "android" ? "contained" : "text"}
-        >
+          mode={Platform.OS === 'android' ? 'contained' : 'text'}>
           Last Copied Text
         </Button>
       </View>
       <View style={styles.button}>
         <Button
           title="Add Note"
-          mode={Platform.OS === "android" ? "contained" : "text"}
+          mode={Platform.OS === 'android' ? 'contained' : 'text'}
           onPress={handleSubmit}
-          disabled={isLoading || text.length < 3 || text.length > 120}
-        >
+          disabled={isLoading || text.length < 3 || text.length > 120}>
           Add Note
         </Button>
       </View>
@@ -98,21 +96,21 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 12,
     borderWidth: 1,
-    width: "100%",
+    width: '100%',
     padding: 10,
     fontSize: 20,
-    fontFamily: "Manrope_400Regular",
+    fontFamily: 'Manrope_400Regular',
   },
   button: {
     margin: 10,
   },
 });
-export const addNoteScreenOptions = ({ navigation, route }) => {
+export const addNoteScreenOptions = () => {
   return {
-    title: "Add A Note",
+    title: 'Add A Note',
     headerTitleStyle: {
-      fontFamily: "Manrope_700Bold",
-      fontWeight: "normal",
+      fontFamily: 'Manrope_700Bold',
+      fontWeight: 'normal',
     },
   };
 };
