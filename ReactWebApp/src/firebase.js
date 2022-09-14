@@ -9,25 +9,24 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_FIREBASE_APP_MEASUREMENT_ID
+  measurementId: process.env.REACT_FIREBASE_APP_MEASUREMENT_ID,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
 
 export const auth = firebase.auth();
 const firestore = firebase.firestore();
 const storage = firebase.storage();
 export const Database = {
-  DOCSDEPO: firestore.collection('docsDepo'),
-  NOTESDEPO: firestore.collection('notesDepo'),
-  USERS: firestore.collection('users'),
-  FEEDBACKS: firestore.collection('feedbacks'),
+  DOCSDEPO: firestore.collection("docsDepo"),
+  NOTESDEPO: firestore.collection("notesDepo"),
+  USERS: firestore.collection("users"),
+  FEEDBACKS: firestore.collection("feedbacks"),
   getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp,
   STORAGE: storage,
-}
+};
 export const TIMESTAMP = firebase.firestore.FieldValue.serverTimestamp;
 export const Providers = {
   google: new firebase.auth.GoogleAuthProvider(),
-}
+};
 export default firebaseConfig;
